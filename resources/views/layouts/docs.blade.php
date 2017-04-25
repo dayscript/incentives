@@ -21,7 +21,7 @@
                 Documentación {{ config('app.name', '') }}
             </h1>
             <h2 class="subtitle">
-                Actualizado: 25 Abril 2017 - 12:28pm
+                Actualizado: {{ date ("F d Y H:i:s", mostRecentModifiedFileTime(resource_path('views/docs/'), true)) }}
             </h2>
         </div>
     </div>

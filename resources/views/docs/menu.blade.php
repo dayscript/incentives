@@ -2,6 +2,7 @@
     <p class="menu-label">General</p>
     <ul class="menu-list">
         <li><a class="{{ request()->is('docs/general/todos')?'is-active':'' }}" href="/docs/general/todos">TODOs</a></li>
+        <li><a class="{{ request()->is('docs/general/limitless')?'is-active':'' }}" href="/docs/general/limitless">Limitless Theme</a></li>
     </ul>
     <p class="menu-label">Instalación</p>
     <ul class="menu-list">
