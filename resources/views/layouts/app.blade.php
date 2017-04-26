@@ -20,68 +20,36 @@
         ]) !!};
     </script>
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
+<body class="layout-boxed">
+<!-- Main navbar -->
+@include('layouts.partials.navbar')
+<!-- /main navbar -->
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
-                    </ul>
+<!-- Page container -->
+<div class="page-container" id="app">
+    <!-- Page content -->
+    <div class="page-content">
+        @if(Auth::check())
+            @include('layouts.partials.sidebar')
+        @endif
+        <div class="content-wrapper">
+            @yield('page-header')
+            <div class="content">
+                @yield('content')
+                <div class="footer text-muted">
+                    &copy; {{ date('Y') }}. <a href="/">{{ config('app.name', 'Laravel') }}</a> by <a href="http://dayscript.com" target="_blank">Dayscript</a>
                 </div>
             </div>
-        </nav>
-
-        @yield('content')
+        </div>
     </div>
+    <!-- /page content -->
 
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
+</div>
+<!-- /page container -->
+
+<!-- Scripts -->
+<script type="text/javascript" src="{{ asset('limitless_1_6/layout_1/LTR/default/assets/js/plugins/loaders/pace.min.js') }}"></script>
+<script src="{{ mix('js/app.js') }}"></script>
+<script type="text/javascript" src="{{ asset('limitless_1_6/layout_1/LTR/default/assets/js/plugins/loaders/blockui.min.js') }}"></script>
 </body>
 </html>

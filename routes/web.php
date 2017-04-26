@@ -11,11 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+
 Route::get('docs/{folder?}/{option?}', 'DocsController@index');
 
-Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
