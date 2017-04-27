@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-body login-form">
                 <div class="text-center">
                     <div class="icon-object border-warning text-warning"><i class="icon-spinner11"></i></div>
@@ -25,12 +25,17 @@
                         </div>
                         @if ($errors->has('email'))
                             <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
                         @endif
                     </div>
-                    <button type="submit" class="btn bg-blue btn-block">{{ __('Enviar correo para reasignar contraseña') }} <i
+                    <div class="form-group">
+                        <button type="submit" class="btn bg-blue btn-block">{{ __('Enviar correo para reasignar contraseña') }} <i
                                 class="icon-arrow-right14 position-right"></i></button>
+                    </div>
+                    <div class="text-center">
+                        <a href="{{ route('login') }}">{{ __('Volver a Ingresar') }}</a>
+                    </div>
                 </form>
             </div>
         </div>
