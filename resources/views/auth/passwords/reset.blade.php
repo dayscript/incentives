@@ -20,7 +20,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-body login-form">
                 <div class="text-center">
                     <div class="icon-object border-warning text-warning"><i class="icon-spinner11"></i></div>
