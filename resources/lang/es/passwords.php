@@ -17,6 +17,6 @@ return [
     'reset'    => 'Tu contraseña ha sido asignada!',
     'sent'     => 'Hemos enviado un email para reasignar la contraseña!',
     'token'    => 'El token usado no es válido.',
-    'user'     => "No hemos encontrado un usuarios on esa correo electrónico.",
+    'user'     => "No hemos encontrado un usuario con ese correo electrónico.",
 
 ];
