@@ -4,7 +4,9 @@
     <div class="page-header page-header-default">
         <div class="page-header-content">
             <div class="page-title">
-                <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Usuarios</span> - Registro</h4>
+                <h4><i class="icon-users4 position-left"></i> <span class="text-semibold">Usuarios</span> - Registro
+                    <small class="display-block">Al registrarte aceptas las condiciones de la plataforma. Tu cuenta puede estar sujeta a aprobación por parte del equipo administrador.</small>
+                </h4>
             </div>
         </div>
 

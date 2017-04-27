@@ -3,7 +3,8 @@
     <div class="page-header page-header-default">
         <div class="page-header-content">
             <div class="page-title">
-                <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Usuarios</span> - Restablecer contraseña</h4>
+                <h4><i class="icon-users4 position-left"></i> <span class="text-semibold">Usuarios</span> - Restablecer contraseña
+                <small class="display-block">Puedes asignar una contraseña nuevamente a tu cuenta. Recuerda que el token de seguridad sólo es válido durante 1 hora.</small></h4>
             </div>
         </div>
 

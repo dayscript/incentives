@@ -4,7 +4,9 @@
     <div class="page-header page-header-default">
         <div class="page-header-content">
             <div class="page-title">
-                <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Usuarios</span> - Ingreso</h4>
+                <h4><i class="icon-users4 position-left"></i> <span class="text-semibold">Usuarios</span> - Ingreso
+                    <small class="display-block">Ingresa haciendo uso de tu correo electrónico y contraseña asignados.</small>
+                </h4>
             </div>
         </div>
 
@@ -20,7 +22,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-body login-form">
                 <div class="text-center">
                     <div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
@@ -54,18 +56,18 @@
                         @endif
                     </div>
                     <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block">{{ __('Ingresar') }} <i
-                                        class="icon-circle-right2 position-right"></i></button>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Recordarme') }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">{{ __('Ingresar') }} <i
+                                    class="icon-circle-right2 position-right"></i></button>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="col-md-3">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Recordarme') }}
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="text-center">
