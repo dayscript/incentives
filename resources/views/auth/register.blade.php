@@ -35,15 +35,15 @@
                                         class="icon-cancel-circle2 position-left"></i> {{ $errors->first('password') }}</span>
                         @endif
                     </div>
-                    <div class="form-group{{ $errors->has('password-confirm') ? ' has-error' : '' }} has-feedback has-feedback-left">
-                        <input id="password-confirm" type="password" name="password-confirm" class="form-control" placeholder="Confirmar contraseña"
+                    <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }} has-feedback has-feedback-left">
+                        <input id="password_confirmation" type="password" name="password_confirmation" class="form-control" placeholder="Confirmar contraseña"
                                required>
                         <div class="form-control-feedback">
                             <i class="icon-user-lock text-muted"></i>
                         </div>
-                        @if ($errors->has('password-confirm'))
+                        @if ($errors->has('password_confirmation'))
                             <span class="help-block text-danger"><i
-                                        class="icon-cancel-circle2 position-left"></i> {{ $errors->first('password-confirm') }}</span>
+                                        class="icon-cancel-circle2 position-left"></i> {{ $errors->first('password_confirmation') }}</span>
                         @endif
                     </div>
                     <div class="content-divider text-muted form-group"><span>Datos personales</span></div>
