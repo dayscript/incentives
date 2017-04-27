@@ -1,5 +1,23 @@
 @extends('layouts.app')
 
+@section('page-header')
+    <div class="page-header page-header-default">
+        <div class="page-header-content">
+            <div class="page-title">
+                <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Usuarios</span> - Olvidé mi contraseña</h4>
+            </div>
+        </div>
+
+        <div class="breadcrumb-line">
+            <ul class="breadcrumb">
+                <li><a href="/"><i class="icon-home2 position-left"></i> Inicio</a></li>
+                <li><a>Usuarios</a></li>
+                <li class="active">Olvidé mi contraseña</li>
+            </ul>
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
