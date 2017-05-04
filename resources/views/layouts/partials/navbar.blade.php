@@ -30,11 +30,11 @@
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="#"><i class="icon-user-plus"></i> My profile</a></li>
-                        <li><a href="#"><i class="icon-coins"></i> My balance</a></li>
-                        <li><a href="#"><span class="badge badge-warning pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li>
+{{--                        <li><a href="#"><i class="icon-user-plus"></i> {{ __('Mi perfil') }}</a></li>--}}
+                        {{--<li><a href="#"><i class="icon-coins"></i> My balance</a></li>--}}
+                        {{--<li><a href="#"><span class="badge badge-warning pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li>--}}
                         <li class="divider"></li>
-                        <li><a href="/users/{{ Auth::user()->id }}/edit"><i class="icon-cog5"></i> {{ __('Editar Perfil') }}</a></li>
+                        <li><a href="/users/{{ Auth::user()->id }}/edit"><i class="icon-cog5"></i> {{ __('Editar perfil') }}</a></li>
                         <li>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="icon-switch2"></i> {{ __('Salir') }}</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
