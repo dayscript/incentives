@@ -11,6 +11,9 @@ try {
     // require('../../../public/limitless_1_6/layout_1/LTR/default/assets/js/plugins/loaders/pace.min.js');
     window.$ = window.jQuery = require('../../../public/limitless_1_6/layout_1/LTR/default/assets/js/core/libraries/jquery.min.js');
     require('../../../public/limitless_1_6/layout_1/LTR/default/assets/js/core/libraries/bootstrap.min.js');
+    require('../../../public/limitless_1_6/layout_1/LTR/default/assets/js/plugins/loaders/blockui.min.js');
+    // require('../../../public/limitless_1_6/layout_1/LTR/default/assets/js/plugins/forms/selects/select2.min.js');
+    require('../../../public/limitless_1_6/layout_1/LTR/default/assets/js/plugins/forms/styling/uniform.min.js');
     require('../../../public/limitless_1_6/layout_1/LTR/default/assets/js/core/app.js');
     // window.$ = window.jQuery = require('jquery');
 

@@ -16,3 +16,8 @@ Auth::routes();
 Route::get('docs/{folder?}/{option?}', 'DocsController@index');
 
 Route::get('/', 'HomeController@index');
+
+Route::resource('users','UsersController');
+Route::post('users/{user}','UsersController@update');
+Route::resource('uploads','Utils\UploadsController');
+Route::get('uploads/{folder}/{file}','Utils\UploadsController@show');

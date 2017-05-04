@@ -23,7 +23,8 @@
             @else
                 <li class="dropdown dropdown-user">
                     <a class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="/limitless_1_6/layout_1/LTR/default/starters/assets/images/image.png" alt="">
+                        <avatar image="{{ Auth::user()->avatar }}" fullname="{{ Auth::user()->name }}" :size="30"></avatar>
+                        {{--<img src="/limitless_1_6/layout_1/LTR/default/starters/assets/images/image.png" alt="">--}}
                         <span>{{ Auth::user()->name }}</span>
                         <i class="caret"></i>
                     </a>
@@ -33,7 +34,7 @@
                         <li><a href="#"><i class="icon-coins"></i> My balance</a></li>
                         <li><a href="#"><span class="badge badge-warning pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li>
+                        <li><a href="/users/{{ Auth::user()->id }}/edit"><i class="icon-cog5"></i> {{ __('Editar Perfil') }}</a></li>
                         <li>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="icon-switch2"></i> {{ __('Salir') }}</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

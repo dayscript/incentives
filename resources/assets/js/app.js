@@ -14,8 +14,26 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+Vue.component('edit-profile', require('./components/users/EditProfile.vue'));
+// Vue.component('avatar',require('vue-avatar/dist/Avatar'));
+import Avatar from 'vue-avatar-component'
+// import VueI18n from 'vue-i18n'
+import Element from 'element-ui'
+// import enLocale from 'element-ui/lib/locale/lang/en'
+// import esLocale from 'element-ui/lib/locale/lang/es'
+// window.Vue.use(VueI18n)
+window.Vue.use(Element)
+// window.Vue.config.lang = 'es'
+// window.Vue.locale('en', enLocale)
+// window.Vue.locale('es', esLocale)
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    components: { Avatar },
+    data(){
+        return {
+            active:0
+        }
+    }
 });
+window.vm = app;

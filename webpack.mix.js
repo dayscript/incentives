@@ -13,4 +13,7 @@ const { mix } = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
+    .copy('node_modules/element-ui/lib/theme-default/index.css','public/css/element-ui.css')
+    .copy('node_modules/element-ui/lib/theme-default/fonts/**','public/css/fonts/')
+
     .version();
