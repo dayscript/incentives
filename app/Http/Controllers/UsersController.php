@@ -100,7 +100,6 @@ class UsersController extends Controller
             $user->save();
         }
 
-
         $results            = [];
         $results['user']    = $user;
         $results['status']  = 'success';

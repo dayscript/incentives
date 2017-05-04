@@ -84,7 +84,7 @@
                 adittionaldata: {
                     '_token': window.Laravel.csrfToken,
                     'ajax': true,
-                    'folder': 'avatars'
+                    'folder': 'avatars/' + this.user_id
                 }
             }
         },
@@ -93,18 +93,22 @@
                 axios.get('/users/' + this.user_id).then(
                     ({data}) => {
                         if (data.cities) this.cities = data.cities;
-                        if (data.user) this.user = data.user;
+                        if (data.user) {
+                            this.user = data.user;
+                        }
                         setTimeout(function () {
                             $('.select').select2();
                         }, 300);
                     }
                 ).catch();
             }
+//            $(".styled").uniform({radioClass: 'choice'});
+//            $(".file-styled").uniform({
+//                fileButtonClass: 'action btn bg-pink-400'
+//            });
         },
         methods: {
             handleAvatarSuccess(res, file) {
-                console.log(res.path);
-//                this.user.avatar = URL.createObjectURL(file.raw);
                 this.user.avatar = res.path;
             },
             beforeAvatarUpload(file) {

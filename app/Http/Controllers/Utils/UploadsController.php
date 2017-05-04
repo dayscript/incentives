@@ -55,13 +55,14 @@ class UploadsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $folder
-     * @param string $file
+     * @param $id
      * @return \Illuminate\Http\Response
+     * @internal param string $folder
+     * @internal param string $file
      */
-    public function show($folder = '', $file='')
+    public function show($id)
     {
-        return '/storage/'.$folder . '/'. $file;
+
     }
 
     /**

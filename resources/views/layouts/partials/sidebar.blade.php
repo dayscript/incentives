@@ -34,6 +34,12 @@
                     <!-- Main -->
                     <li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
                     <li class="{{ request()->is('/')?'active':'' }}"><a href="/"><i class="icon-home4"></i> <span>{{ __('Dashboard') }}</span></a></li>
+                    <li class="{{ request()->is('users/*') ?'active':''}}">
+                        <a href="#"><i class="icon-users"></i> <span>{{ __('Usuarios') }}</span></a>
+                        <ul>
+                            <li class="{{ request()->is('users/'. Auth::user()->id .'/edit')?'active':'' }}"><a href="/users/{{ Auth::user()->id }}/edit">{{ __('Editar mi perfil') }}</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="#"><i class="icon-question3"></i> <span>{{ __('Ayuda') }}</span></a>
                         <ul>
@@ -47,12 +53,6 @@
                             </li>
                             <li class="navigation-divider"></li>
                             <li><a href="#">{{ __('Documentación técnica') }}</a></li>
-                        </ul>
-                    </li>
-                    <li class="{{ request()->is('users/*') ?'active':''}}">
-                        <a href="#"><i class="icon-users"></i> <span>{{ __('Usuarios') }}</span></a>
-                        <ul>
-                            <li class="{{ request()->is('users/'. Auth::user()->id .'/edit')?'active':'' }}"><a href="/users/{{ Auth::user()->id }}/edit">{{ __('Editar mi perfil') }}</a></li>
                         </ul>
                     </li>
                     <!-- /main -->
