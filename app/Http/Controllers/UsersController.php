@@ -81,6 +81,7 @@ class UsersController extends Controller
      */
     public function update(User $user)
     {
+        sleep(1);
         $this->validate(request(), [
             'name'     => 'required|min:5',
             'email'    => [
