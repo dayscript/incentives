@@ -20,4 +20,5 @@ Route::get('/', 'HomeController@index');
 Route::resource('users','UsersController');
 Route::post('users/{user}','UsersController@update');
 Route::resource('uploads','Utils\UploadsController');
+Route::resource('clients','ClientsController');
 //Route::get('uploads/{folder}/{file}','Utils\UploadsController@show');

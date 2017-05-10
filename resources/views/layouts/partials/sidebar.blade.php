@@ -37,7 +37,16 @@
                     <li class="{{ request()->is('users/*') ?'active':''}}">
                         <a href="#"><i class="icon-users"></i> <span>{{ __('Usuarios') }}</span></a>
                         <ul>
+                            <li class="{{ request()->is('users')?'active':'' }}"><a href="/users">{{ __('Listado de usuarios') }}</a></li>
                             <li class="{{ request()->is('users/'. Auth::user()->id .'/edit')?'active':'' }}"><a href="/users/{{ Auth::user()->id }}/edit">{{ __('Editar mi perfil') }}</a></li>
+                            <li class="{{ request()->is('users/create')?'active':'' }}"><a href="/users/create">{{ __('Agregar usuario') }}</a></li>
+                        </ul>
+                    </li>
+                    <li class="{{ request()->is('clients/*') ?'active':''}}">
+                        <a href="#"><i class="icon-briefcase"></i> <span>{{ __('Clientes') }}</span></a>
+                        <ul>
+                            <li class="{{ request()->is('clients')?'active':'' }}"><a href="/clients">{{ __('Listado de clientes') }}</a></li>
+                            <li class="{{ request()->is('clients/create')?'active':'' }}"><a href="/clients/create">{{ __('Agregar cliente') }}</a></li>
                         </ul>
                     </li>
                     <li>

@@ -12,6 +12,10 @@
     </ul>
     <p class="menu-label">Base de datos</p>
     <ul class="menu-list">
-        <li><a class="{{ request()->is('docs/database/users')?'is-active':'' }}" href="/docs/database/users">users</a></li>
+        @php($tables = DB::select('SHOW TABLES'))
+        @foreach($tables as $table)
+            @php($table_name = $table->Tables_in_incentives)
+            <li><a class="{{ request()->is('docs/database/'.$table_name)?'is-active':'' }}" href="/docs/database/{{ $table_name }}">{{ $table_name }}</a></li>
+        @endforeach
     </ul>
 </aside>

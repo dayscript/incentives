@@ -5,5 +5,11 @@ Esta tabla almacena registros de los usuarios creados para acceder a la platafor
 | Campo        | Tipo           | Descripción  |
 | ------------- |:-------------:| ----- |
 | id      | `int` | Llave primaria autoincremental |
-| created_at | `varchar`      |    Fecha |
-| updated_at | `varchar`      |    Fecha |
+| name | `varchar` | Nombre del usuario |
+| email | `varchar` | Email del usuario |
+| avatar | `varchar` | Ruta de la imagen asociada al usuario |
+| position | `varchar` | Cargo |
+| city_id | `int` | Relación a la tabla de ciudades |
+| remember_token | `varchar` | Token para guardar sesión del usuario |
+| created_at | `timestamp`      |    Fecha |
+| updated_at | `timestamp`      |    Fecha |
