@@ -17,7 +17,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::orderBy('name')->paginate(10);
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -27,18 +28,56 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        $cities            = [];
+        foreach (City::orderBy('country')->get() as $city) {
+            if (!isset($cities[$city->country])) $cities[$city->country] = [];
+            $cities[$city->country][] = $city;
+        }
+
+        return view('users.create', compact('cities'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        sleep(1);
+        $this->validate(request(), [
+            'name'     => 'required|min:5',
+            'email'    => [
+                'required',
+                'email',
+                Rule::unique('users')
+            ],
+            'position' => 'min:2',
+        ]);
+
+        $user = User::create(request()->except('password'));
+        if ($pw = request()->password) {
+            $this->validate(request(), [
+                'password' => 'min:6',
+            ]);
+            $user->password = bcrypt($pw);
+            $user->save();
+        }
+
+        if(str_contains($user->avatar,'avatars/0/')){
+            $old_file = str_replace('/storage/','',$user->avatar);
+            //            dd(Storage::disk('public')->size($old_file));
+            $new_file = str_replace('avatars/0/','avatars/'.$user->id.'/',$old_file);
+            Storage::disk('public')->move($old_file, $new_file);
+            $user->avatar= '/storage/'.$new_file;
+            $user->save();
+        }
+        $results            = [];
+        $results['user']    = $user;
+        $results['status']  = 'success';
+        $results['message'] = __('Usuario creado');
+
+        return $results;
     }
 
     /**
@@ -52,13 +91,6 @@ class UsersController extends Controller
         $results           = [];
         $results['user']   = $user;
         $results['status'] = 'success';
-        $cities            = [];
-        foreach (City::orderBy('country')->get() as $city) {
-            if (!isset($cities[$city->country])) $cities[$city->country] = [];
-            $cities[$city->country][] = $city;
-        }
-        $results['cities'] = $cities;
-
         return $results;
     }
 
@@ -70,7 +102,13 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $cities            = [];
+        foreach (City::orderBy('country')->get() as $city) {
+            if (!isset($cities[$city->country])) $cities[$city->country] = [];
+            $cities[$city->country][] = $city;
+        }
+
+        return view('users.edit', compact('user', 'cities'));
     }
 
     /**
@@ -118,6 +156,10 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $results = [];
+        $user->delete();
+        $results['status']  = 'success';
+        $results['message'] = __('Usuario eliminado');
+        return $results;
     }
 }

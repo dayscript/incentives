@@ -62,25 +62,40 @@
                 Formatos aceptados: gif, png, jpg. Tamaño máximo del archivo: 2MB</span>
         </div>
         <div class="text-right">
-            <button @click.prevent="updateProfile" class="btn btn-primary">Guardar <i class="icon-user-check position-right"></i></button>
+            <a class="btn" href="/users"><i class=" icon-arrow-left15 left"></i> Regresar</a>
+            <button v-if="user.id>0" @click.prevent="updateUser" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i></button>
+            <button v-else @click.prevent="createUser" class="btn btn-success">Crear <i class="icon-checkmark4 position-right"></i></button>
+            <button v-if="user.id>0" @click.prevent="deleteUser" class="btn btn-danger">Eliminar <i class="icon-trash position-right"></i>
+            </button>
+
         </div>
     </form>
 </template>
 
 <script>
     export default {
-        props: ['user_id'],
+        props: {
+            user_id: {
+                type: Number,
+                default: 0
+            },
+            cities:{
+                type: Object,
+                default:{}
+            }
+        },
         data(){
             return {
                 user: {
+                    id: this.user_id,
                     name: '',
                     email: '',
                     position: '',
                     password: '',
-                    city_id: null
+                    city_id: null,
+                    avatar: null
                 },
                 errors: {},
-                cities: [],
                 adittionaldata: {
                     '_token': window.Laravel.csrfToken,
                     'ajax': true,
@@ -89,23 +104,20 @@
             }
         },
         mounted() {
-            if (this.user_id) {
+            if (this.user_id>0) {
                 axios.get('/users/' + this.user_id).then(
                     ({data}) => {
-                        if (data.cities) this.cities = data.cities;
+//                        if (data.cities) this.cities = data.cities;
                         if (data.user) {
                             this.user = data.user;
                         }
-                        setTimeout(function () {
-                            $('.select').select2();
-                        }, 300);
                     }
                 ).catch();
             }
-//            $(".styled").uniform({radioClass: 'choice'});
-//            $(".file-styled").uniform({
-//                fileButtonClass: 'action btn bg-pink-400'
-//            });
+            setTimeout(function () {
+                $('.select').select2();
+            }, 300);
+
         },
         methods: {
             handleAvatarSuccess(res, file) {
@@ -119,17 +131,52 @@
 //                    this.$message.error('Avatar picture must be JPG format!');
 //                }
                 if (!isLt2M) {
-                    this.$message.error('Avatar picture size can not exceed 2MB!');
+                    this.$message.error('La imagen no puede pesar mas de 2MB!');
                 }
                 return isLt2M;
             },
             resetErrors(field){
                 Vue.delete(this.errors, field);
             },
-            updateProfile(){
+            createUser(){
+                window.vm.active++;
+                axios.post('/users', this.user).then(
+                    ({data}) => {
+                        if (data.user) {
+                            this.user = data.user;
+                            this.adittionaldata.folder = 'avatars/' + this.user.id;
+                        }
+                        setTimeout(function () {
+                            $('.select').select2();
+                        }, 300);
+
+                        if (data.message) new PNotify({
+                            text: data.message,
+                            addclass: 'bg-' + data.status,
+                            type: data.status,
+                            animation: 'fade',
+                            delay: 2000
+                        });
+                        window.vm.active--;
+                    }
+                ).catch(function (error) {
+                    window.vm.active--;
+                    if (error.response) {
+                        if (error.response.status == 422) {
+                            var data = error.response.data;
+                            this.errors = data;
+                        } else {
+                            console.log(error.response.status);
+                        }
+                    } else {
+                        console.log('Error', error.message);
+                    }
+                }.bind(this));
+            },
+            updateUser(){
                 window.vm.active++;
                 this.user.city_id = $('#city_id').val();
-                axios.put('/users/' + this.user_id, this.user).then(
+                axios.put('/users/' + this.user.id, this.user).then(
                     ({data}) => {
                         if (data.user) this.user = data.user;
 //                        $('#city_id').val(data.user.city_id);
@@ -160,6 +207,38 @@
                     }
                 }.bind(this));
 
+            },
+            deleteUser(){
+                if (confirm('¿Estás seguro que quieres eliminar este registro?')) {
+                    window.vm.active++;
+                    axios.delete('/users/' + this.user.id).then(
+                        ({data}) => {
+                            if (data.message) new PNotify({
+                                text: data.message,
+                                addclass: 'bg-' + data.status,
+                                type: data.status,
+                                animation: 'fade',
+                                delay: 2000
+                            });
+                            window.vm.active--;
+                            if (data.status=='success') {
+                                document.location.href = '/users';
+                            }
+                        }
+                    ).catch(function (error) {
+                        window.vm.active--;
+                        if (error.response) {
+                            if (error.response.status == 422) {
+                                var data = error.response.data;
+                                this.errors = data;
+                            } else {
+                                console.log(error.response.status);
+                            }
+                        } else {
+                            console.log('Error', error.message);
+                        }
+                    }.bind(this));
+                }
             }
         }
     }
