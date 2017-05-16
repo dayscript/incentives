@@ -17,6 +17,7 @@ Route::get('docs/{folder?}/{option?}', 'DocsController@index');
 
 Route::get('/', 'HomeController@index');
 
+Route::get('users/api','UsersController@apitokens');
 Route::resource('users','UsersController');
 Route::post('users/{user}','UsersController@update');
 Route::resource('uploads','Utils\UploadsController');

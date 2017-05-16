@@ -162,4 +162,13 @@ class UsersController extends Controller
         $results['message'] = __('Usuario eliminado');
         return $results;
     }
+
+    /**
+     * Api tokens administration view
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function apitokens()
+    {
+        return view('users.apitokens');
+    }
 }

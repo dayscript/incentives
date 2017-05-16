@@ -14,6 +14,23 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+// Passport components
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue')
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue')
+);
+
+
 Vue.component('edit-user', require('./components/users/EditUser.vue'));
 Vue.component('edit-client', require('./components/clients/EditClient.vue'));
 // Vue.component('avatar',require('vue-avatar/dist/Avatar'));

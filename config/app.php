@@ -177,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Nathanmac\Utilities\Parser\ParserServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
     ],
 

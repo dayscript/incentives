@@ -40,6 +40,7 @@
                             <li class="{{ request()->is('users')?'active':'' }}"><a href="/users">{{ __('Listado de usuarios') }}</a></li>
                             <li class="{{ request()->is('users/'. Auth::user()->id .'/edit')?'active':'' }}"><a href="/users/{{ Auth::user()->id }}/edit">{{ __('Editar mi perfil') }}</a></li>
                             <li class="{{ request()->is('users/create')?'active':'' }}"><a href="/users/create">{{ __('Agregar usuario') }}</a></li>
+                            <li class="{{ request()->is('users/api')?'active':'' }}"><a href="/users/api">{{ __('API Tokens') }}</a></li>
                         </ul>
                     </li>
                     <li class="{{ request()->is('clients/*') ?'active':''}}">
