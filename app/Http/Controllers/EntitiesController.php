@@ -49,7 +49,49 @@ class EntitiesController extends Controller
      */
     public function show(Entity $entity)
     {
-        //
+        $results = [];
+        $points = [];
+        $entity->makeHidden('rules');
+        foreach ($entity->rules as $rule){
+            $points[] = [
+                'created_at'=>$rule->pivot->created_at->toDateTimeString(),
+                'points'=>$rule->pivot->points,
+                'value'=>$rule->pivot->value,
+                'description'=>$rule->pivot->description,
+            ];
+        }
+        $entity->points = $points;
+        $results['entity'] = $entity;
+        return $results;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $identification
+     * @return \Illuminate\Http\Response
+     */
+    public function showByIdentification($identification)
+    {
+        $results = [];
+        if($entity = Entity::where('identification', $identification)->first()){
+            $points = [];
+            $entity->makeHidden('rules');
+            foreach ($entity->rules as $rule){
+                $points[] = [
+                    'created_at'=>$rule->pivot->created_at->toDateTimeString(),
+                    'points'=>$rule->pivot->points,
+                    'value'=>$rule->pivot->value,
+                    'description'=>$rule->pivot->description,
+                ];
+            }
+            $entity->points = $points;
+            $results['entity'] = $entity;
+        } else {
+            $results['status'] = 'error';
+            $results['message'] = __('No existe la entidad');
+        }
+        return $results;
     }
 
     /**

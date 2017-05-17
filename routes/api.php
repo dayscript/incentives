@@ -13,10 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/test', function (Request $request) {
+Route::middleware('auth:api')->get('/test', function () {
     return 'API authentication OK';
 });
-Route::get('entities', 'EntitiesController@index');
+Route::get('entities/{identification}', 'EntitiesController@showByIdentification');
 Route::post('entities/{identification}/addvalue', 'EntitiesController@addvalue');
 
 

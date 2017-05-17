@@ -14,6 +14,7 @@
     <ul class="menu-list">
         <li><a class="{{ request()->is('docs/api/test')?'is-active':'' }}" href="/docs/api/test">Prueba de conexión</a></li>
         <li><a class="{{ request()->is('docs/api/entities_addvalue')?'is-active':'' }}" href="/docs/api/entities_addvalue">Entities Add Value</a></li>
+        <li><a class="{{ request()->is('docs/api/entities_show')?'is-active':'' }}" href="/docs/api/entities_show">Entity Points Summary</a></li>
     </ul>
     <p class="menu-label">Base de datos</p>
     <ul class="menu-list">
