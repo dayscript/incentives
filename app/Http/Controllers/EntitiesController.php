@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Incentives\Core\Entity;
+use App\Incentives\Rules\Rule;
 use Illuminate\Http\Request;
 
 class EntitiesController extends Controller
@@ -14,7 +15,9 @@ class EntitiesController extends Controller
      */
     public function index()
     {
-        return 'ok';
+        $entities = Entity::orderBy('name')->paginate(10);
+        return view('entities.index', compact('entities'));
+
     }
 
     /**
@@ -81,5 +84,27 @@ class EntitiesController extends Controller
     public function destroy(Entity $entity)
     {
         //
+    }
+
+    /**
+     * Adds rule value to given entity
+     * @param $identification
+     * @return array
+     */
+    public function addvalue($identification)
+    {
+        $this->validate(request(), [
+            'rule'     => 'required|exists:rules,id',
+        ]);
+        $results = [];
+        $entity = Entity::firstOrCreate(['identification'=>$identification]);
+
+        if($rule = Rule::find(request()->get('rule'))){
+            $value = request()->get('value',1);
+            $entity->rules()->attach($rule->id, ['value'=>$value, 'points'=>$value*$rule->points]);
+        }
+
+        $results['entity'] = $entity;
+        return $results;
     }
 }

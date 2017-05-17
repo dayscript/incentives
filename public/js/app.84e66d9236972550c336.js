@@ -4350,6 +4350,186 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/rules/EditRule.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        rule_id: {
+            type: Number,
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            rule: {
+                id: this.rule_id,
+                name: '',
+                description: '',
+                points: null
+            },
+            errors: {},
+            adittionaldata: {
+                '_token': window.Laravel.csrfToken,
+                'ajax': true
+            }
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        if (this.rule_id > 0) {
+            axios.get('/rules/' + this.rule_id).then(function (_ref) {
+                var data = _ref.data;
+
+                if (data.rule) {
+                    _this.rule = data.rule;
+                }
+            }).catch();
+        }
+    },
+
+    methods: {
+        resetErrors: function resetErrors(field) {
+            Vue.delete(this.errors, field);
+        },
+        createRule: function createRule() {
+            var _this2 = this;
+
+            window.vm.active++;
+            axios.post('/rules', this.rule).then(function (_ref2) {
+                var data = _ref2.data;
+
+                if (data.rule) _this2.rule = data.rule;
+                if (data.message) new PNotify({
+                    text: data.message,
+                    addclass: 'bg-' + data.status,
+                    type: data.status,
+                    animation: 'fade',
+                    delay: 2000
+                });
+                window.vm.active--;
+            }).catch(function (error) {
+                window.vm.active--;
+                if (error.response) {
+                    if (error.response.status == 422) {
+                        var data = error.response.data;
+                        this.errors = data;
+                    } else {
+                        console.log(error.response.status);
+                    }
+                } else {
+                    console.log('Error', error.message);
+                }
+            }.bind(this));
+        },
+        updateRule: function updateRule() {
+            var _this3 = this;
+
+            window.vm.active++;
+            axios.put('/rules/' + this.rule.id, this.rule).then(function (_ref3) {
+                var data = _ref3.data;
+
+                if (data.rule) _this3.rule = data.rule;
+                if (data.message) new PNotify({
+                    text: data.message,
+                    addclass: 'bg-' + data.status,
+                    type: data.status,
+                    animation: 'fade',
+                    delay: 2000
+                });
+                window.vm.active--;
+            }).catch(function (error) {
+                window.vm.active--;
+                if (error.response) {
+                    if (error.response.status == 422) {
+                        var data = error.response.data;
+                        this.errors = data;
+                    } else {
+                        console.log(error.response.status);
+                    }
+                } else {
+                    console.log('Error', error.message);
+                }
+            }.bind(this));
+        },
+        deleteRule: function deleteRule() {
+            if (confirm('¿Estás seguro que quieres eliminar esta regla?')) {
+                window.vm.active++;
+                axios.delete('/rules/' + this.rule.id).then(function (_ref4) {
+                    var data = _ref4.data;
+
+                    if (data.message) new PNotify({
+                        text: data.message,
+                        addclass: 'bg-' + data.status,
+                        type: data.status,
+                        animation: 'fade',
+                        delay: 2000
+                    });
+                    window.vm.active--;
+                    if (data.status == 'success') {
+                        document.location.href = '/clients';
+                    }
+                }).catch(function (error) {
+                    window.vm.active--;
+                    if (error.response) {
+                        if (error.response.status == 422) {
+                            var data = error.response.data;
+                            this.errors = data;
+                        } else {
+                            console.log(error.response.status);
+                        }
+                    } else {
+                        console.log('Error', error.message);
+                    }
+                }.bind(this));
+            }
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/users/EditUser.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67029,6 +67209,193 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-9da5b10c\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/rules/EditRule.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('form', {
+    attrs: {
+      "action": "#"
+    }
+  }, [_c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.name
+    }
+  }, [_c('label', [_vm._v("Nombre:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.rule.name),
+      expression: "rule.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Nombre de la regla"
+    },
+    domProps: {
+      "value": (_vm.rule.name)
+    },
+    on: {
+      "keyup": function($event) {
+        _vm.resetErrors('name')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.rule.name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('transition', {
+    attrs: {
+      "enter-active-class": "animated fadeIn",
+      "mode": "out-in",
+      "leave-active-class": "animated fadeOut"
+    }
+  }, [(_vm.errors.name) ? _c('span', {
+    ref: "errors.name",
+    staticClass: "help-block text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.name[0]))]) : _c('span', {
+    ref: "noerrors.name",
+    staticClass: "help-block"
+  }, [_vm._v("Escribe el nombre de la regla de acumulación")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.description
+    }
+  }, [_c('label', [_vm._v("Descripción:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.rule.description),
+      expression: "rule.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Descripción de la regla"
+    },
+    domProps: {
+      "value": (_vm.rule.description)
+    },
+    on: {
+      "keyup": function($event) {
+        _vm.resetErrors('description')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.rule.description = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('transition', {
+    attrs: {
+      "enter-active-class": "animated fadeIn",
+      "mode": "out-in",
+      "leave-active-class": "animated fadeOut"
+    }
+  }, [(_vm.errors.description) ? _c('span', {
+    ref: "errors.description",
+    staticClass: "help-block text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.description[0]))]) : _c('span', {
+    ref: "noerrors.description",
+    staticClass: "help-block"
+  }, [_vm._v("Escribe una descripción sobre el contenido de esta regla")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.points
+    }
+  }, [_c('label', [_vm._v("Puntos ganados:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.rule.points),
+      expression: "rule.points"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "number",
+      "placeholder": "Puntos a asignar"
+    },
+    domProps: {
+      "value": (_vm.rule.points)
+    },
+    on: {
+      "keyup": function($event) {
+        _vm.resetErrors('points')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.rule.points = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  }), _vm._v(" "), _c('transition', {
+    attrs: {
+      "enter-active-class": "animated fadeIn",
+      "mode": "out-in",
+      "leave-active-class": "animated fadeOut"
+    }
+  }, [(_vm.errors.points) ? _c('span', {
+    ref: "errors.points",
+    staticClass: "help-block text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.points[0]))]) : _c('span', {
+    ref: "noerrors.points",
+    staticClass: "help-block"
+  }, [_vm._v("Cantidad de puntos que se obtienen con esta regla")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "text-right"
+  }, [_vm._m(0), _vm._v(" "), (_vm.rule.id > 0) ? _c('button', {
+    staticClass: "btn btn-success",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.updateRule($event)
+      }
+    }
+  }, [_vm._v("Guardar "), _c('i', {
+    staticClass: "icon-checkmark4 position-right"
+  })]) : _c('button', {
+    staticClass: "btn btn-success",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.createRule($event)
+      }
+    }
+  }, [_vm._v("Crear "), _c('i', {
+    staticClass: "icon-checkmark4 position-right"
+  })]), _vm._v(" "), (_vm.rule.id > 0) ? _c('button', {
+    staticClass: "btn btn-danger",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.deleteRule($event)
+      }
+    }
+  }, [_vm._v("Eliminar "), _c('i', {
+    staticClass: "icon-trash position-right"
+  })]) : _vm._e()])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('a', {
+    staticClass: "btn",
+    attrs: {
+      "href": "/rules"
+    }
+  }, [_c('i', {
+    staticClass: " icon-arrow-left15 left"
+  }), _vm._v(" Regresar")])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-9da5b10c", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-e84b12f2\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/passport/Clients.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -81595,6 +81962,7 @@ Vue.component('passport-personal-access-tokens', __webpack_require__("./resource
 
 Vue.component('edit-user', __webpack_require__("./resources/assets/js/components/users/EditUser.vue"));
 Vue.component('edit-client', __webpack_require__("./resources/assets/js/components/clients/EditClient.vue"));
+Vue.component('edit-rule', __webpack_require__("./resources/assets/js/components/rules/EditRule.vue"));
 // Vue.component('avatar',require('vue-avatar/dist/Avatar'));
 
 // import VueI18n from 'vue-i18n'
@@ -81817,6 +82185,41 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-ff5c10e2", Component.options)
   } else {
     hotAPI.reload("data-v-ff5c10e2", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/rules/EditRule.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/rules/EditRule.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-9da5b10c\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/rules/EditRule.vue"),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/jcorrego/Desktop/incentives/resources/assets/js/components/rules/EditRule.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] EditRule.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9da5b10c", Component.options)
+  } else {
+    hotAPI.reload("data-v-9da5b10c", Component.options)
   }
 })()}
 

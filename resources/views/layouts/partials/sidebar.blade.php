@@ -50,6 +50,14 @@
                             <li class="{{ request()->is('clients/create')?'active':'' }}"><a href="/clients/create">{{ __('Agregar cliente') }}</a></li>
                         </ul>
                     </li>
+                    <li class="{{ request()->is('rules/*') ?'active':''}}">
+                        <a href="#"><i class="icon-add-to-list"></i> <span>{{ __('Acumulación') }}</span></a>
+                        <ul>
+                            <li class="{{ request()->is('rules')?'active':'' }}"><a href="/rules">{{ __('Listado de reglas') }}</a></li>
+                            <li class="{{ request()->is('rules/create')?'active':'' }}"><a href="/rules/create">{{ __('Agregar regla') }}</a></li>
+                            <li class="{{ request()->is('entities')?'active':'' }}"><a href="/entities">{{ __('Listado de entidades') }}</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="#"><i class="icon-question3"></i> <span>{{ __('Ayuda') }}</span></a>
                         <ul>

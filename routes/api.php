@@ -16,4 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/test', function (Request $request) {
     return 'API authentication OK';
 });
-Route::get('entities', 'EntitiesController@index')->middleware('auth:api');
+Route::get('entities', 'EntitiesController@index');
+Route::post('entities/{identification}/addvalue', 'EntitiesController@addvalue');
+
+

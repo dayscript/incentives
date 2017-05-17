@@ -12,7 +12,7 @@ class DocsController extends Controller
      * @param string $folder
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index( $folder='general', $option = 'todos' )
+    public function index( $folder='general', $option = 'limitless' )
     {
         $parsedown = new Parsedown;
         $file = resource_path('views/docs/markdown/'.$folder.'/'.$option.'.md');
