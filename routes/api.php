@@ -13,7 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/test', function () {
+//Route::middleware('auth:api')->get('/test', function () {
+Route::get('/test', function () {
+    \Illuminate\Support\Facades\Log::info('OK');
     return 'API authentication OK';
 });
 Route::get('entities/{identification}', 'EntitiesController@showByIdentification');
