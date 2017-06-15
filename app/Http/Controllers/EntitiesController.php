@@ -143,7 +143,8 @@ class EntitiesController extends Controller
 
         if($rule = Rule::find(request()->get('rule'))){
             $value = request()->get('value',1);
-            $entity->rules()->attach($rule->id, ['value'=>$value, 'points'=>$value*$rule->points]);
+            $description = request()->get('description');
+            $entity->rules()->attach($rule->id, ['value'=>$value, 'points'=>$value*$rule->points, 'description'=>$description]);
         }
 
         $results['entity'] = $entity;
