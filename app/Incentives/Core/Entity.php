@@ -21,7 +21,7 @@ class Entity extends Model
      */
     public function rules()
     {
-        return $this->belongsToMany(Rule::class)->withPivot('value','points','description')->withTimestamps();
+        return $this->belongsToMany(Rule::class)->withPivot('id','value','points','description')->withTimestamps();
     }
 
     public function totalpoints()
