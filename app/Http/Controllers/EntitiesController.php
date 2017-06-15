@@ -83,6 +83,7 @@ class EntitiesController extends Controller
                     'points'=>$rule->pivot->points,
                     'value'=>$rule->pivot->value,
                     'description'=>$rule->pivot->description,
+                    'rule_id'=>$rule->id
                 ];
             }
             $entity->points = $points;
