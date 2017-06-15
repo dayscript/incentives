@@ -16,6 +16,7 @@ class EntitiesController extends Controller
     public function index()
     {
         $entities = Entity::orderBy('name')->paginate(10);
+
         return view('entities.index', compact('entities'));
 
     }
@@ -33,7 +34,7 @@ class EntitiesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -44,24 +45,25 @@ class EntitiesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Incentives\Core\Entity  $entity
+     * @param  \App\Incentives\Core\Entity $entity
      * @return \Illuminate\Http\Response
      */
     public function show(Entity $entity)
     {
         $results = [];
-        $points = [];
+        $points  = [];
         $entity->makeHidden('rules');
-        foreach ($entity->rules as $rule){
+        foreach ($entity->rules as $rule) {
             $points[] = [
-                'created_at'=>$rule->pivot->created_at->toDateTimeString(),
-                'points'=>$rule->pivot->points,
-                'value'=>$rule->pivot->value,
-                'description'=>$rule->pivot->description,
+                'created_at'  => $rule->pivot->created_at->toDateTimeString(),
+                'points'      => $rule->pivot->points,
+                'value'       => $rule->pivot->value,
+                'description' => $rule->pivot->description,
             ];
         }
-        $entity->points = $points;
+        $entity->points    = $points;
         $results['entity'] = $entity;
+
         return $results;
     }
 
@@ -74,31 +76,33 @@ class EntitiesController extends Controller
     public function showByIdentification($identification)
     {
         $results = [];
-        if($entity = Entity::where('identification', $identification)->first()){
+        if ($entity = Entity::where('identification', $identification)->first()) {
             $points = [];
             $entity->makeHidden('rules');
-            foreach ($entity->rules as $rule){
+            foreach ($entity->rules as $rule) {
                 $points[] = [
-                    'created_at'=>$rule->pivot->created_at->toDateTimeString(),
-                    'points'=>$rule->pivot->points,
-                    'value'=>$rule->pivot->value,
-                    'description'=>$rule->pivot->description,
-                    'rule_id'=>$rule->id
+                    'id'          => $rule->pivot->id,
+                    'created_at'  => $rule->pivot->created_at->toDateTimeString(),
+                    'points'      => $rule->pivot->points,
+                    'value'       => $rule->pivot->value,
+                    'description' => $rule->pivot->description,
+                    'rule_id'     => $rule->id
                 ];
             }
-            $entity->points = $points;
+            $entity->points    = $points;
             $results['entity'] = $entity;
         } else {
-            $results['status'] = 'error';
+            $results['status']  = 'error';
             $results['message'] = __('No existe la entidad');
         }
+
         return $results;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Incentives\Core\Entity  $entity
+     * @param  \App\Incentives\Core\Entity $entity
      * @return \Illuminate\Http\Response
      */
     public function edit(Entity $entity)
@@ -109,8 +113,8 @@ class EntitiesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Incentives\Core\Entity  $entity
+     * @param  \Illuminate\Http\Request    $request
+     * @param  \App\Incentives\Core\Entity $entity
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Entity $entity)
@@ -121,7 +125,7 @@ class EntitiesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Incentives\Core\Entity  $entity
+     * @param  \App\Incentives\Core\Entity $entity
      * @return \Illuminate\Http\Response
      */
     public function destroy(Entity $entity)
@@ -137,18 +141,19 @@ class EntitiesController extends Controller
     public function addvalue($identification)
     {
         $this->validate(request(), [
-            'rule'     => 'required|exists:rules,id',
+            'rule' => 'required|exists:rules,id',
         ]);
         $results = [];
-        $entity = Entity::firstOrCreate(['identification'=>$identification]);
+        $entity  = Entity::firstOrCreate(['identification' => $identification]);
 
-        if($rule = Rule::find(request()->get('rule'))){
-            $value = request()->get('value',1);
+        if ($rule = Rule::find(request()->get('rule'))) {
+            $value       = request()->get('value', 1);
             $description = request()->get('description');
-            $entity->rules()->attach($rule->id, ['value'=>$value, 'points'=>$value*$rule->points, 'description'=>$description]);
+            $entity->rules()->attach($rule->id, ['value' => $value, 'points' => $value * $rule->points, 'description' => $description]);
         }
 
         $results['entity'] = $entity;
+
         return $results;
     }
 }
