@@ -156,4 +156,20 @@ class EntitiesController extends Controller
 
         return $results;
     }
+
+    /**
+     * Adds rule value to given entity
+     * @param $identification
+     * @param $id
+     * @return array
+     */
+    public function delvalue($identification, $id)
+    {
+        $results = [];
+        $entity  = Entity::firstOrCreate(['identification' => $identification]);
+        $values = $entity->rules()->wherePivot('id', $id)->detach();
+        $results['values'] = $values;
+
+        return $results;
+    }
 }
