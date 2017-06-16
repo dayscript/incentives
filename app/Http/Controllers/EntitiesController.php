@@ -149,9 +149,14 @@ class EntitiesController extends Controller
         if ($rule = Rule::find(request()->get('rule'))) {
             $value       = request()->get('value', 1);
             $description = request()->get('description');
+            $ids = $entity->rules()->pluck('entity_rule.id')->toArray();
+            $results['ids'] = $ids;
             $entity->rules()->attach($rule->id, ['value' => $value, 'points' => $value * $rule->points, 'description' => $description]);
+            foreach ($entity->rules as $val){
+              if(!in_array($val->pivot->id, $ids))$value = $val->pivot;
+            }
+            $results['value'] = $value;
         }
-
         $results['entity'] = $entity;
 
         return $results;
