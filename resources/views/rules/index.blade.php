@@ -33,6 +33,9 @@
                 <a href="/rules/{{ $rule->id }}/edit" class="media-link">
                     <div class="media-left">
                         ID: {{ $rule->id }}
+                        @if($client = $rule->client)
+                            <avatar image="{{ $client->image }}" fullname="{{ $client->name }}" :size="36"></avatar>
+                        @endif
                     </div>
                     <div class="media-body">
                         <h6 class="media-heading">{{ $rule->name }}</h6>

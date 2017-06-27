@@ -4392,6 +4392,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -4406,8 +4413,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 id: this.rule_id,
                 name: '',
                 description: '',
-                points: null
+                points: null,
+                client_id: null
             },
+            clients: [],
             errors: {},
             adittionaldata: {
                 '_token': window.Laravel.csrfToken,
@@ -4427,6 +4436,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }).catch();
         }
+        axios.get('/api/clients').then(function (_ref2) {
+            var data = _ref2.data;
+
+            if (data.clients) {
+                _this.clients = data.clients;
+            }
+        }).catch();
+        setTimeout(function () {
+            $('.select').select2();
+        }, 300);
     },
 
     methods: {
@@ -4437,8 +4456,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             window.vm.active++;
-            axios.post('/rules', this.rule).then(function (_ref2) {
-                var data = _ref2.data;
+            axios.post('/rules', this.rule).then(function (_ref3) {
+                var data = _ref3.data;
 
                 if (data.rule) _this2.rule = data.rule;
                 if (data.message) new PNotify({
@@ -4467,10 +4486,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this3 = this;
 
             window.vm.active++;
-            axios.put('/rules/' + this.rule.id, this.rule).then(function (_ref3) {
-                var data = _ref3.data;
+            this.rule.client_id = $('#client_id').val();
+            axios.put('/rules/' + this.rule.id, this.rule).then(function (_ref4) {
+                var data = _ref4.data;
 
                 if (data.rule) _this3.rule = data.rule;
+                setTimeout(function () {
+                    $('.select').select2();
+                }, 300);
                 if (data.message) new PNotify({
                     text: data.message,
                     addclass: 'bg-' + data.status,
@@ -4478,6 +4501,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     animation: 'fade',
                     delay: 2000
                 });
+
                 window.vm.active--;
             }).catch(function (error) {
                 window.vm.active--;
@@ -4496,8 +4520,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         deleteRule: function deleteRule() {
             if (confirm('¿Estás seguro que quieres eliminar esta regla?')) {
                 window.vm.active++;
-                axios.delete('/rules/' + this.rule.id).then(function (_ref4) {
-                    var data = _ref4.data;
+                axios.delete('/rules/' + this.rule.id).then(function (_ref5) {
+                    var data = _ref5.data;
 
                     if (data.message) new PNotify({
                         text: data.message,
@@ -67218,6 +67242,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "action": "#"
     }
   }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Cliente:")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.rule.client_id),
+      expression: "rule.client_id"
+    }],
+    staticClass: "select",
+    attrs: {
+      "name": "client_id",
+      "id": "client_id"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.rule.client_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.clients), function(client) {
+    return _c('option', {
+      domProps: {
+        "value": client.id
+      }
+    }, [_vm._v(_vm._s(client.name))])
+  }))]), _vm._v(" "), _c('div', {
     staticClass: "form-group",
     class: {
       'has-error': _vm.errors.name
