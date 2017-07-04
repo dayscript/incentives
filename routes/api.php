@@ -23,5 +23,6 @@ Route::get('entities/{identification}', 'EntitiesController@showByIdentification
 Route::post('entities/{identification}/addvalue', 'EntitiesController@addvalue');
 Route::post('entities/{identification}/addgoalvalue', 'EntitiesController@addgoalvalue');
 Route::get('entities/{identification}/delvalue/{id}', 'EntitiesController@delvalue');
+Route::get('entities/{identification}/delgoalvalue/{id}', 'EntitiesController@delgoalvalue');
 
 
