@@ -99,6 +99,10 @@ class EntitiesController extends Controller
                     $mod_percentage = Goal::modifier1($percentage);
                 } else if ($goal->modifier == 'modifier2') {
                     $mod_percentage = Goal::modifier2($percentage);
+                } else if ($goal->modifier == 'modifier3') {
+                    $mod_percentage = Goal::modifier3($percentage);
+                } else if ($goal->modifier == 'modifier4') {
+                    $mod_percentage = Goal::modifier4($percentage);
                 } else {
                     $mod_percentage = $percentage;
                 }

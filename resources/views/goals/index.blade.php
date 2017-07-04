@@ -44,7 +44,9 @@
                         <h6 class="media-heading">{{ $goal->name }}</h6>
                         {{ $goal->description }}
                     </div>
-                    <div class="media-right"><br>
+                    <div class="media-right">
+                        Peso: {{ $goal->weight }}%
+                        <br>
 {{--                        {{ number_format($rule->points,2,',','.') }}--}}
                     </div>
                 </a>

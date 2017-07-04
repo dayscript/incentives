@@ -81,6 +81,14 @@
                     {
                         key: 'modifier2',
                         label: 'Rango 0% - 80% - 100%'
+                    },
+                    {
+                        key: 'modifier3',
+                        label: 'Rango 0% - 80% - 90% - 100%'
+                    },
+                    {
+                        key: 'modifier4',
+                        label: 'Rango 0% - 90% - 100%'
                     }
                 ],
                 errors: {},

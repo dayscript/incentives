@@ -47,4 +47,25 @@ class Goal extends Model
         elseif($value < 100)return 80;
         else return 100;
     }
+    /**
+     * Percentage Modifier
+     * @param $value
+     * @return int
+     */
+    public static function modifier3($value)
+    {
+        if($value < 80) return 0;
+        elseif($value < 90)return 90;
+        else return 100;
+    }
+    /**
+     * Percentage Modifier
+     * @param $value
+     * @return int
+     */
+    public static function modifier4($value)
+    {
+        if($value < 90) return 0;
+        else return 100;
+    }
 }
