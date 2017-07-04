@@ -26,4 +26,5 @@ Route::resource('clients','ClientsController');
 
 
 Route::resource('rules','RulesController');
+Route::resource('goals','GoalsController');
 Route::resource('entities','EntitiesController');

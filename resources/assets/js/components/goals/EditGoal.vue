@@ -2,41 +2,33 @@
   <form action="#">
     <div class="form-group">
       <label>Cliente:</label>
-      <select name="client_id" id="client_id" class="select" v-model="rule.client_id">
+      <select name="client_id" id="client_id" class="select" v-model="goal.client_id">
         <option v-for="client in clients" :value="client.id">{{ client.name }}</option>
       </select>
     </div>
     <div class="form-group" :class="{'has-error': errors.name}">
       <label>Nombre:</label>
-      <input type="text" class="form-control" placeholder="Nombre de la regla" v-model="rule.name" v-on:keyup="resetErrors('name')">
+      <input type="text" class="form-control" placeholder="Nombre de la meta" v-model="goal.name" v-on:keyup="resetErrors('name')">
       <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
         <span ref="errors.name" v-if="errors.name" class="help-block text-danger">{{ errors.name[0] }}</span>
-        <span ref="noerrors.name" v-else class="help-block">Escribe el nombre de la regla de acumulación</span>
+        <span ref="noerrors.name" v-else class="help-block">Escribe el nombre de la meta</span>
       </transition>
     </div>
     <div class="form-group" :class="{'has-error': errors.description}">
       <label>Descripción:</label>
-      <input type="text" class="form-control" placeholder="Descripción de la regla" v-model="rule.description"
+      <input type="text" class="form-control" placeholder="Descripción de la meta" v-model="goal.description"
              v-on:keyup="resetErrors('description')">
       <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
         <span ref="errors.description" v-if="errors.description" class="help-block text-danger">{{ errors.description[0] }}</span>
-        <span ref="noerrors.description" v-else class="help-block">Escribe una descripción sobre el contenido de esta regla</span>
-      </transition>
-    </div>
-    <div class="form-group" :class="{'has-error': errors.points}">
-      <label>Puntos ganados:</label>
-      <input type="number" class="form-control" placeholder="Puntos a asignar" v-model="rule.points" v-on:keyup="resetErrors('points')">
-      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
-        <span ref="errors.points" v-if="errors.points" class="help-block text-danger">{{ errors.points[0] }}</span>
-        <span ref="noerrors.points" v-else class="help-block">Cantidad de puntos que se obtienen con esta regla</span>
+        <span ref="noerrors.description" v-else class="help-block">Escribe una descripción sobre el contenido de esta meta</span>
       </transition>
     </div>
     <div class="text-right">
-      <a class="btn" href="/rules"><i class=" icon-arrow-left15 left"></i> Regresar</a>
-      <button v-if="rule.id>0" @click.prevent="updateRule" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i>
+      <a class="btn" href="/goals"><i class=" icon-arrow-left15 left"></i> Regresar</a>
+      <button v-if="goal.id>0" @click.prevent="updateGoal" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i>
       </button>
-      <button v-else @click.prevent="createRule" class="btn btn-success">Crear <i class="icon-checkmark4 position-right"></i></button>
-      <button v-if="rule.id>0" @click.prevent="deleteRule" class="btn btn-danger">Eliminar <i class="icon-trash position-right"></i>
+      <button v-else @click.prevent="createGoal" class="btn btn-success">Crear <i class="icon-checkmark4 position-right"></i></button>
+      <button v-if="goal.id>0" @click.prevent="deleteGoal" class="btn btn-danger">Eliminar <i class="icon-trash position-right"></i>
       </button>
     </div>
   </form>
@@ -45,18 +37,17 @@
 <script>
     export default {
         props: {
-            rule_id: {
+            goal_id: {
                 type: Number,
                 default: 0
             },
         },
         data(){
             return {
-                rule: {
-                    id: this.rule_id,
+                goal: {
+                    id: this.goal_id,
                     name: '',
                     description: '',
-                    points: null,
                     client_id: null
                 },
                 clients: [],
@@ -68,11 +59,11 @@
             }
         },
         mounted() {
-            if (this.rule_id > 0) {
-                axios.get('/rules/' + this.rule_id).then(
+            if (this.goal_id > 0) {
+                axios.get('/goals/' + this.goal_id).then(
                   ({data}) => {
-                      if (data.rule) {
-                          this.rule = data.rule;
+                      if (data.goal) {
+                          this.goal = data.goal;
                       }
                   }
                 ).catch();
@@ -92,11 +83,11 @@
             resetErrors(field){
                 Vue.delete(this.errors, field);
             },
-            createRule(){
+            createGoal(){
                 window.vm.active++;
-                axios.post('/rules', this.rule).then(
+                axios.post('/goals', this.goal).then(
                   ({data}) => {
-                      if (data.rule) this.rule = data.rule;
+                      if (data.goal) this.goal = data.goal;
                       if (data.message) new PNotify({
                           text: data.message,
                           addclass: 'bg-' + data.status,
@@ -120,12 +111,12 @@
                     }
                 }.bind(this));
             },
-            updateRule(){
+            updateGoal(){
                 window.vm.active++;
-                this.rule.client_id = $('#client_id').val();
-                axios.put('/rules/' + this.rule.id, this.rule).then(
+                this.goal.client_id = $('#client_id').val();
+                axios.put('/goals/' + this.goal.id, this.goal).then(
                   ({data}) => {
-                      if (data.rule) this.rule = data.rule;
+                      if (data.goal) this.goal = data.goal;
                       setTimeout(function () {
                           $('.select').select2();
                       }, 300);
@@ -153,10 +144,10 @@
                     }
                 }.bind(this));
             },
-            deleteRule(){
-                if (confirm('¿Estás seguro que quieres eliminar esta regla?')) {
+            deleteGoal(){
+                if (confirm('¿Estás seguro que quieres eliminar esta meta?')) {
                     window.vm.active++;
-                    axios.delete('/rules/' + this.rule.id).then(
+                    axios.delete('/goals/' + this.goal.id).then(
                       ({data}) => {
                           if (data.message) new PNotify({
                               text: data.message,
@@ -167,7 +158,7 @@
                           });
                           window.vm.active--;
                           if (data.status == 'success') {
-                              document.location.href = '/rules';
+                              document.location.href = '/goals';
                           }
                       }
                     ).catch(function (error) {

@@ -2,9 +2,13 @@
 
 namespace App\Incentives\Core;
 
+use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property mixed rules
+ */
 class Entity extends Model
 {
     /**
@@ -22,6 +26,15 @@ class Entity extends Model
     public function rules()
     {
         return $this->belongsToMany(Rule::class)->withPivot('id','value','points','description')->withTimestamps();
+    }
+    /**
+     * Relationship with associated goals values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function goals()
+    {
+        return $this->belongsToMany(Goal::class)->withPivot('id','value','date')->withTimestamps();
     }
 
     public function totalpoints()

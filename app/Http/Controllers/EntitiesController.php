@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Incentives\Core\Entity;
+use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EntitiesController extends Controller
@@ -51,17 +53,17 @@ class EntitiesController extends Controller
     public function show(Entity $entity)
     {
         $results = [];
-        $points  = [];
+        $points = [];
         $entity->makeHidden('rules');
         foreach ($entity->rules as $rule) {
             $points[] = [
-                'created_at'  => $rule->pivot->created_at->toDateTimeString(),
-                'points'      => $rule->pivot->points,
-                'value'       => $rule->pivot->value,
+                'created_at' => $rule->pivot->created_at->toDateTimeString(),
+                'points' => $rule->pivot->points,
+                'value' => $rule->pivot->value,
                 'description' => $rule->pivot->description,
             ];
         }
-        $entity->points    = $points;
+        $entity->points = $points;
         $results['entity'] = $entity;
 
         return $results;
@@ -81,18 +83,18 @@ class EntitiesController extends Controller
             $entity->makeHidden('rules');
             foreach ($entity->rules as $rule) {
                 $points[] = [
-                    'id'          => $rule->pivot->id,
-                    'created_at'  => $rule->pivot->created_at->toDateTimeString(),
-                    'points'      => $rule->pivot->points,
-                    'value'       => $rule->pivot->value,
+                    'id' => $rule->pivot->id,
+                    'created_at' => $rule->pivot->created_at->toDateTimeString(),
+                    'points' => $rule->pivot->points,
+                    'value' => $rule->pivot->value,
                     'description' => $rule->pivot->description,
-                    'rule_id'     => $rule->id
+                    'rule_id' => $rule->id
                 ];
             }
-            $entity->points    = $points;
+            $entity->points = $points;
             $results['entity'] = $entity;
         } else {
-            $results['status']  = 'error';
+            $results['status'] = 'error';
             $results['message'] = __('No existe la entidad');
         }
 
@@ -113,7 +115,7 @@ class EntitiesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request    $request
+     * @param  \Illuminate\Http\Request $request
      * @param  \App\Incentives\Core\Entity $entity
      * @return \Illuminate\Http\Response
      */
@@ -144,20 +146,53 @@ class EntitiesController extends Controller
             'rule' => 'required|exists:rules,id',
         ]);
         $results = [];
-        $entity  = Entity::firstOrCreate(['identification' => $identification]);
+        $entity = Entity::firstOrCreate(['identification' => $identification]);
 
         if ($rule = Rule::find(request()->get('rule'))) {
-            $value       = request()->get('value', 1);
+            $value = request()->get('value', 1);
             $description = request()->get('description');
             $ids = $entity->rules()->pluck('entity_rule.id')->toArray();
 
             $entity->rules()->attach($rule->id, ['value' => $value, 'points' => $value * $rule->points, 'description' => $description]);
-            foreach ($entity->rules as $val){
-              if(!in_array($val->pivot->id, $ids))$value = $val->pivot;
+            foreach ($entity->rules as $val) {
+                if (!in_array($val->pivot->id, $ids)) $rvalue = $val->pivot;
             }
-            $results['value'] = $value;
+            $results['value'] = $rvalue;
         }
         $results['entity'] = $entity;
+
+        return $results;
+    }
+
+    /**
+     * Adds goal value to given entity
+     * @param $identification
+     * @return array
+     */
+    public function addgoalvalue($identification)
+    {
+        $this->validate(request(), [
+            'goal' => 'required|exists:goals,id',
+        ]);
+        $results = [];
+        $entity = Entity::firstOrCreate(['identification' => $identification]);
+        $results['entity'] = $entity;
+
+        if ($goal = Goal::find(request()->get('goal'))) {
+            $value = request()->get('value', 1);
+            $date = request()->get('date', Carbon::now()->toDateString());
+            if($gvalue = $entity->goals()->wherePivot('date', $date)->where('goals.id',$goal->id)->first()){
+                $results['value'] = $gvalue;
+                $entity->goals()->wherePivot('date', $date)->updateExistingPivot($goal->id, ['value'=>$value]);
+            } else {
+                $ids = $entity->goals()->pluck('entity_goal.id')->toArray();
+                $entity->goals()->attach($goal->id, ['value' => $value, 'date' => $date]);
+                foreach ($entity->goals as $val) {
+                    if (!in_array($val->pivot->id, $ids)) $gvalue = $val->pivot;
+                }
+                $results['value'] = $gvalue;
+            }
+        }
 
         return $results;
     }
@@ -171,7 +206,7 @@ class EntitiesController extends Controller
     public function delvalue($identification, $id)
     {
         $results = [];
-        $entity  = Entity::firstOrCreate(['identification' => $identification]);
+        $entity = Entity::firstOrCreate(['identification' => $identification]);
         $values = $entity->rules()->wherePivot('id', $id)->detach();
         $results['values'] = $values;
 

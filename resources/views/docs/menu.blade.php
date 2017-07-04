@@ -15,6 +15,7 @@
         <li><a class="{{ request()->is('docs/api/test')?'is-active':'' }}" href="/docs/api/test">Connection test</a></li>
         <li><a class="{{ request()->is('docs/api/entities_addvalue')?'is-active':'' }}" href="/docs/api/entities_addvalue">Entities Add Value</a></li>
         <li><a class="{{ request()->is('docs/api/entities_delvalue')?'is-active':'' }}" href="/docs/api/entities_delvalue">Entities Remove Value</a></li>
+        <li><a class="{{ request()->is('docs/api/entities_addgoalvalue')?'is-active':'' }}" href="/docs/api/entities_addgoalvalue">Entities Add Goal Value</a></li>
         <li><a class="{{ request()->is('docs/api/entities_show')?'is-active':'' }}" href="/docs/api/entities_show">Entity Points Summary</a></li>
     </ul>
     <p class="menu-label">Base de datos</p>
