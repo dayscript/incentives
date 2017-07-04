@@ -23,6 +23,24 @@
         <span ref="noerrors.description" v-else class="help-block">Escribe una descripción sobre el contenido de esta meta</span>
       </transition>
     </div>
+    <div class="form-group">
+      <label>Modificador de cálculo:</label>
+      <select name="modifier" id="modifier"  v-model="goal.modifier">
+        <option v-for="modif in modifiers" :value="modif.key">{{ modif.label }}</option>
+      </select>
+      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
+        <span ref="errors.modifier" v-if="errors.modifier" class="help-block text-danger">{{ errors.modifier[0] }}</span>
+        <span ref="noerrors.modifier" v-else class="help-block">Un modificador permite alterar el resultado del cálculo de cumplimiento de la meta</span>
+      </transition>
+    </div>
+    <div class="form-group" :class="{'has-error': errors.weight}">
+      <label>Peso en el indicador:</label>
+      <input type="number" class="form-control" placeholder="100" v-model="goal.weight" v-on:keyup="resetErrors('weight')">
+      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
+        <span ref="errors.weight" v-if="errors.weight" class="help-block text-danger">{{ errors.weight[0] }}</span>
+        <span ref="noerrors.weight" v-else class="help-block">Peso en el indicador</span>
+      </transition>
+    </div>
     <div class="text-right">
       <a class="btn" href="/goals"><i class=" icon-arrow-left15 left"></i> Regresar</a>
       <button v-if="goal.id>0" @click.prevent="updateGoal" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i>
@@ -48,9 +66,23 @@
                     id: this.goal_id,
                     name: '',
                     description: '',
+                    modifier: '',
+                    weight: '100',
                     client_id: null
                 },
                 clients: [],
+                modifiers: [
+                    {key:'none',
+                    label:'Ninguno'},
+                    {
+                        key: 'modifier1',
+                        label: 'Rango 0% - 80% - 100% - 120%'
+                    },
+                    {
+                        key: 'modifier2',
+                        label: 'Rango 0% - 80% - 100%'
+                    }
+                ],
                 errors: {},
                 adittionaldata: {
                     '_token': window.Laravel.csrfToken,

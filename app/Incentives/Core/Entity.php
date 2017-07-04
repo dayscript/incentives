@@ -34,7 +34,7 @@ class Entity extends Model
      */
     public function goals()
     {
-        return $this->belongsToMany(Goal::class)->withPivot('id','value','date')->withTimestamps();
+        return $this->belongsToMany(Goal::class)->withPivot('id','value','real','date')->withTimestamps();
     }
 
     public function totalpoints()

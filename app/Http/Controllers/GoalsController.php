@@ -87,7 +87,6 @@ class GoalsController extends Controller
         $this->validate(request(), [
           'name'     => 'required|min:3',
         ]);
-
         $goal->update(request()->all());
 
         $results            = [];
