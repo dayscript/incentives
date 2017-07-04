@@ -8,6 +8,7 @@ Esta tabla almacena los valores definidos para una entidad, con respecto a una m
 | entity_id | `int` | Llave a la tabla de entidades |
 | goal_id | `int` | Llave a la tabla de metas |
 | value | `double` | Valor de la meta para esta entidad |
+| real | `double` | Valor de cumplimiento de la meta para esta entidad |
 | date | `date` | Fecha (mes) correspondiente a este valor de meta |
 | created_at | `timestamp` | Fecha |
 | updated_at | `timestamp` | Fecha |
