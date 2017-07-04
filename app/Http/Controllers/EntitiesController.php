@@ -198,7 +198,7 @@ class EntitiesController extends Controller
     }
 
     /**
-     * Adds rule value to given entity
+     * Deletes rule value to given entity
      * @param $identification
      * @param $id
      * @return array
@@ -208,6 +208,21 @@ class EntitiesController extends Controller
         $results = [];
         $entity = Entity::firstOrCreate(['identification' => $identification]);
         $values = $entity->rules()->wherePivot('id', $id)->detach();
+        $results['values'] = $values;
+
+        return $results;
+    }
+    /**
+     * Deletes goal value to given entity
+     * @param $identification
+     * @param $id
+     * @return array
+     */
+    public function delgoalvalue($identification, $id)
+    {
+        $results = [];
+        $entity = Entity::firstOrCreate(['identification' => $identification]);
+        $values = $entity->goals()->wherePivot('id', $id)->detach();
         $results['values'] = $values;
 
         return $results;
