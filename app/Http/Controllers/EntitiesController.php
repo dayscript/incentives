@@ -212,7 +212,7 @@ class EntitiesController extends Controller
             $date  = request()->get('date', Carbon::now()->toDateString());
             if ($gvalue = $entity->goals()->wherePivot('date', $date)->where('goals.id', $goal->id)->first()) {
                 $gvalue->pivot->value = $value;
-                $gvalue->pivot->real  = $real;
+                $gvalue->pivot->real  = $real ;
                 $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
                 if ($gvalue->modifier == 'modifier1') {
                     $mod_percentage = Goal::modifier1($percentage);
