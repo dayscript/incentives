@@ -213,36 +213,51 @@ class EntitiesController extends Controller
             if ($gvalue = $entity->goals()->wherePivot('date', $date)->where('goals.id', $goal->id)->first()) {
                 $gvalue->pivot->value = $value;
                 $gvalue->pivot->real  = $real;
-                $results['value']     = $gvalue;
+                $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
+                if ($gvalue->modifier == 'modifier1') {
+                    $mod_percentage = Goal::modifier1($percentage);
+                } else if ($gvalue->modifier == 'modifier2') {
+                    $mod_percentage = Goal::modifier2($percentage);
+                } else if ($gvalue->modifier == 'modifier3') {
+                    $mod_percentage = Goal::modifier3($percentage);
+                } else if ($gvalue->modifier == 'modifier4') {
+                    $mod_percentage = Goal::modifier4($percentage);
+                } else {
+                    $mod_percentage = $percentage;
+                }
+                $percentage_weighed = $mod_percentage * ($gvalue->weight / 100);
+                $gvalue->percentage = $percentage;
+                $gvalue->percentage_modified = $mod_percentage;
+                $gvalue->percentage_weighed = $percentage_weighed;
+                $results['value']     = $gvalue->pivot;
                 $entity->goals()->wherePivot('date', $date)->updateExistingPivot($goal->id, ['value' => $value, 'real' => $real]);
             } else {
                 $ids = $entity->goals()->pluck('entity_goal.id')->toArray();
                 $entity->goals()->attach($goal->id, ['value' => $value, 'date' => $date, 'real' => $real]);
                 foreach ($entity->goals as $val) {
                     if (!in_array($val->pivot->id, $ids)) {
-                        $goal = $val;
-                        $gvalue = $val->pivot;
+                        $gvalue = $val;
                         break;
                     }
                 }
-                $percentage = round(100 * $gvalue->real / $gvalue->value, 2);
-                if ($goal->modifier == 'modifier1') {
+                $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
+                if ($gvalue->modifier == 'modifier1') {
                     $mod_percentage = Goal::modifier1($percentage);
-                } else if ($goal->modifier == 'modifier2') {
+                } else if ($gvalue->modifier == 'modifier2') {
                     $mod_percentage = Goal::modifier2($percentage);
-                } else if ($goal->modifier == 'modifier3') {
+                } else if ($gvalue->modifier == 'modifier3') {
                     $mod_percentage = Goal::modifier3($percentage);
-                } else if ($goal->modifier == 'modifier4') {
+                } else if ($gvalue->modifier == 'modifier4') {
                     $mod_percentage = Goal::modifier4($percentage);
                 } else {
                     $mod_percentage = $percentage;
                 }
-                $percentage_weighed = $mod_percentage * ($goal->weight / 100);
+                $percentage_weighed = $mod_percentage * ($gvalue->weight / 100);
                 $gvalue->percentage = $percentage;
                 $gvalue->percentage_modified = $mod_percentage;
                 $gvalue->percentage_weighed = $percentage_weighed;
 
-                $results['value'] = $gvalue;
+                $results['value'] = $gvalue->pivot;
             }
         }
 
