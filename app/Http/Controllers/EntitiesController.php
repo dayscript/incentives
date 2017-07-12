@@ -226,9 +226,9 @@ class EntitiesController extends Controller
                     $mod_percentage = $percentage;
                 }
                 $percentage_weighed = $mod_percentage * ($gvalue->weight / 100);
-                $gvalue->percentage = $percentage;
-                $gvalue->percentage_modified = $mod_percentage;
-                $gvalue->percentage_weighed = $percentage_weighed;
+                $gvalue->pivot->percentage = $percentage;
+                $gvalue->pivot->percentage_modified = $mod_percentage;
+                $gvalue->pivot->percentage_weighed = $percentage_weighed;
                 $results['value']     = $gvalue->pivot;
                 $entity->goals()->wherePivot('date', $date)->updateExistingPivot($goal->id, ['value' => $value, 'real' => $real]);
             } else {
@@ -253,9 +253,9 @@ class EntitiesController extends Controller
                     $mod_percentage = $percentage;
                 }
                 $percentage_weighed = $mod_percentage * ($gvalue->weight / 100);
-                $gvalue->percentage = $percentage;
-                $gvalue->percentage_modified = $mod_percentage;
-                $gvalue->percentage_weighed = $percentage_weighed;
+                $gvalue->pivot->percentage = $percentage;
+                $gvalue->pivot->percentage_modified = $mod_percentage;
+                $gvalue->pivot->percentage_weighed = $percentage_weighed;
 
                 $results['value'] = $gvalue->pivot;
             }
