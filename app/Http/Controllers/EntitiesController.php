@@ -106,9 +106,10 @@ class EntitiesController extends Controller
                 } else {
                     $mod_percentage = $percentage;
                 }
-                $percentage_weighed = $mod_percentage * ($goal->weight/100);
+                $percentage_weighed = $mod_percentage * ($goal->weight / 100);
                 $goals[]            = [
                   'id'                  => $goal->pivot->id,
+                  'goal_id'             => $goal->id,
                   'date'                => $goal->pivot->date,
                   'value'               => $goal->pivot->value,
                   'real'                => $goal->pivot->real,
@@ -218,8 +219,29 @@ class EntitiesController extends Controller
                 $ids = $entity->goals()->pluck('entity_goal.id')->toArray();
                 $entity->goals()->attach($goal->id, ['value' => $value, 'date' => $date, 'real' => $real]);
                 foreach ($entity->goals as $val) {
-                    if (!in_array($val->pivot->id, $ids)) $gvalue = $val->pivot;
+                    if (!in_array($val->pivot->id, $ids)) {
+                        $goal = $val;
+                        $gvalue = $val->pivot;
+                        break;
+                    }
                 }
+                $percentage = round(100 * $gvalue->real / $gvalue->value, 2);
+                if ($goal->modifier == 'modifier1') {
+                    $mod_percentage = Goal::modifier1($percentage);
+                } else if ($goal->modifier == 'modifier2') {
+                    $mod_percentage = Goal::modifier2($percentage);
+                } else if ($goal->modifier == 'modifier3') {
+                    $mod_percentage = Goal::modifier3($percentage);
+                } else if ($goal->modifier == 'modifier4') {
+                    $mod_percentage = Goal::modifier4($percentage);
+                } else {
+                    $mod_percentage = $percentage;
+                }
+                $percentage_weighed = $mod_percentage * ($goal->weight / 100);
+                $gvalue->percentage = $percentage;
+                $gvalue->percentage_modified = $mod_percentage;
+                $gvalue->percentage_weighed = $percentage_weighed;
+
                 $results['value'] = $gvalue;
             }
         }
