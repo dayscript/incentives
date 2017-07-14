@@ -178,7 +178,7 @@ class ClientsController extends Controller
                   'percentage_modified' => $mod_percentage,
                   'percentage_weighed'  => $percentage_weighed,
                   'date'                => $entity->pivot->date,
-                  'created_at'          => $entity->pivot->created_at,
+                  'created_at'          => $entity->pivot->created_at->toDateTimeString(),
                 ];
             }
         }
