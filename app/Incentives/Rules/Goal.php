@@ -3,6 +3,7 @@
 namespace App\Incentives\Rules;
 
 use App\Incentives\Core\Client;
+use App\Incentives\Core\Entity;
 use Illuminate\Database\Eloquent\Model;
 
 class Goal extends Model
@@ -21,6 +22,15 @@ class Goal extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    /**
+     * Entities relationship
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function entities()
+    {
+        return $this->belongsToMany(Entity::class)->withPivot('id','value','real','date')->withTimestamps();
     }
 
     /**

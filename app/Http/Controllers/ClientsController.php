@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Incentives\Core\Client;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -138,4 +139,22 @@ class ClientsController extends Controller
 
     return $results;
   }
+
+    /**
+     * List date goal values
+     * @param Client $client
+     * @param null   $date
+     * @return array
+     */
+    public function dategoalvalues(Client $client, $date = null)
+    {
+        if(!$date)$date = Carbon::now()->toDateString();
+        $results = [];
+        $results['goal_values'] = collect([]);
+        foreach ($client->goals as $goal){
+            $results['goal_values'] = $results['goal_values']->merge($goal->entities()->wherePivot('date',$date)->get());
+        }
+        return $results;
+
+    }
 }
