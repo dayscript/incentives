@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Incentives\Core\Client;
+use App\Incentives\Rules\Goal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
