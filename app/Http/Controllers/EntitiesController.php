@@ -93,7 +93,8 @@ class EntitiesController extends Controller
             }
             $goals = [];
             foreach ($entity->goals as $goal) {
-                $percentage = round(100 * $goal->pivot->real / $goal->pivot->value, 2);
+                if($goal->pivot->value == 0)$percentage = 0;
+                else $percentage = round(100 * $goal->pivot->real / $goal->pivot->value, 2);
 
                 if ($goal->modifier == 'modifier1') {
                     $mod_percentage = Goal::modifier1($percentage);
@@ -213,7 +214,8 @@ class EntitiesController extends Controller
             if ($gvalue = $entity->goals()->wherePivot('date', $date)->where('goals.id', $goal->id)->first()) {
                 $gvalue->pivot->value = $value;
                 $gvalue->pivot->real  = $real ;
-                $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
+                if($goal->pivot->value == 0)$percentage = 0;
+                else $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
                 if ($gvalue->modifier == 'modifier1') {
                     $mod_percentage = Goal::modifier1($percentage);
                 } else if ($gvalue->modifier == 'modifier2') {
@@ -240,7 +242,8 @@ class EntitiesController extends Controller
                         break;
                     }
                 }
-                $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
+                if($goal->pivot->value == 0)$percentage = 0;
+                else $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
                 if ($gvalue->modifier == 'modifier1') {
                     $mod_percentage = Goal::modifier1($percentage);
                 } else if ($gvalue->modifier == 'modifier2') {
