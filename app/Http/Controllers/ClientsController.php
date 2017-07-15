@@ -154,7 +154,8 @@ class ClientsController extends Controller
         $results['goal_values'] = [];
         foreach ($client->goals as $goal) {
             foreach ($goal->entities()->wherePivot('date', $date)->get() as $entity) {
-                $percentage = round(100 * $entity->pivot->real / $entity->pivot->value, 2);
+                if($entity->pivot->value == 0)$percentage = 0;
+                else $percentage = round(100 * $entity->pivot->real / $entity->pivot->value, 2);
                 if ($goal->modifier == 'modifier1') {
                     $mod_percentage = Goal::modifier1($percentage);
                 } else if ($goal->modifier == 'modifier2') {

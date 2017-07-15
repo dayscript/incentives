@@ -214,7 +214,7 @@ class EntitiesController extends Controller
             if ($gvalue = $entity->goals()->wherePivot('date', $date)->where('goals.id', $goal->id)->first()) {
                 $gvalue->pivot->value = $value;
                 $gvalue->pivot->real  = $real ;
-                if($goal->pivot->value == 0)$percentage = 0;
+                if($gvalue->pivot->value == 0)$percentage = 0;
                 else $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
                 if ($gvalue->modifier == 'modifier1') {
                     $mod_percentage = Goal::modifier1($percentage);
@@ -242,7 +242,7 @@ class EntitiesController extends Controller
                         break;
                     }
                 }
-                if($goal->pivot->value == 0)$percentage = 0;
+                if($gvalue->pivot->value == 0)$percentage = 0;
                 else $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
                 if ($gvalue->modifier == 'modifier1') {
                     $mod_percentage = Goal::modifier1($percentage);
