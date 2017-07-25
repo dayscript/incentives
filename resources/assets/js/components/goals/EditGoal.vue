@@ -93,6 +93,10 @@
                     {
                         key: 'modifier5',
                         label: 'Rango 0% - 120%, 125%'
+                    },
+                    {
+                        key: 'modifier6',
+                        label: 'Rango 0% - 100%, Max 100%'
                     }
                 ],
                 errors: {},
