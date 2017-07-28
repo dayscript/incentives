@@ -97,7 +97,12 @@
                     {
                         key: 'modifier6',
                         label: 'Rango 0% - 100%, Max 100%'
+                    },
+                    {
+                        key: 'modifier7',
+                        label: 'Min 0%'
                     }
+
                 ],
                 errors: {},
                 adittionaldata: {
