@@ -156,17 +156,7 @@ class ClientsController extends Controller
             foreach ($goal->entities()->wherePivot('date', $date)->get() as $entity) {
                 if($entity->pivot->value == 0)$percentage = 0;
                 else $percentage = round(100 * $entity->pivot->real / $entity->pivot->value, 2);
-                if ($goal->modifier == 'modifier1') {
-                    $mod_percentage = Goal::modifier1($percentage);
-                } else if ($goal->modifier == 'modifier2') {
-                    $mod_percentage = Goal::modifier2($percentage);
-                } else if ($goal->modifier == 'modifier3') {
-                    $mod_percentage = Goal::modifier3($percentage);
-                } else if ($goal->modifier == 'modifier4') {
-                    $mod_percentage = Goal::modifier4($percentage);
-                } else {
-                    $mod_percentage = $percentage;
-                }
+                $mod_percentage = Goal::modified($percentage, $goal->modifier);
                 $percentage_weighed       = $mod_percentage * ($goal->weight / 100);
                 $results['goal_values'][] = [
                   'id'                  => $entity->pivot->id,

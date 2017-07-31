@@ -36,6 +36,31 @@ class Goal extends Model
     /**
      * Percentage Modifier
      * @param $value
+     * @param $modifier
+     * @return int
+     */
+    public static function modified($value, $modifier)
+    {
+        if ($modifier == 'modifier1') {
+            $value = Goal::modifier1($value);
+        } else if ($modifier == 'modifier2') {
+            $value = Goal::modifier2($value);
+        } else if ($modifier == 'modifier3') {
+            $value = Goal::modifier3($value);
+        } else if ($modifier == 'modifier4') {
+            $value = Goal::modifier4($value);
+        } else if ($modifier == 'modifier5') {
+            $value = Goal::modifier5($value);
+        } else if ($modifier == 'modifier6') {
+            $value = Goal::modifier6($value);
+        } else if ($modifier == 'modifier7') {
+            $value = Goal::modifier7($value);
+        }
+        return $value;
+    }
+    /**
+     * Percentage Modifier
+     * @param $value
      * @return int
      */
     public static function modifier1($value)

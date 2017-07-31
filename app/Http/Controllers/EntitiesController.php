@@ -95,18 +95,7 @@ class EntitiesController extends Controller
             foreach ($entity->goals as $goal) {
                 if($goal->pivot->value == 0)$percentage = 0;
                 else $percentage = round(100 * $goal->pivot->real / $goal->pivot->value, 2);
-
-                if ($goal->modifier == 'modifier1') {
-                    $mod_percentage = Goal::modifier1($percentage);
-                } else if ($goal->modifier == 'modifier2') {
-                    $mod_percentage = Goal::modifier2($percentage);
-                } else if ($goal->modifier == 'modifier3') {
-                    $mod_percentage = Goal::modifier3($percentage);
-                } else if ($goal->modifier == 'modifier4') {
-                    $mod_percentage = Goal::modifier4($percentage);
-                } else {
-                    $mod_percentage = $percentage;
-                }
+                $mod_percentage = Goal::modified($percentage, $goal->modifier);
                 $percentage_weighed = $mod_percentage * ($goal->weight / 100);
                 $goals[]            = [
                   'id'                  => $goal->pivot->id,
@@ -216,17 +205,7 @@ class EntitiesController extends Controller
                 $gvalue->pivot->real  = $real ;
                 if($gvalue->pivot->value == 0)$percentage = 0;
                 else $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
-                if ($gvalue->modifier == 'modifier1') {
-                    $mod_percentage = Goal::modifier1($percentage);
-                } else if ($gvalue->modifier == 'modifier2') {
-                    $mod_percentage = Goal::modifier2($percentage);
-                } else if ($gvalue->modifier == 'modifier3') {
-                    $mod_percentage = Goal::modifier3($percentage);
-                } else if ($gvalue->modifier == 'modifier4') {
-                    $mod_percentage = Goal::modifier4($percentage);
-                } else {
-                    $mod_percentage = $percentage;
-                }
+                $mod_percentage = Goal::modified($percentage, $gvalue->modifier);
                 $percentage_weighed = $mod_percentage * ($gvalue->weight / 100);
                 $gvalue->pivot->percentage = $percentage;
                 $gvalue->pivot->percentage_modified = $mod_percentage;
@@ -244,17 +223,7 @@ class EntitiesController extends Controller
                 }
                 if($gvalue->pivot->value == 0)$percentage = 0;
                 else $percentage = round(100 * $gvalue->pivot->real / $gvalue->pivot->value, 2);
-                if ($gvalue->modifier == 'modifier1') {
-                    $mod_percentage = Goal::modifier1($percentage);
-                } else if ($gvalue->modifier == 'modifier2') {
-                    $mod_percentage = Goal::modifier2($percentage);
-                } else if ($gvalue->modifier == 'modifier3') {
-                    $mod_percentage = Goal::modifier3($percentage);
-                } else if ($gvalue->modifier == 'modifier4') {
-                    $mod_percentage = Goal::modifier4($percentage);
-                } else {
-                    $mod_percentage = $percentage;
-                }
+                $mod_percentage = Goal::modified($percentage, $gvalue->modifier);
                 $percentage_weighed = $mod_percentage * ($gvalue->weight / 100);
                 $gvalue->pivot->percentage = $percentage;
                 $gvalue->pivot->percentage_modified = $mod_percentage;
