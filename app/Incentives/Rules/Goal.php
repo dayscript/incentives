@@ -55,6 +55,8 @@ class Goal extends Model
             $value = Goal::modifier6($value);
         } else if ($modifier == 'modifier7') {
             $value = Goal::modifier7($value);
+        } else if ($modifier == 'modifier8') {
+            $value = Goal::modifier8($value);
         }
         return $value;
     }
@@ -132,5 +134,16 @@ class Goal extends Model
     {
         if($value <= 0) return 0;
         else return $value;
+    }
+    /**
+     * Percentage Modifier
+     * @param $value
+     * @return int
+     */
+    public static function modifier8($value)
+    {
+        if($value <= 0) return 0;
+        elseif ($value<=120)return $value;
+        else return $value*1.05;
     }
 }

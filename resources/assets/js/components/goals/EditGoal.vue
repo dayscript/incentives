@@ -101,7 +101,12 @@
                     {
                         key: 'modifier7',
                         label: 'Min 0%'
+                    },
+                    {
+                        key: 'modifier8',
+                        label: '0% - 120%, > 120%, +5% '
                     }
+
 
                 ],
                 errors: {},
