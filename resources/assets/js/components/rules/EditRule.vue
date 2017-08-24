@@ -31,6 +31,16 @@
         <span ref="noerrors.points" v-else class="help-block">Cantidad de puntos que se obtienen con esta regla</span>
       </transition>
     </div>
+    <div class="form-group">
+      <label>Modificador de cálculo:</label>
+      <select name="modifier" id="modifier"  v-model="rule.modifier">
+        <option v-for="modif in modifiers" :value="modif.key">{{ modif.label }}</option>
+      </select>
+      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
+        <span ref="errors.modifier" v-if="errors.modifier" class="help-block text-danger">{{ errors.modifier[0] }}</span>
+        <span ref="noerrors.modifier" v-else class="help-block">Un modificador permite alterar el resultado del cálculo de puntos</span>
+      </transition>
+    </div>
     <div class="text-right">
       <a class="btn" href="/rules"><i class=" icon-arrow-left15 left"></i> Regresar</a>
       <button v-if="rule.id>0" @click.prevent="updateRule" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i>
@@ -56,6 +66,7 @@
                     id: this.rule_id,
                     name: '',
                     description: '',
+                    modifier: '',
                     points: null,
                     client_id: null
                 },
@@ -64,7 +75,15 @@
                 adittionaldata: {
                     '_token': window.Laravel.csrfToken,
                     'ajax': true,
-                }
+                },
+                modifiers: [
+                    {key:'none',
+                        label:'Ninguno'},
+                    {
+                        key: 'modifier1',
+                        label: 'Rango de puntos por valor de factura'
+                    },
+                ]
             }
         },
         mounted() {

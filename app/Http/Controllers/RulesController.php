@@ -88,7 +88,6 @@ class RulesController extends Controller
         $this->validate(request(), [
             'name'     => 'required|min:3',
         ]);
-
         $rule->update(request()->all());
 
         $results            = [];

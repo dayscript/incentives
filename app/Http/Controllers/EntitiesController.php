@@ -170,8 +170,9 @@ class EntitiesController extends Controller
             $value       = request()->get('value', 1);
             $description = request()->get('description');
             $ids         = $entity->rules()->pluck('entity_rule.id')->toArray();
-
-            $entity->rules()->attach($rule->id, ['value' => $value, 'points' => $value * $rule->points, 'description' => $description]);
+            $points = $value * $rule->points;
+            $points = Rule::modified($points, $rule->modifier);
+            $entity->rules()->attach($rule->id, ['value' => $value, 'points' => $points, 'description' => $description]);
             foreach ($entity->rules as $val) {
                 if (!in_array($val->pivot->id, $ids)) $rvalue = $val->pivot;
             }

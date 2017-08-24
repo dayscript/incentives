@@ -12,5 +12,7 @@ Dentro de las variables esperadas en la petición POST, están:
 - `rule` **obligatorio**. Identificador numérico de la regla a asociar
 - `description` **opcional**. Valor de texto con descripción sobre el registro
 
-El sistema asigna el número de puntos resultante de multiplicar `value` y el numero de `puntos` definidos 
+El sistema asigna el número de puntos resultante de multiplicar `value` y el número de `puntos` definidos 
 en la regla con id=`rule`, agrega la `description` si existe y guarda la fecha y hora de creación del registro.
+
+**Nota:** En caso de que la regla tenga asociado un modificador, se aplica la modificación al valor resultante de los puntos.
