@@ -5,6 +5,9 @@ namespace App\Incentives\Rules;
 use App\Incentives\Core\Client;
 use App\Incentives\Core\Entity;
 use Illuminate\Database\Eloquent\Model;
+use App\Role;
+use App\Type_Goal;
+
 
 class Goal extends Model
 {
@@ -13,7 +16,8 @@ class Goal extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'description', 'modifier','weight','client_id'];
+
+    protected $fillable = ['name', 'description', 'modifier','weight','client_id', 'indicator_id', 'date_start', 'date_end', 'rol_id','typegoal_id', 'point'];
 
     /**
      * Returns associated client
@@ -23,7 +27,22 @@ class Goal extends Model
     {
         return $this->belongsTo(Client::class);
     }
-
+    /**
+     * Returns associated client
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function rol()
+    {
+        return $this->belongsTo(Role::class);
+    }
+    /**
+     * Returns associated client
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type()
+    {
+        return $this->belongsTo(Type_Goal::class);
+    }
     /**
      * Entities relationship
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -57,8 +76,24 @@ class Goal extends Model
             $value = Goal::modifier7($value);
         } else if ($modifier == 'modifier8') {
             $value = Goal::modifier8($value);
+        } else if ($modifier == 'modifier9') {
+            $value = Goal::modifier9($value);
+        } else if ($modifier == 'modifier10') {
+            $value = Goal::modifier10($value);
+        } else if ($modifier == 'modifier11') {
+            $value = Goal::modifier11($value);
         }
         return $value;
+    }
+    /**
+     * Percentage Modifier
+     * @param $value
+     * @param $modifier
+     * @return int
+     */
+    public static function maxmodified($point,$value)
+    {
+        return $point*$value;
     }
     /**
      * Percentage Modifier
@@ -91,7 +126,7 @@ class Goal extends Model
      */
     public static function modifier3($value)
     {
-        if($value < 80) return 0;
+        if($value < 85) return 0;
         elseif($value < 90)return 90;
         else return 100;
     }
@@ -145,5 +180,37 @@ class Goal extends Model
         if($value <= 0) return 0;
         elseif ($value<=120)return $value;
         else return $value*1.05;
+    }
+    /**
+     * Percentage Modifier
+     * @param $value
+     * @return int
+     */
+    public static function modifier9($value)
+    {
+        if($value < 100) return 0;
+        else return 100;
+    }
+    /**
+     * Percentage Modifier
+     * @param $value
+     * @return int
+     */
+    public static function modifier10($value)
+    {
+        if($value <= 0) return 0;
+        elseif ($value<100)return 0;
+        else return 100;
+    }
+    /**
+     * Percentage Modifier
+     * @param $value
+     * @return int
+     */
+    public static function modifier11($value)
+    {
+        if($value <= 0) return 0;
+        elseif ($value<85)return 0;
+        else return 100;
     }
 }

@@ -14,7 +14,7 @@ class Client extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','image'];
+    protected $fillable = ['name','image', 'nit', 'address'];
 
     /**
      * Return goals

@@ -12,16 +12,16 @@ class Rule extends Model
    *
    * @var array
    */
-  protected $fillable = ['name', 'description', 'modifier', 'points', 'client_id'];
+  protected $fillable = ['client_id', 'name', 'description', 'modifier', 'points', 'indicator_id', 'date_start', 'date_end', 'rol_id'];
 
-  /**
-   * Returns associated client
-   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-   */
-  public function client()
-  {
-    return $this->belongsTo(Client::class);
-  }
+    /**
+     * Returns associated client
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function client()
+    {
+      return $this->belongsTo(Client::class);
+    }
     /**
      * Points Modifier
      * @param $value

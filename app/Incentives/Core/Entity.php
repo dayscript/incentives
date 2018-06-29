@@ -4,6 +4,8 @@ namespace App\Incentives\Core;
 
 use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
+use App\State;
+use App\Role;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -16,7 +18,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['identification'];
+    protected $fillable = ['identification', 'name', 'last_name', 'email', 'role_id', 'state_id'];
 
     /**
      * Relationship with associated rules values
@@ -44,5 +46,13 @@ class Entity extends Model
             $total += $rule->pivot->points;
         }
         return $total;
+    }
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

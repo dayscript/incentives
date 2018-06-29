@@ -2,21 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Incentives\Rules\Rule;
+use App\Role;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class RulesController extends Controller
+class RolesController extends Controller
 {
-    /**
+/**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $rules = Rule::orderBy('name')->paginate(10);
-        return view('rules.index', compact('rules'));
+        $role = Role::orderBy('name')->paginate(10);
+        return view('roles.index', compact('role'));
+    }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function apilist()
+    {
+        $results            = [];
+        $roles            = Role::orderBy('name')->get();
+        $results['roles'] = $roles;
+
+        return $results;
     }
 
     /**
@@ -26,71 +40,75 @@ class RulesController extends Controller
      */
     public function create()
     {
-        return view('rules.create');
+        return view('roles.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
         sleep(1);
         $this->validate(request(), [
             'name'     => 'required|min:3',
         ]);
 
-        $rule = Rule::create(request()->all());
+        $role = Role::create(request()->all());
         $results            = [];
-        $results['rule']    = $rule;
+        $results['role']     = $role;
         $results['status']  = 'success';
-        $results['message'] = __('Regla creada');
+        $results['message'] = __('Rol creado');
+
         return $results;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Incentives\Rules\Rule  $rule
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(Rule $rule)
+    public function show(Role $role)
     {
         $results           = [];
-        $results['rule']   = $rule;
+        $results['role']   = $role;
         $results['status'] = 'success';
-
+		$results['message'] = __('Rol agregado');
         return $results;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Incentives\Rules\Rule  $rule
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Rule $rule)
+    public function edit(Role $role)
     {
-        return view('rules.edit', compact('rule'));
+        return view('roles.edit', compact('role'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Incentives\Rules\Rule  $rule
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Rule $rule)
+    public function update(Request $request, Role $role)
     {
         sleep(1);
+    
         $this->validate(request(), [
             'name'     => 'required|min:3',
         ]);
-        $rule->update(request()->all());
+        $role->update(request()->all());
 
         $results            = [];
-        $results['rule']    = $rule;
+        $results['role']    = $role;
         $results['status']  = 'success';
         $results['message'] = __('Datos actualizados');
 
@@ -100,11 +118,16 @@ class RulesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Incentives\Rules\Rule  $rule
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rule $rule)
+    public function destroy(Role $role)
     {
-        //
+        $results = [];
+        $role->delete();
+        $results['status']  = 'success';
+        $results['message'] = __('Rol eliminado');
+
+        return $results;
     }
 }
