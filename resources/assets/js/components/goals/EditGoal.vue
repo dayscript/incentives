@@ -25,7 +25,7 @@
     </div>
     <div class="form-group">
       <label>Modificador de cálculo:</label>
-      <select name="modifier" id="modifier"  v-model="goal.modifier">
+      <select name="modifier" id="modifier" class="select" v-model="goal.modifier">
         <option v-for="modif in modifiers" :value="modif.key">{{ modif.label }}</option>
       </select>
       <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
@@ -39,6 +39,40 @@
       <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
         <span ref="errors.weight" v-if="errors.weight" class="help-block text-danger">{{ errors.weight[0] }}</span>
         <span ref="noerrors.weight" v-else class="help-block">Peso en el indicador</span>
+      </transition>
+    </div>
+    <div class="form-group" :class="{'has-error': errors.date_start}">
+      <label>Fecha Inicio:</label>
+      <input type="date" class="form-control" v-model="goal.date_start" v-on:keyup="resetErrors('date_start')">
+      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
+        <span ref="errors.date_start" v-if="errors.date_start" class="help-block text-danger">{{ errors.date_start[0] }}</span>
+      </transition>
+    </div>
+    <div class="form-group" :class="{'has-error': errors.date_end}">
+      <label>Fecha Fin:</label>
+      <input type="date" class="form-control" v-model="goal.date_end" v-on:keyup="resetErrors('date_end')">
+      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
+        <span ref="errors.date_end" v-if="errors.date_end" class="help-block text-danger">{{ errors.date_end[0] }}</span>
+      </transition>
+    </div>
+    <div class="form-group">
+      <label>Indicador:</label>
+      <select name="indicator_id" id="indicator_id" class="select" v-model="goal.indicator_id">
+        <option v-for="indicator in indicators" :value="indicator.id">{{ indicator.name }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Rol:</label>
+      <select name="rol_id" id="rol_id" class="select" v-model="goal.rol_id">
+        <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
+      </select>
+    </div>
+    <div class="form-group" :class="{'has-error': errors.point}">
+      <label>Puntos:</label>
+      <input type="number" class="form-control" placeholder="100" v-model="goal.point" v-on:keyup="resetErrors('point')">
+      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
+        <span ref="errors.point" v-if="errors.point" class="help-block text-danger">{{ errors.point[0] }}</span>
+        <span ref="noerrors.point" v-else class="help-block">Puntos del indicador</span>
       </transition>
     </div>
     <div class="text-right">
@@ -68,9 +102,16 @@
                     description: '',
                     modifier: '',
                     weight: '100',
-                    client_id: null
+                    client_id: null,
+                    indicator_id: null,
+                    date_start: '',
+                    date_end: '',
+                    rol_id: null,
+                    point: ''
                 },
                 clients: [],
+                indicators: [],
+                roles: [],
                 modifiers: [
                     {key:'none',
                     label:'Ninguno'},
@@ -133,9 +174,23 @@
                   }
               }
             ).catch();
-            setTimeout(function () {
+            axios.get('/api/indicators').then(
+              ({data}) => {
+                  if (data.indicators) {
+                      this.indicators = data.indicators;
+                  }
+              }
+            ).catch();
+            axios.get('/api/roles').then(
+              ({data}) => {
+                  if (data.roles) {
+                      this.roles = data.roles;
+                  }
+              }
+            ).catch();
+            /*setTimeout(function () {
                 $('.select').select2();
-            }, 300);
+            }, 300);*/
         },
         methods: {
             resetErrors(field){
@@ -145,7 +200,9 @@
                 window.vm.active++;
                 axios.post('/goals', this.goal).then(
                   ({data}) => {
-                      if (data.goal) this.goal = data.goal;
+                      if (data.goal) {
+                        this.goal = data.goal;
+                      }
                       if (data.message) new PNotify({
                           text: data.message,
                           addclass: 'bg-' + data.status,
@@ -171,7 +228,6 @@
             },
             updateGoal(){
                 window.vm.active++;
-                this.goal.client_id = $('#client_id').val();
                 axios.put('/goals/' + this.goal.id, this.goal).then(
                   ({data}) => {
                       if (data.goal) this.goal = data.goal;

@@ -41,7 +41,7 @@
                         @endif
                     </div>
                     <div class="media-body">
-                        <h6 class="media-heading">{{ $goal->name }}</h6>
+                        <h6 class="media-heading">{{ $goal->name }} - {{$goal->rol->name}}</h6>
                         {{ $goal->description }}
                     </div>
                     <div class="media-right">

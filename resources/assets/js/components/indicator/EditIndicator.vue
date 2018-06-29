@@ -2,52 +2,30 @@
     <form action="#">
         <div class="form-group" :class="{'has-error': errors.name}">
             <label>Nombre:</label>
-            <input type="text" class="form-control" placeholder="Nombre del cliente" v-model="client.name" v-on:keyup="resetErrors('name')">
+            <input type="text" class="form-control" placeholder="Nombre del indicador" v-model="indicator.name" v-on:keyup="resetErrors('name')">
             <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
                 <span ref="errors.name" v-if="errors.name" class="help-block text-danger">{{ errors.name[0] }}</span>
-                <span ref="noerrors.name" v-else class="help-block">Escribe el nombre del cliente</span>
-            </transition>
-        </div>
-        <div class="form-group" :class="{'has-error': errors.nit}">
-            <label>NIT:</label>
-            <input type="text" class="form-control" placeholder="NIT del cliente" v-model="client.nit" v-on:keyup="resetErrors('nit')">
-            <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
-                <span ref="errors.nit" v-if="errors.nit" class="help-block text-danger">{{ errors.nit[0] }}</span>
-                <span ref="noerrors.nit" v-else class="help-block">Escribe el NIT del cliente</span>
-            </transition>
-        </div>
-        <div class="form-group" :class="{'has-error': errors.address}">
-            <label>Dirección:</label>
-            <input type="text" class="form-control" placeholder="Dirección del cliente" v-model="client.address" v-on:keyup="resetErrors('address')">
-            <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
-                <span ref="errors.address" v-if="errors.address" class="help-block text-danger">{{ errors.address[0] }}</span>
-                <span ref="noerrors.address" v-else class="help-block">Escribe la dirección del cliente</span>
+                <span ref="noerrors.name" v-else class="help-block">Escribe el indicador</span>
             </transition>
         </div>
         <div class="form-group">
-            <label>Imagen:
-                <small>Recomendamos una imagen cuadrada con el logo o ícono de la empresa cliente.</small>
-            </label>
-            <el-upload
-                    class="avatar-uploader"
-                    :data="adittionaldata"
-                    action="/uploads"
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    name="file">
-                <img v-if="client.image" :src="client.image" class="avatar-image">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-            <span class="help-block">Haz click o arrastra un archivo para cambiar la imagen. <br>
-                Formatos aceptados: gif, png, jpg. Tamaño máximo del archivo: 2MB</span>
+          <label>Cliente:</label>
+          <select name="client_id" id="client_id" class="select" v-model="indicator.client_id">
+            <option v-for="client in clients" :value="client.id">{{ client.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo:</label>
+          <select name="type_id" id="type_id" class="select" v-model="indicator.type_id">
+            <option v-for="type in types" :value="type.id">{{ type.name }}</option>
+          </select>
         </div>
         <div class="text-right">
-            <a class="btn" href="/clients"><i class=" icon-arrow-left15 left"></i> Regresar</a>
-            <button v-if="client.id>0" @click.prevent="updateClient" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i>
+            <a class="btn" href="/indicator"><i class=" icon-arrow-left15 left"></i> Regresar</a>
+            <button v-if="indicator.id>0" @click.prevent="updateRol" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i>
             </button>
-            <button v-else @click.prevent="createClient" class="btn btn-success">Crear <i class="icon-checkmark4 position-right"></i></button>
-            <button v-if="client.id>0" @click.prevent="deleteClient" class="btn btn-danger">Eliminar <i class="icon-trash position-right"></i>
+            <button v-else @click.prevent="createRol" class="btn btn-success">Crear <i class="icon-checkmark4 position-right"></i></button>
+            <button v-if="indicator.id>0" @click.prevent="deleteRol" class="btn btn-danger">Eliminar <i class="icon-trash position-right"></i>
             </button>
         </div>
     </form>
@@ -56,60 +34,70 @@
 <script>
     export default {
         props: {
-            client_id: {
+            indicator_id: {
                 type: Number,
                 default: 0
-            },
+            }
         },
         data(){
             return {
-                client: {
-                    id: this.client_id,
-                    name: '',
-                    image: null,
-                    nit: '',
-                    address: ''
+                indicator: {
+                    id: this.indicator_id,
+                    name: '', 
+                    client_id: null,
+                    type_id:null
                 },
+                clients: [],
+                types: [],
                 errors: {},
                 adittionaldata: {
                     '_token': window.Laravel.csrfToken,
                     'ajax': true,
-                    'folder': 'clients/' + this.client_id
+                    'folder': 'indicator/' + this.indicator_id
                 }
             }
         },
         mounted() {
-            if (this.client_id > 0) {
-                axios.get('/clients/' + this.client_id).then(
+            if (this.indicator_id>0) {
+                axios.get('/indicator/' + this.indicator_id).then(
                     ({data}) => {
-                        if (data.client) {
-                            this.client = data.client;
+                        if (data.indicator) {
+                            this.indicator = data.indicator;
                         }
                     }
                 ).catch();
             }
+            axios.get('/api/clients').then(
+              ({data}) => {
+                  if (data.clients) {
+                      this.clients = data.clients;
+                  }
+              }
+            ).catch();
+            axios.get('/api/types').then(
+              ({data}) => {
+                  if (data.types) {
+                      this.types = data.types;
+                  }
+              }
+            ).catch();
+            setTimeout(function () {
+                $('.select').select2();
+            }, 300);
         },
         methods: {
-            handleAvatarSuccess(res, file) {
-                this.client.image = res.path;
-            },
-            beforeAvatarUpload(file) {
-                const isLt2M = file.size / 1024 / 1024 < 2;
-                if (!isLt2M) {
-                    this.$message.error('La imagen no puede pesar mas de 2MB!');
-                }
-                return isLt2M;
-            },
             resetErrors(field){
                 Vue.delete(this.errors, field);
             },
-            createClient(){
+            createRol(){
                 window.vm.active++;
-                axios.post('/clients', this.client).then(
+                this.indicator.client_id = $('#client_id').val();
+                this.indicator.type_id = $('#type_id').val();
+                axios.post('/indicator', this.indicator).then(
                     ({data}) => {
-                        if (data.client) {
-                            this.client = data.client;
-                            this.adittionaldata.folder = 'clients/' + this.client.id;
+                        if (data.indicator) {
+                            this.indicator = data.indicator;
+                            this.adittionaldata.folder = 'indicator/' + this.indicator.id;
                         }
                         if (data.message) new PNotify({
                             text: data.message,
@@ -134,11 +122,13 @@
                     }
                 }.bind(this));
             },
-            updateClient(){
+            updateRol(){
                 window.vm.active++;
-                axios.put('/clients/' + this.client.id, this.client).then(
+                this.indicator.client_id = $('#client_id').val();
+                this.indicator.type_id = $('#type_id').val();
+                axios.put('/indicator/' + this.indicator.id, this.indicator).then(
                     ({data}) => {
-                        if (data.client) this.client = data.client;
+                        if (data.indicator) this.indicator = data.indicator;
                         if (data.message) new PNotify({
                             text: data.message,
                             addclass: 'bg-' + data.status,
@@ -161,11 +151,12 @@
                         console.log('Error', error.message);
                     }
                 }.bind(this));
+
             },
-            deleteClient(){
+            deleteRol(){
                 if (confirm('¿Estás seguro que quieres eliminar este registro?')) {
                     window.vm.active++;
-                    axios.delete('/clients/' + this.client.id).then(
+                    axios.delete('/indicator/' + this.indicator.id).then(
                         ({data}) => {
                             if (data.message) new PNotify({
                                 text: data.message,
@@ -176,7 +167,7 @@
                             });
                             window.vm.active--;
                             if (data.status=='success') {
-                                document.location.href = '/clients';
+                                document.location.href = '/indicator';
                             }
                         }
                     ).catch(function (error) {

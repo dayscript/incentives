@@ -8,6 +8,9 @@
                     <small class="display-block">{{ __('Lista de usuarios creados en el sistema') }}</small>
                 </h4>
             </div>
+            <div class="heading-elements">
+                <a href="/users/create" type="button" class="btn btn-primary heading-btn">Agregar Usuario</a>
+            </div>
         </div>
         <div class="breadcrumb-line">
             <ul class="breadcrumb">

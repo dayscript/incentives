@@ -41,6 +41,32 @@
         <span ref="noerrors.modifier" v-else class="help-block">Un modificador permite alterar el resultado del cálculo de puntos</span>
       </transition>
     </div>
+    <div class="form-group" :class="{'has-error': errors.date_start}">
+      <label>Fecha Inicio:</label>
+      <input type="date" class="form-control" v-model="rule.date_start" v-on:keyup="resetErrors('date_start')">
+      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
+        <span ref="errors.date_start" v-if="errors.date_start" class="help-block text-danger">{{ errors.date_start[0] }}</span>
+      </transition>
+    </div>
+    <div class="form-group" :class="{'has-error': errors.date_end}">
+      <label>Fecha Fin:</label>
+      <input type="date" class="form-control" v-model="rule.date_end" v-on:keyup="resetErrors('date_end')">
+      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
+        <span ref="errors.date_end" v-if="errors.date_end" class="help-block text-danger">{{ errors.date_end[0] }}</span>
+      </transition>
+    </div>
+    <div class="form-group">
+      <label>Indicador:</label>
+      <select name="indicator_id" id="indicator_id" class="select" v-model="rule.indicator_id">
+        <option v-for="indicator in indicators" :value="indicator.id">{{ indicator.name }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Rol:</label>
+      <select name="rol_id" id="rol_id" class="select" v-model="rule.rol_id">
+        <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
+      </select>
+    </div>
     <div class="text-right">
       <a class="btn" href="/rules"><i class=" icon-arrow-left15 left"></i> Regresar</a>
       <button v-if="rule.id>0" @click.prevent="updateRule" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i>
@@ -68,13 +94,20 @@
                     description: '',
                     modifier: '',
                     points: null,
-                    client_id: null
+                    client_id: null,
+                    indicator_id: null,
+                    date_start: '',
+                    date_end: '',
+                    rol_id: null
                 },
                 clients: [],
+                indicators: [],
+                roles: [],
                 errors: {},
                 adittionaldata: {
                     '_token': window.Laravel.csrfToken,
                     'ajax': true,
+                    'folder': 'rules/' + this.rule_id
                 },
                 modifiers: [
                     {key:'none',
@@ -103,9 +136,23 @@
                   }
               }
             ).catch();
-            setTimeout(function () {
+            axios.get('/api/indicators').then(
+              ({data}) => {
+                  if (data.indicators) {
+                      this.indicators = data.indicators;
+                  }
+              }
+            ).catch();
+            axios.get('/api/roles').then(
+              ({data}) => {
+                  if (data.roles) {
+                      this.roles = data.roles;
+                  }
+              }
+            ).catch();
+            /*setTimeout(function () {
                 $('.select').select2();
-            }, 300);
+            }, 300);*/
         },
         methods: {
             resetErrors(field){
@@ -115,7 +162,7 @@
                 window.vm.active++;
                 axios.post('/rules', this.rule).then(
                   ({data}) => {
-                      if (data.rule) this.rule = data.rule;
+                      if (data.rule) { this.rule = data.rule; console.log('**', this.rule); }
                       if (data.message) new PNotify({
                           text: data.message,
                           addclass: 'bg-' + data.status,
@@ -141,23 +188,18 @@
             },
             updateRule(){
                 window.vm.active++;
-                this.rule.client_id = $('#client_id').val();
                 axios.put('/rules/' + this.rule.id, this.rule).then(
-                  ({data}) => {
-                      if (data.rule) this.rule = data.rule;
-                      setTimeout(function () {
-                          $('.select').select2();
-                      }, 300);
-                      if (data.message) new PNotify({
-                          text: data.message,
-                          addclass: 'bg-' + data.status,
-                          type: data.status,
-                          animation: 'fade',
-                          delay: 2000
-                      });
-
-                      window.vm.active--;
-                  }
+                    ({data}) => {
+                        if (data.rule) this.rule = data.rule;
+                        if (data.message) new PNotify({
+                            text: data.message,
+                            addclass: 'bg-' + data.status,
+                            type: data.status,
+                            animation: 'fade',
+                            delay: 2000
+                        });
+                        window.vm.active--;
+                    }
                 ).catch(function (error) {
                     window.vm.active--;
                     if (error.response) {
@@ -171,6 +213,8 @@
                         console.log('Error', error.message);
                     }
                 }.bind(this));
+
+
             },
             deleteRule(){
                 if (confirm('¿Estás seguro que quieres eliminar esta regla?')) {
