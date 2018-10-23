@@ -166,6 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
+
         Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
@@ -177,8 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Nathanmac\Utilities\Parser\ParserServiceProvider::class,
-        Laravel\Passport\PassportServiceProvider::class,
-
+        Laravel\Passport\PassportServiceProvider::class
     ],
 
     /*

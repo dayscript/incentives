@@ -53,10 +53,19 @@
                     <li class="{{ request()->is('rules/*') ?'active':''}}">
                         <a href="#"><i class="icon-add-to-list"></i> <span>{{ __('Acumulación') }}</span></a>
                         <ul>
+                            <li class="{{ request()->is('vars')?'active':'' }}"><a href="/vars">{{ __('Vars') }}</a></li>
                             <li class="{{ request()->is('rules')?'active':'' }}"><a href="/rules">{{ __('Reglas') }}</a></li>
                             <li class="{{ request()->is('goals')?'active':'' }}"><a href="/goals">{{ __('Metas') }}</a></li>
 {{--                            <li class="{{ request()->is('rules/create')?'active':'' }}"><a href="/rules/create">{{ __('Agregar regla') }}</a></li>--}}
                             <li class="{{ request()->is('entities')?'active':'' }}"><a href="/entities">{{ __('Entidades') }}</a></li>
+
+
+                        </ul>
+                    </li>
+                    <li class="{{ request()->is('templates/*') ?'active':''}}">
+                        <a href="#"><i class="icon-add-to-list"></i> <span>{{ __('Herramientas') }}</span></a>
+                        <ul>
+                            <li class="{{ request()->is('Plantillas')?'active':'' }}"><a href="/templates">{{ __('Plantillas') }}</a></li>
                         </ul>
                     </li>
                     <li>

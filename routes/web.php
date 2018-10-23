@@ -24,7 +24,18 @@ Route::resource('uploads','Utils\UploadsController');
 Route::resource('clients','ClientsController');
 //Route::get('uploads/{folder}/{file}','Utils\UploadsController@show');
 
+Route::get('entities/create-from-file','EntitiesController@createFromFile');
+Route::get('invoices/create-from-file','InvoiceController@createFromFile');
 
+Route::resource('vars','VarsController');
 Route::resource('rules','RulesController');
 Route::resource('goals','GoalsController');
 Route::resource('entities','EntitiesController');
+Route::resource('templates','TemplateController');
+Route::resource('template-vars','TemplateVarsController');
+Route::resource('invoices','InvoiceController');
+Route::resource('redemptions','RedemptionController');
+
+
+Route::get('devel/vars/{id}','VarsController@devel');
+Route::get('devel/templates/{id}','TemplateController@devel');

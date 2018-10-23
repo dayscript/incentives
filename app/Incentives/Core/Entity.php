@@ -4,6 +4,11 @@ namespace App\Incentives\Core;
 
 use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
+use App\Incentives\Core\EntityData;
+use App\Kokoriko\Redemption;
+use App\Kokoriko\Invoice;
+
+
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -16,7 +21,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['identification'];
+    protected $fillable = ['identification', 'name'];
 
     /**
      * Relationship with associated rules values
@@ -37,6 +42,16 @@ class Entity extends Model
         return $this->belongsToMany(Goal::class)->withPivot('id','value','real','date')->withTimestamps();
     }
 
+    /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function data()
+    {
+        return $this->hasOne(EntityData::class);
+    }
+
     public function totalpoints()
     {
         $total = 0;
@@ -45,4 +60,42 @@ class Entity extends Model
         }
         return $total;
     }
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function redemptions()
+    {
+        return $this->hasMany(Redemption::class);
+    }
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class,'identification','identification');
+    }
+
+
+    public function getPoints(){
+      $invoices = [];
+      $redemptions = [];
+
+      foreach ( $this->invoices as $key => $invoice ) {
+          $invoices[] = (int)$invoice->value;
+      }
+
+      foreach ( $this->redemptions as $key => $redemption ) {
+          $redemptions[] = (int)$redemption->value;
+      }
+
+      return number_format( ( array_sum($invoices)  / 1000 ) - array_sum($redemptions),0 ) ;
+    }
+
+
 }

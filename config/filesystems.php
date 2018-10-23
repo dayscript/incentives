@@ -63,6 +63,20 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
+        'ftp' => [
+          'driver'   => 'ftp',
+          'host'     => '107.180.97.21',
+          'username' => 'kokoriko@pianoproducciones.com.co',
+          'password' => '#1Rf#1Hj&-TF',
+
+          // Optional FTP Settings...
+          'port'     => 21,
+          // 'root'     => '',
+          // 'passive'  => true,
+          // 'ssl'      => true,
+          // 'timeout'  => 30,
+      ],
+
     ],
 
 ];

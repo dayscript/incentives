@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Incentives\Core\Entity;
+use App\Incentives\Core\EntityData;
+use App\Kokoriko\File;
 use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Storage;
+
+use Log;
 
 class EntitiesController extends Controller
 {
@@ -64,6 +69,9 @@ class EntitiesController extends Controller
             ];
         }
         $entity->points    = $points;
+        $entity->data;
+        $entity->redemptions;
+        $entity->invoices;
         $results['entity'] = $entity;
 
         return $results;
@@ -109,12 +117,16 @@ class EntitiesController extends Controller
                 ];
             }
             $entity->goalvalues = $goals;
-            $entity->points     = $points;
+            $entity->points     = $entity->getPoints();
+            $entity->redemptions;
+            $entity->invoices;
+
             $results['entity']  = $entity;
         } else {
             $results['status']  = 'error';
             $results['message'] = __('No existe la entidad');
         }
+
 
         return $results;
     }
@@ -268,4 +280,73 @@ class EntitiesController extends Controller
 
         return $results;
     }
+
+
+    /**
+     * Create entities from file FTP
+     * @param
+     * @return array
+     */
+    public function createFromFile(){
+
+      $limit_process_entityes = env('LIMIT_IMPORT_ENTITIES',0);
+      $file_keys = array('identification','name','email','phone','date','identification2','name2','line_break');
+      $return = array();
+      $entities = [];
+      $message = '';
+
+
+      $files = Storage::disk('ftp')->allFiles('preregistro/');
+
+      foreach ($files as $num_file => $file) {
+
+        if( count(File::where('name',$file)->get()) ) {$message= 'no new files'; continue; };
+        if( $num_file > $limit_process_entityes ) break; # limita el numero de archivos a procesar
+
+
+        $file_contents = Storage::disk('ftp')->get($file);
+
+
+        $data_contents = explode(PHP_EOL,$file_contents);
+
+        foreach( $data_contents as $key => $entity){
+
+          if(strlen($entity) == 0) continue;
+
+          $entity = explode(';', $entity);
+
+          foreach ($entity as $row => $value) {
+            $new_entity[$file_keys[$row]] = $value;
+          }
+
+          if( strpos($new_entity['identification'], '.') != false ) {
+
+              $new_entity['identification'] = explode('.',$new_entity['identification'])[0];
+          }
+
+
+          $entity = Entity::firstOrCreate(['identification' => $new_entity['identification'], 'name' => $new_entity['name'] ]);
+          $entity_data = EntityData::firstOrCreate([
+             'entity_id' => $entity->id,
+             'email'  => $new_entity['email'],
+             'phone'  => $new_entity['phone'],
+             'real_date_up' => $new_entity['date']
+           ]);
+          Log::info('Enitity Create OK: '.$entity->id);
+
+        }
+        $file_save = File::firstOrCreate(['name' => $file,'status' => true]);
+        $message .= 'Process File: '. $file_save ."\n";
+      }
+
+      Log::info('Import entites : '.$message);
+      $return['status'] = 'success';
+      $return['entities'] = $entities;
+      $return['message'] = $message;
+
+      return $return;
+    }
+
+
+
 }

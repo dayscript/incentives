@@ -106,6 +106,10 @@ class RulesController extends Controller
      */
     public function destroy(Rule $rule)
     {
-        //
+        $rule->delete();
+        $results            = [];
+        $results['status']  = 'success';
+        $results['message'] = __('Datos eliminados');
+        return $results;
     }
 }
