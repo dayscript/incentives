@@ -24,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
-        $this->app->register('dayscript\laravelZohoCrm\laravelZohoCrmServiceProvider');
+       $this->app->register('dayscript\laravelZohoCrm\laravelZohoCrmServiceProvider');
     }
 }

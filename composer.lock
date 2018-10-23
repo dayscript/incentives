@@ -4,128 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "217cd6077da6c212e454474c2c6d0fed",
+    "content-hash": "42f8d025340795d040555293be78b546",
     "packages": [
-        {
-            "name": "cristianpontes/zoho-crm-client-php",
-            "version": "1.7",
-            "target-dir": "CristianPontes/ZohoCRMClient",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cristianpontes/zoho-crm-client-php.git",
-                "reference": "b2d5bbcc4ed52b1825d3a1954df635173909132f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cristianpontes/zoho-crm-client-php/zipball/b2d5bbcc4ed52b1825d3a1954df635173909132f",
-                "reference": "b2d5bbcc4ed52b1825d3a1954df635173909132f",
-                "shasum": ""
-            },
-            "require": {
-                "kriswallsmith/buzz": "0.15",
-                "php": ">=5.3.3",
-                "psr/log": "~1.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.8.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "CristianPontes\\ZohoCRMClient": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christiaan Baartse",
-                    "email": "anotherhero@gmail.com"
-                },
-                {
-                    "name": "Cristian Pontes",
-                    "email": "hsilencee@gmail.com"
-                }
-            ],
-            "description": "Provides a clean readable PHP API to the Zoho Rest API",
-            "homepage": "https://cristianpontes.github.io/zoho-crm-client-php",
-            "keywords": [
-                "Zoho",
-                "api",
-                "client",
-                "crm",
-                "rest",
-                "sdk"
-            ],
-            "time": "2018-05-31T19:20:44+00:00"
-        },
-        {
-            "name": "dayscript/laravelzohocrm",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dayscript/laravelzohocrm.git",
-                "reference": "85e9a78aa1f5ba1bac0ab209137f9632001f130a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dayscript/laravelzohocrm/zipball/85e9a78aa1f5ba1bac0ab209137f9632001f130a",
-                "reference": "85e9a78aa1f5ba1bac0ab209137f9632001f130a",
-                "shasum": ""
-            },
-            "require": {
-                "cristianpontes/zoho-crm-client-php": "^1.7",
-                "illuminate/support": "~5",
-                "zohocrm/php-sdk": "^1.1"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.1",
-                "orchestra/testbench": "~3.0",
-                "phpunit/phpunit": "~7.0",
-                "sempro/phpunit-pretty-print": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "dayscript\\laravelZohoCrm\\laravelZohoCrmServiceProvider"
-                    ],
-                    "aliases": {
-                        "laravelZohoCrm": "dayscript\\laravelZohoCrm\\Facades\\laravelZohoCrm"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "dayscript\\laravelZohoCrm\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "AGPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "dayscript",
-                    "email": "soporte@dayscript.com",
-                    "homepage": "http://dayscript.com"
-                }
-            ],
-            "description": ":description",
-            "homepage": "https://github.com/dayscript/laravelzohocrm",
-            "keywords": [
-                "laravel",
-                "laravelZohoCrm"
-            ],
-            "time": "2018-10-23T16:40:08+00:00"
-        },
         {
             "name": "defuse/php-encryption",
             "version": "v2.2.1",
@@ -647,54 +527,6 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
-        },
-        {
-            "name": "kriswallsmith/buzz",
-            "version": "v0.15",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kriswallsmith/Buzz.git",
-                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/d4041666c3ffb379af02a92dabe81c904b35fab8",
-                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "suggest": {
-                "ext-curl": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Buzz": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kris Wallsmith",
-                    "email": "kris.wallsmith@gmail.com",
-                    "homepage": "http://kriswallsmith.net/"
-                }
-            ],
-            "description": "Lightweight HTTP client",
-            "homepage": "https://github.com/kriswallsmith/Buzz",
-            "keywords": [
-                "curl",
-                "http client"
-            ],
-            "time": "2015-06-25T17:26:56+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3213,51 +3045,69 @@
                 "psr-7"
             ],
             "time": "2018-09-27T19:45:25+00:00"
-        },
-        {
-            "name": "zohocrm/php-sdk",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zoho/zcrm-php-sdk.git",
-                "reference": "b4216d05d9fdb2e591c6e13f66732ebb5726e81c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zoho/zcrm-php-sdk/zipball/b4216d05d9fdb2e591c6e13f66732ebb5726e81c",
-                "reference": "b4216d05d9fdb2e591c6e13f66732ebb5726e81c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=5.7"
-            },
-            "type": "sdk",
-            "autoload": {
-                "psr-4": {
-                    "": "src"
-                },
-                "files": [
-                    "src/index.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Zoho CRM API Team",
-                    "email": "support@zohocrm.com",
-                    "homepage": "https://www.zoho.com/crm/help/customer-support.html",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Zoho CRM API SDK for PHP",
-            "homepage": "https://github.com/zoho/zcrm-php-sdk",
-            "time": "2018-10-04T11:01:27+00:00"
         }
     ],
     "packages-dev": [
+        {
+            "name": "cristianpontes/zoho-crm-client-php",
+            "version": "1.7",
+            "target-dir": "CristianPontes/ZohoCRMClient",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cristianpontes/zoho-crm-client-php.git",
+                "reference": "b2d5bbcc4ed52b1825d3a1954df635173909132f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cristianpontes/zoho-crm-client-php/zipball/b2d5bbcc4ed52b1825d3a1954df635173909132f",
+                "reference": "b2d5bbcc4ed52b1825d3a1954df635173909132f",
+                "shasum": ""
+            },
+            "require": {
+                "kriswallsmith/buzz": "0.15",
+                "php": ">=5.3.3",
+                "psr/log": "~1.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "CristianPontes\\ZohoCRMClient": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christiaan Baartse",
+                    "email": "anotherhero@gmail.com"
+                },
+                {
+                    "name": "Cristian Pontes",
+                    "email": "hsilencee@gmail.com"
+                }
+            ],
+            "description": "Provides a clean readable PHP API to the Zoho Rest API",
+            "homepage": "https://cristianpontes.github.io/zoho-crm-client-php",
+            "keywords": [
+                "Zoho",
+                "api",
+                "client",
+                "crm",
+                "rest",
+                "sdk"
+            ],
+            "time": "2018-05-31T19:20:44+00:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "dev-master",
@@ -3413,6 +3263,54 @@
                 "test"
             ],
             "time": "2018-02-19T09:04:07+00:00"
+        },
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "v0.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kriswallsmith/Buzz.git",
+                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/d4041666c3ffb379af02a92dabe81c904b35fab8",
+                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ],
+            "time": "2015-06-25T17:26:56+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -4698,9 +4596,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "dayscript/laravelzohocrm": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

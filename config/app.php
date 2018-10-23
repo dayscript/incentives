@@ -166,7 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        dayscript\laravelZohoCrm\laravelZohoCrmServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
@@ -179,6 +179,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Nathanmac\Utilities\Parser\ParserServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class
+
+
     ],
 
     /*

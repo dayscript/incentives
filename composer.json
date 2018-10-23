@@ -6,7 +6,6 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "dayscript/laravelzohocrm": "dev-master",
         "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "5.4.*",
         "laravel/passport": "^3.0",
@@ -26,11 +25,13 @@
             "app/helpers.php"
         ],
         "psr-4": {
+            "dayscript\\laravelZohoCrm\\": "packages/dayscript/laravelZohoCrm/src",
             "App\\": "app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "dayscript\\laravelZohoCrm\\": "packages/dayscript/laravelZohoCrm/src",
             "Tests\\": "tests/"
         }
     },
