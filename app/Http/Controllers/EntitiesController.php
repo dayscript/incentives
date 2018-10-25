@@ -9,6 +9,8 @@ use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+
+use dayscript\laravelZohoCrm\laravelZohoCrm;
 use Storage;
 
 use Log;
@@ -334,7 +336,43 @@ class EntitiesController extends Controller
            ]);
           Log::info('Enitity Create OK: '.$entity->id);
 
+          $recordsArray = array([
+            "Company" => "Kokoriko",
+            "Email" => $entity_data->email,
+            "Description" => null,
+            "Rating" => null,
+            "Website" => null,
+            "Twitter" => null,
+            "Salutation" => "Sr.",
+            "First_Name" => explode(' ',$entity->name)[0],
+            "Lead_Status" => null,
+            "Industry" => null,
+            "Full_Name" => $entity->name,
+            "Record_Image" => null,
+            "Skype_ID" => null,
+            "Phone" => "3167490905",
+            "Street" => null,
+            "Zip_Code" => null,
+            "Email_Opt_Out" => false,
+            "Designation" => "Comprador",
+            "City" => null,
+            "No_of_Employees" => null,
+            "Mobile" => null,
+            "Prediction_Score" => null,
+            "Last_Name" => explode(' ',$entity->name)[1],
+            "State" => null,
+            "Lead_Source" => null,
+            "Country" => null,
+            "Tag" => [],
+            "Fax" => null,
+            "Annual_Revenue" => null,
+            "Secondary_Email" => null
+          ]);
+
+          $zoho = new laravelZohoCrm;
+          $zoho->addModuleRecord('Contacts',$recordsArray);
         }
+
         $file_save = File::firstOrCreate(['name' => $file,'status' => true]);
         $message .= 'Process File: '. $file_save ."\n";
       }
@@ -346,7 +384,5 @@ class EntitiesController extends Controller
 
       return $return;
     }
-
-
 
 }
