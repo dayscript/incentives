@@ -102,7 +102,7 @@ class Entity extends Model
     public function overcomePoints(){
         $invoices_overcome = [];
         $date_from = Carbon::now()->subYears(364);
-        $date_to = Carbon::now()->subYears(365);
+        $date_to = Carbon::now()->subYears(330);
         $invoices = $this->invoices->where('invoice_date_up', '>=' , $date_from->format('Y-m-d'))
                                    ->where('invoice_date_up', '<=' , $date_to->format('Y-m-d'));
 
