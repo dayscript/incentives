@@ -126,7 +126,7 @@ class EntitiesController extends Controller
 
             $results['entity']  = $entity;
         } else {
-            $results['status']  = 'error';
+            $results['status']  = '404';
             $results['message'] = __('No existe la entidad');
         }
 
