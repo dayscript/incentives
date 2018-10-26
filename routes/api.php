@@ -30,7 +30,7 @@ Route::get('entities/{identification}/delgoalvalue/{id}', 'EntitiesController@de
 Route::post('redemptions', 'RedemptionController@store')->middleware('cors');
 Route::post('entities', 'EntitiesController@store')->middleware('cors');
 
-
+ 
 Route::get('clients', 'ClientsController@apilist');
 Route::get('vars', 'VarsController@apilist');
 Route::get('templates', 'TemplateController@apilist');
