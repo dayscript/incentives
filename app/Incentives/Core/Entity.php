@@ -117,7 +117,12 @@ class Entity extends Model
 
     public function subscriptionPoints(){
       $goal = Goal::where('name', '=', 'Activiación')->first();
-      $entitygoal = EntityGoal::firstOrCreate(['entity_id'=> $this->id,'goal_id'=>$goal->id]);
+      $entitygoal = EntityGoal::firstOrCreate(
+        [
+          'entity_id'=> $this->id,
+          'goal_id'=>$goal->id
+        ]
+      );
       $entitygoal->value = 50;
       $entitygoal->real = 50;
       $entitygoal->date = \Carbon\Carbon::now()->format('Y-m-d');
