@@ -120,7 +120,7 @@ class Entity extends Model
       $entitygoal = EntityGoal::firstOrCreate(
         [
           'entity_id'=> $this->id,
-          'goal_id'=>$goal->id
+          'goal_id'  => $goal->id
         ]
       );
       $entitygoal->value = 50;
