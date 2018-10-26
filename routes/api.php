@@ -28,6 +28,8 @@ Route::get('entities/{identification}/delvalue/{id}', 'EntitiesController@delval
 Route::get('entities/{identification}/delgoalvalue/{id}', 'EntitiesController@delgoalvalue');
 
 Route::post('redemptions', 'RedemptionController@store')->middleware('cors');
+Route::post('entities', 'EntitiesController@store')->middleware('cors');
+
 
 Route::get('clients', 'ClientsController@apilist');
 Route::get('vars', 'VarsController@apilist');

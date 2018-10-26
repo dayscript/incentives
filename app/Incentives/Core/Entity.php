@@ -4,6 +4,7 @@ namespace App\Incentives\Core;
 
 use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
+use App\Incentives\Core\EntityGoal;
 use App\Incentives\Core\EntityData;
 use App\Kokoriko\Redemption;
 use App\Kokoriko\Invoice;
@@ -112,6 +113,15 @@ class Entity extends Model
 
         return (int)number_format( array_sum($invoices_overcome)  / 1000 ) ;
 
+    }
+
+    public function subscriptionPoints(){
+      $goal = Goal::where('name', '=', 'Activiación')->first();
+      $entitygoal = EntityGoal::firstOrCreate(['entity_id'=> $this->id,'goal_id'=>$goal->id]);
+      $entitygoal->value = 50;
+      $entitygoal->real = 50;
+      $entitygoal->date = \Carbon\Carbon::now()->format('Y-m-d');
+      $entitygoal->save();
     }
 
 }

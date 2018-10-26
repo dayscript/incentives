@@ -12,11 +12,15 @@ use Illuminate\Http\Request;
 
 use dayscript\laravelZohoCrm\laravelZohoCrm;
 use Storage;
-
 use Log;
 
 class EntitiesController extends Controller
 {
+
+    public function __construct(){
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +52,21 @@ class EntitiesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      sleep(1);
+      $results            = [];
+
+      $this->validate(request(),[
+        'identification'     => 'required',
+        'name'         => 'required',
+      ]);
+
+
+      $entity = Entity::firstOrCreate( ['identification' => $request->input('identification'),'name' => $request->input('name')] );
+      $entity->subscriptionPoints();
+      $results['entity'] = $entity;
+      $results['status'] = '200';
+      $results['messages'] = 'Por tu activación, tienes una cortesia de 50 kokoripesos';
+      return $entity;
     }
 
     /**
