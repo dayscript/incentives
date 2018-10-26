@@ -123,11 +123,11 @@ class EntitiesController extends Controller
             $entity->points_overcome = $entity->overcomePoints();
             $entity->redemptions;
             $entity->invoices;
-
             $results['entity']  = $entity;
         } else {
-            $results['status']  = '404';
-            $results['message'] = __('No existe la entidad');
+          $results['status']  = '404';
+          $results['message'] = __('No existe la entidad');
+          return \Response::json([$results], 404); // Status code here
         }
 
 
