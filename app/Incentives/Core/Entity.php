@@ -44,6 +44,16 @@ class Entity extends Model
     }
 
     /**
+     * Relationship with associated goals values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+
+     public function entityGoals(){
+       return $this->hasMany(EntityGoal::class,'entity_id');
+     }
+
+    /**
      * Relationship with associated rules values
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -87,6 +97,7 @@ class Entity extends Model
     public function getPoints(){
       $invoices = [];
       $redemptions = [];
+      $entity_goals =[];
       $date = Carbon::now()->subYears(1);
 
       foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
@@ -97,7 +108,11 @@ class Entity extends Model
           $redemptions[] = (int)$redemption->value;
       }
 
-      return (int)number_format( ( array_sum($invoices)  / 1000 ) - array_sum($redemptions),0 ) ;
+      foreach ($this->entityGoals as $key => $value) {
+        $entity_goals[] = (int)$value->value;
+      }
+
+      return (int)number_format( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) ) - array_sum($redemptions),0 ) ;
     }
 
     public function overcomePoints(){
