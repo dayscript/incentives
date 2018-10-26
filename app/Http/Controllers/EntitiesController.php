@@ -120,6 +120,7 @@ class EntitiesController extends Controller
             }
             $entity->goalvalues = $goals;
             $entity->points     = $entity->getPoints();
+            $entity->points_overcome = $entity->overcomePoints();
             $entity->redemptions;
             $entity->invoices;
 

@@ -7,7 +7,7 @@ use App\Incentives\Rules\Rule;
 use App\Incentives\Core\EntityData;
 use App\Kokoriko\Redemption;
 use App\Kokoriko\Invoice;
-
+use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -78,6 +78,7 @@ class Entity extends Model
      */
     public function invoices()
     {
+
         return $this->hasMany(Invoice::class,'identification','identification');
     }
 
@@ -85,17 +86,32 @@ class Entity extends Model
     public function getPoints(){
       $invoices = [];
       $redemptions = [];
+      $date = Carbon::now()->subYears(1);
 
-      foreach ( $this->invoices as $key => $invoice ) {
+      foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
           $invoices[] = (int)$invoice->value;
       }
 
-      foreach ( $this->redemptions as $key => $redemption ) {
+      foreach ( $this->redemptions->where('created_at','>', $date->format('Y-m-d') )  as $key => $redemption ) {
           $redemptions[] = (int)$redemption->value;
       }
 
-      return number_format( ( array_sum($invoices)  / 1000 ) - array_sum($redemptions),0 ) ;
+      return (int)number_format( ( array_sum($invoices)  / 1000 ) - array_sum($redemptions),0 ) ;
     }
 
+    public function overcomePoints(){
+        $invoices_overcome = [];
+        $date_from = Carbon::now()->subYears(364);
+        $date_to = Carbon::now()->subYears(365);
+        $invoices = $this->invoices->where('invoice_date_up', '>=' , $date_from->format('Y-m-d'))
+                                   ->where('invoice_date_up', '<=' , $date_to->format('Y-m-d'));
+
+         foreach ( $invoices as $key => $invoice ) {
+             $invoices_overcome[] = (int)$invoice->value;
+         }
+
+        return (int)number_format( array_sum($invoices_overcome)  / 1000 ) ;
+
+    }
 
 }
