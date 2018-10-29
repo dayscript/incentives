@@ -60,7 +60,7 @@ class RedemptionController extends Controller
 
           $results['vars']    = $redemption;
           $results['status']  = 200;
-          $results['message'] = __('Redención creada');
+          $results['message'] = __('Has redimido con exito' . $request->input('value') . ', se ha enviado una notificación a tu correo electronico con los detalles' );
       }else{
         $results['vars']    = $redemption;
         $results['status']  = 401;
