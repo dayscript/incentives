@@ -131,7 +131,7 @@ class Entity extends Model
     }
 
     public function subscriptionPoints(){
-      $goal = Goal::where('name', '=', 'Activiación')->first();
+      $goal = Rule::where('name', '=', 'Activiación')->first();
       $entitygoal = EntityGoal::firstOrCreate(
         [
           'entity_id'=> $this->id,
