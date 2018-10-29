@@ -63,9 +63,9 @@ class EntitiesController extends Controller
 
       $entity = Entity::firstOrCreate( ['identification' => $request->input('identification'),'name' => $request->input('name')] );
       $entity->subscriptionPoints();
-      
+
+      $entity->totalpoints = $entity->getPoints();
       $entity->goalvalues = $goals;
-      $entity->points     = $entity->getPoints();
       $entity->points_overcome = $entity->overcomePoints();
       $entity->redemptions;
       $entity->invoices;
@@ -94,7 +94,9 @@ class EntitiesController extends Controller
               'description' => $rule->pivot->description,
             ];
         }
-        $entity->points    = $points;
+        $entity->totalpoints = $entity->getPoints();
+
+        $entity->point_values    = $points;
         $entity->data;
         $entity->redemptions;
         $entity->invoices;
@@ -113,6 +115,7 @@ class EntitiesController extends Controller
     {
         $results = [];
         if ($entity = Entity::where('identification', $identification)->first()) {
+
             $points = [];
             $entity->makeHidden(['rules', 'goals']);
             foreach ($entity->rules as $rule) {
@@ -142,8 +145,10 @@ class EntitiesController extends Controller
                   'percentage_weighed'  => $percentage_weighed,
                 ];
             }
-            $entity->goalvalues = $goals;
-            $entity->points     = $entity->getPoints();
+
+            $entity->totalpoints = $entity->getPoints();
+            $entity->point_values = $points;
+            $entity->goal_values = $goals;
             $entity->points_overcome = $entity->overcomePoints();
             $entity->redemptions;
             $entity->invoices;

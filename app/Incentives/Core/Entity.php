@@ -98,7 +98,9 @@ class Entity extends Model
       $invoices = [];
       $redemptions = [];
       $entity_goals =[];
+      $total = 0;
       $date = Carbon::now()->subYears(1);
+
 
       foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
           $invoices[] = (int)$invoice->value;
@@ -112,7 +114,11 @@ class Entity extends Model
         $entity_goals[] = (int)$value->value;
       }
 
-      return (int)number_format( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) ) - array_sum($redemptions),0 ) ;
+      foreach ($this->rules as $rule){
+          $total += $rule->pivot->points;
+      }
+
+      return (int)number_format( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) + $total ) - array_sum($redemptions),0 ) ;
     }
 
     public function overcomePoints(){
@@ -131,17 +137,8 @@ class Entity extends Model
     }
 
     public function subscriptionPoints(){
-      $goal = Rule::where('name', '=', 'Activiación')->first();
-      $entitygoal = EntityGoal::firstOrCreate(
-        [
-          'entity_id'=> $this->id,
-          'goal_id'  => $goal->id
-        ]
-      );
-      $entitygoal->value = 50;
-      $entitygoal->real = 50;
-      $entitygoal->date = \Carbon\Carbon::now()->format('Y-m-d');
-      $entitygoal->save();
+      $rule = Rule::where('name', '=', 'Activación de cuenta')->first();
+      $params = ['value'=>$rule->points,'points'=>$rule->points,'description'=>$rule->description];
+      $this->rules()->attach($rule,$params);
     }
-
 }
