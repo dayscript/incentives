@@ -138,7 +138,9 @@ class Entity extends Model
 
     public function subscriptionPoints(){
       $rule = Rule::where('name', '=', 'Activación de cuenta')->first();
-      $params = ['value'=>$rule->points,'points'=>$rule->points,'description'=>$rule->description];
-      $this->rules()->attach($rule,$params);
+      if($rule){
+        $params = ['value'=>$rule->points,'points'=>$rule->points,'description'=>$rule->description];
+        $this->rules()->attach($rule,$params);
+      }
     }
 }
