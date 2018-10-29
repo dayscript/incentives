@@ -53,10 +53,10 @@ class RedemptionController extends Controller
       ]);
 
       $entity = Entity::find($request->input('entity_id'));
-      if( $request->input('value') <= $entity->getPoints() ){
+      if( $request->input('value') <= $entity->getPoints() && $request->input('value') > 0   ){
           $redemption = Redemption::create(request()->all());
           $redemption->token = str_random(15);
-          $redemption->save();
+          $redemption->save(); 
 
           $results['vars']    = $redemption;
           $results['status']  = 200;
