@@ -60,18 +60,16 @@ class EntitiesController extends Controller
         'name'         => 'required',
       ]);
 
-
-      $entity = Entity::firstOrCreate( ['identification' => $request->input('identification'),'name' => $request->input('name')] );
+      $to_create = ['identification' => $request->input('identification'),'name' => $request->input('name')];
+      $entity = Entity::firstOrCreate( $to_create );
+      $to_zoho = $request->all();
       $entity->subscriptionPoints();
+      $entity->createZoho('Contacts',$to_zoho);
 
-      $entity->totalpoints = $entity->getPoints();
-      $entity->goalvalues = $goals;
-      $entity->points_overcome = $entity->overcomePoints();
-      $entity->redemptions;
-      $entity->invoices;
       $results['entity'] = $entity;
       $results['status'] = '200';
-      $results['messages'] = 'Por tu activación, tienes una cortesia de 50 kokoripesos';
+      $results['messages'] = '';
+      
       return $entity;
     }
 
