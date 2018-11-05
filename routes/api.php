@@ -20,17 +20,17 @@ Route::get('/test', function () {
 });
 Route::get('clients/{client}/dategoalvalues/{date?}', 'ClientsController@dategoalvalues');
 
-Route::get('entities/{identification}', 'EntitiesController@showByIdentification')->middleware('cors');
+Route::get('entities/{identification}', 'EntitiesController@showByIdentification');
 
 Route::post('entities/{identification}/addvalue', 'EntitiesController@addvalue');
 Route::post('entities/{identification}/addgoalvalue', 'EntitiesController@addgoalvalue');
 Route::get('entities/{identification}/delvalue/{id}', 'EntitiesController@delvalue');
 Route::get('entities/{identification}/delgoalvalue/{id}', 'EntitiesController@delgoalvalue');
 
-Route::post('redemptions', 'RedemptionController@store')->middleware('cors');
-Route::post('entities', 'EntitiesController@store')->middleware('cors');
+Route::post('redemptions', 'RedemptionController@store');
+Route::post('entities', 'EntitiesController@store');
 
- 
+
 Route::get('clients', 'ClientsController@apilist');
 Route::get('vars', 'VarsController@apilist');
 Route::get('templates', 'TemplateController@apilist');
