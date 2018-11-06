@@ -56,8 +56,8 @@ class RedemptionController extends Controller
       if( $request->input('value') <= $entity->getPoints() && $request->input('value') > 0   ){
           $redemption = Redemption::create(request()->all());
           $redemption->token = str_random(15);
-          $redemption->save(); 
-
+          $redemption->save();
+          $redemption->createZoho();
           $results['vars']    = $redemption;
           $results['status']  = 200;
           $results['message'] = __('Has redimido con exito' . $request->input('value') . ', se ha enviado una notificación a tu correo electronico con los detalles' );
@@ -116,5 +116,11 @@ class RedemptionController extends Controller
     public function destroy(Redemption $redemption)
     {
         //
+    }
+
+
+    public function Devel(){
+      $redemtion = Redemption::find(5);
+      return $redemtion->createZoho();
     }
 }

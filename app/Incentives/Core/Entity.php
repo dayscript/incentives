@@ -13,6 +13,10 @@ use dayscript\laravelZohoCrm\laravelZohoCrm;
 
 use Illuminate\Database\Eloquent\Model;
 
+use GuzzleHttp\Pool;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
+
 /**
  * @property mixed rules
  */
@@ -38,7 +42,7 @@ class Entity extends Model
       'Created_Time'                => NULL,
       'Salutation'                  => NULL,
       'Cedula'                      => 'field_no_identificacion',
-      'Cedula_Asesor'               => 'cedula_del_asesor',
+      'Cedula_Ascesor'              => 'cedula_del_asesor',
       'Date_of_Birth'               => 'field_birthdate',
       'Email'                       => 'mail',
       'Email_Opt_Out'               => TRUE,
@@ -61,6 +65,27 @@ class Entity extends Model
       'Twitter'                     => NULL
     ];
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+
+    public $fieldsRest = [
+         'name' => null,
+         'pass' => null,
+         'mail' => null,
+         'status' => null,
+         'field_no_identificacion' => null,
+         'field_nombres' => null,
+         'field_apellidos' => null,
+         'field_acepto_terminos_y_condicio' => null,
+         'field_acepto_politica_de_datos_p' => null,
+         'field_birthdate' => null,
+         'field_gender' => null,
+         'field_telephone' => null,
+         'roles' => null
+     ];
 
 
     /**
@@ -232,6 +257,7 @@ class Entity extends Model
       $this->zohoFields['Salutation'] = $this->detectGender($arrayRecod['field_gender']);
 
       $zoho->addModuleRecord($module, [$this->zohoFields] );
+
       return $zoho;
     }
 
@@ -265,6 +291,24 @@ class Entity extends Model
       $zoho = new laravelZohoCrm;
       $zoho->deleteModuleRecord($module,[$entity_id]);
       return $zoho;
+    }
+
+
+    public function createRest($arrayRecod = array() ){
+
+        $client = new Client(['base_uri' => 'https://kokoriko.demodayscript.com/']);
+
+        $headers = array(
+            'headers' => [
+                'Authorization' => 'Basic '.base64_encode('admin:p0p01234'),
+                'Content-Type'  => 'application/json'
+              ],
+            'body'=>  json_encode($arrayRecod)
+            );
+
+        $res = $client->request('POST', 'api/user', $headers );
+
+        return $res->getBody();
     }
 
     /**

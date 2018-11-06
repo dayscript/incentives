@@ -62,6 +62,14 @@ class EntitiesController extends Controller
 
       $to_create = ['identification' => $request->input('identification'),'name' => $request->input('name')];
       $entity = Entity::firstOrCreate( $to_create );
+      // $entity->data()->attach($entity->id, ['email' => $request->input('mail'), 'phone' => $request->input('field_telephone'), 'real_date_up' => date('Y-m-d'),'status'=>1]);
+      $entity_data = EntityData::firstOrCreate([
+         'entity_id' => $entity->id,
+         'email'  => $request->input('mail'),
+         'phone'  => $request->input('field_telephone'),
+         'real_date_up' => date('Y-m-d'),
+         'status' => 1,
+       ]);
       $to_zoho = $request->all();
       $entity->subscriptionPoints();
       $entity->createZoho('Contacts',$to_zoho);
@@ -69,7 +77,7 @@ class EntitiesController extends Controller
       $results['entity'] = $entity;
       $results['status'] = '200';
       $results['messages'] = '';
-      
+
       return $entity;
     }
 
@@ -319,6 +327,7 @@ class EntitiesController extends Controller
      */
     public function createFromFile(){
 
+
       $limit_process_entityes = env('LIMIT_IMPORT_ENTITIES',0);
       $file_keys = array('identification','name','email','phone','date','identification2','name2','line_break');
       $return = array();
@@ -362,43 +371,49 @@ class EntitiesController extends Controller
              'phone'  => $new_entity['phone'],
              'real_date_up' => $new_entity['date']
            ]);
+
           Log::info('Enitity Create OK: '.$entity->id);
 
-          $recordsArray = array([
-            "Company" => "Kokoriko",
-            "Email" => $entity_data->email,
-            "Description" => null,
-            "Rating" => null,
-            "Website" => null,
-            "Twitter" => null,
-            "Salutation" => "Sr.",
-            "First_Name" => explode(' ',$entity->name)[0],
-            "Lead_Status" => null,
-            "Industry" => null,
-            "Full_Name" => $entity->name,
-            "Record_Image" => null,
-            "Skype_ID" => null,
-            "Phone" => "3167490905",
-            "Street" => null,
-            "Zip_Code" => null,
-            "Email_Opt_Out" => false,
-            "Designation" => "Comprador",
-            "City" => null,
-            "No_of_Employees" => null,
-            "Mobile" => null,
-            "Prediction_Score" => null,
-            "Last_Name" => explode(' ',$entity->name)[1],
-            "State" => null,
-            "Lead_Source" => null,
-            "Country" => null,
-            "Tag" => [],
-            "Fax" => null,
-            "Annual_Revenue" => null,
-            "Secondary_Email" => null
-          ]);
+          $arrayRecod = [
+            'name' => array( 'value'=> $entity->identification),
+            'pass' => array( 'value'=> $entity_data->identification),
+            'mail' => array( 'value'=> $entity_data->email),
+            'status' => array( 'value'=> 1),
+            'field_no_identificacion' => array( 'value'=> $entity->identification),
+            'field_nombres' => array( 'value'=> explode(' ',$entity->name)[0]),
+            'field_apellidos' => array( 'value'=> explode(' ',$entity->name)[1]),
+            'field_acepto_terminos_y_condicio' => array( 'value'=> 1),
+            'field_acepto_politica_de_datos_p' => array( 'value'=> 1),
+            'field_birthdate' => array( 'value'=> null),
+            'field_gender' => array( 'value'=> null),
+            'field_telephone' => array( 'value'=> $entity_data->phone),
+            'roles' => array('incentives'),
+          ];
+          try {
+            $entity->createRest($arrayRecod);
+            Log::info('Entity create Drupal OK : '.$entity->identification);
 
-          $zoho = new laravelZohoCrm;
-          $zoho->addModuleRecord('Contacts',$recordsArray);
+          } catch (\Exception $e) {
+            Log::info('Entity exist in Drupal : '.$entity->identification);
+
+          }
+
+          $recordsArray = [
+            'mail' =>  $entity_data->email,
+            'field_no_identificacion' =>  (string)$entity->identification,
+            'field_nombres' =>  ucwords(strtolower(explode(' ',$entity->name)[0])),
+            'field_apellidos' =>  ucwords(strtolower(explode(' ',$entity->name)[1])),
+            'field_telephone' =>  explode('.',$entity_data->phone)[0],
+            'asesor' => ucwords(strtolower($new_entity['name2'])),
+            'cedula_del_asesor' => explode('.',$new_entity['identification2'])[0],
+            'field_gender' => '',
+            'fecha_de_registro'=>'',
+            'field_birthdate' => '',
+            'roles' => array('incentives')
+          ];
+
+          $entity->createZoho('Leads',$recordsArray);
+          $entities[] =$entity;
         }
 
         $file_save = File::firstOrCreate(['name' => $file,'status' => true]);
@@ -412,5 +427,6 @@ class EntitiesController extends Controller
 
       return $return;
     }
+
 
 }

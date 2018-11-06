@@ -39,3 +39,5 @@ Route::resource('redemptions','RedemptionController');
 
 Route::get('devel/vars/{id}','VarsController@devel');
 Route::get('devel/templates/{id}','TemplateController@devel');
+
+Route::get('devel/redemption','RedemptionController@Devel');
