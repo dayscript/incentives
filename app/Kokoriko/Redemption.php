@@ -5,7 +5,8 @@ namespace App\Kokoriko;
 use Illuminate\Database\Eloquent\Model;
 
 use dayscript\laravelZohoCrm\laravelZohoCrm;
-use App\Incentives\Core\EntityData;
+use App\Incentives\Core\Information;
+
 use App\Incentives\Core\Entity;
 
 
@@ -84,7 +85,7 @@ class Redemption extends Model
     }
 
 
-
+    
 
 
 }

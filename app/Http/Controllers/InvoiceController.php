@@ -103,7 +103,7 @@ class InvoiceController extends Controller
 
 
       $files = Storage::disk('ftp')->allFiles('ventas/');
-      
+
       foreach ($files as $num_file => $file) {
         if( count(File::where('name',$file)->get()) ) {$message= 'no new files'; continue; };
 
@@ -143,9 +143,10 @@ class InvoiceController extends Controller
           $invoice->value           = $new_invoice['value'];
           $invoice->invoice_date_up = $new_invoice['invoice_date_up'];
           $invoice->save();
+          $invoice->createZoho('Invoices');
         }
 
-        $file_save = File::firstOrCreate(['name' => $file,'status' => true]);
+        $file_save = File::firstOrCreate(['name' => $file,'status' => 1]);
 
         $message .= 'Process File: '. $file_save ."\n";
       }

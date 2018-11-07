@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Incentives\Core\Entity;
-use App\Incentives\Core\EntityData;
+use App\Incentives\Core\Information;
 use App\Kokoriko\File;
 use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
@@ -61,18 +61,12 @@ class EntitiesController extends Controller
       ]);
 
       $to_create = ['identification' => $request->input('identification'),'name' => $request->input('name')];
-      $entity = Entity::firstOrCreate( $to_create );
-      // $entity->data()->attach($entity->id, ['email' => $request->input('mail'), 'phone' => $request->input('field_telephone'), 'real_date_up' => date('Y-m-d'),'status'=>1]);
-      $entity_data = EntityData::firstOrCreate([
-         'entity_id' => $entity->id,
-         'email'  => $request->input('mail'),
-         'phone'  => $request->input('field_telephone'),
-         'real_date_up' => date('Y-m-d'),
-         'status' => 1,
-       ]);
       $to_zoho = $request->all();
+      $entity = Entity::firstOrCreate( $to_create );
+      $entity->createInformation($to_zoho);
+      
       $entity->subscriptionPoints();
-      $entity->createZoho('Contacts',$to_zoho);
+      $entity->createZoho('Contacts');
 
       $results['entity'] = $entity;
       $results['status'] = '200';
@@ -327,13 +321,11 @@ class EntitiesController extends Controller
      */
     public function createFromFile(){
 
-
       $limit_process_entityes = env('LIMIT_IMPORT_ENTITIES',0);
-      $file_keys = array('identification','name','email','phone','date','identification2','name2','line_break');
+      $file_keys = array('field_no_identificacion','name','mail','field_telephone','fecha_de_registro','cedula_del_asesor','nombre_asesor','line_break');
       $return = array();
       $entities = [];
       $message = '';
-
 
       $files = Storage::disk('ftp')->allFiles('preregistro/');
 
@@ -342,9 +334,7 @@ class EntitiesController extends Controller
         if( count(File::where('name',$file)->get()) ) {$message= 'no new files'; continue; };
         if( $num_file > $limit_process_entityes ) break; # limita el numero de archivos a procesar
 
-
         $file_contents = Storage::disk('ftp')->get($file);
-
 
         $data_contents = explode(PHP_EOL,$file_contents);
 
@@ -358,62 +348,22 @@ class EntitiesController extends Controller
             $new_entity[$file_keys[$row]] = $value;
           }
 
-          if( strpos($new_entity['identification'], '.') != false ) {
-
-              $new_entity['identification'] = explode('.',$new_entity['identification'])[0];
-          }
-
-
-          $entity = Entity::firstOrCreate(['identification' => $new_entity['identification'], 'name' => $new_entity['name'] ]);
-          $entity_data = EntityData::firstOrCreate([
-             'entity_id' => $entity->id,
-             'email'  => $new_entity['email'],
-             'phone'  => $new_entity['phone'],
-             'real_date_up' => $new_entity['date']
-           ]);
+          $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'] ]);
+          $entity->createInformation($new_entity);
+          $entity->entityInformation;
 
           Log::info('Enitity Create OK: '.$entity->id);
-
-          $arrayRecod = [
-            'name' => array( 'value'=> $entity->identification),
-            'pass' => array( 'value'=> $entity_data->identification),
-            'mail' => array( 'value'=> $entity_data->email),
-            'status' => array( 'value'=> 1),
-            'field_no_identificacion' => array( 'value'=> $entity->identification),
-            'field_nombres' => array( 'value'=> explode(' ',$entity->name)[0]),
-            'field_apellidos' => array( 'value'=> explode(' ',$entity->name)[1]),
-            'field_acepto_terminos_y_condicio' => array( 'value'=> 1),
-            'field_acepto_politica_de_datos_p' => array( 'value'=> 1),
-            'field_birthdate' => array( 'value'=> null),
-            'field_gender' => array( 'value'=> null),
-            'field_telephone' => array( 'value'=> $entity_data->phone),
-            'roles' => array('incentives'),
-          ];
           try {
-            $entity->createRest($arrayRecod);
+            $entity->createRest();
             Log::info('Entity create Drupal OK : '.$entity->identification);
 
           } catch (\Exception $e) {
             Log::info('Entity exist in Drupal : '.$entity->identification);
 
           }
+          $zoho = $entity->createZoho('Leads');
 
-          $recordsArray = [
-            'mail' =>  $entity_data->email,
-            'field_no_identificacion' =>  (string)$entity->identification,
-            'field_nombres' =>  ucwords(strtolower(explode(' ',$entity->name)[0])),
-            'field_apellidos' =>  ucwords(strtolower(explode(' ',$entity->name)[1])),
-            'field_telephone' =>  explode('.',$entity_data->phone)[0],
-            'asesor' => ucwords(strtolower($new_entity['name2'])),
-            'cedula_del_asesor' => explode('.',$new_entity['identification2'])[0],
-            'field_gender' => '',
-            'fecha_de_registro'=>'',
-            'field_birthdate' => '',
-            'roles' => array('incentives')
-          ];
-
-          $entity->createZoho('Leads',$recordsArray);
-          $entities[] =$entity;
+          $entities[] = $entity;
         }
 
         $file_save = File::firstOrCreate(['name' => $file,'status' => true]);
@@ -428,5 +378,13 @@ class EntitiesController extends Controller
       return $return;
     }
 
+    public function Devel(){
+      $entity = Entity::find(127);
+      $information = Information::create(['mail'=>'ariel.acevedo@dayscript.com','phone'=>'3167490905','status'=>1]);
+      $entity->entityInformation()->attach($information);
+      $entity->entityInformation;
+
+      return $entity;
+    }
 
 }

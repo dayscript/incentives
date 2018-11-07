@@ -5,7 +5,7 @@ namespace App\Incentives\Core;
 use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
 use App\Incentives\Core\EntityGoal;
-use App\Incentives\Core\EntityData;
+use App\Incentives\Core\Information;
 use App\Kokoriko\Redemption;
 use App\Kokoriko\Invoice;
 use Carbon\Carbon;
@@ -124,17 +124,64 @@ class Entity extends Model
      */
     public function data()
     {
-        return $this->hasOne(EntityData::class);
+        return $this->hasOne(EntityData::class,'entity_id');
     }
 
-    public function totalpoints()
+    /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function entityInformation()
     {
-        $total = 0;
-        foreach ($this->rules as $rule){
-            $total += $rule->pivot->points;
-        }
-        return $total;
+        return $this->belongsToMany(Information::class);
     }
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+      public function createInformation( $entity_information = array() )
+      {
+
+        $name_and_last_name = explode(' ',$entity_information['name']);
+
+
+        $information = new Information;
+        $information->name  = $this->identification;
+        $information->pass  = $this->identification;
+        $information->nombres  = $name_and_last_name[0];
+        $information->apellidos  = $name_and_last_name[1];
+        $information->no_identificacion  = $this->identification;
+        $information->acepto_terminos_y_condicio  = 1;
+        $information->acepto_politica_de_datos_p  = 1;
+        $information->birthdate  = ( isset($entity_information['field_birthdate'] ) ) ? $entity_information['field_birthdate']:null;
+        $information->gender  = ( isset($entity_information['field_gender'] ) ) ? $entity_information['field_gender']:null;;
+        $information->status = 1;
+        $information->telephone  = $entity_information['field_telephone'];
+        $information->asesor  = $entity_information['nombre_asesor'];
+        $information->no_identificacion_asesor  = $entity_information['cedula_del_asesor'];
+        $information->roles  = 'incentives';
+        $information->mail  = $entity_information['mail'];
+
+        $information->save();
+        $this->entityInformation()->attach($information);
+      }
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+      public function totalpoints()
+      {
+          $total = 0;
+          foreach ($this->rules as $rule){
+              $total += $rule->pivot->points;
+          }
+          return $total;
+      }
 
     /**
      * Relationship with associated rules values
@@ -240,7 +287,22 @@ class Entity extends Model
      * @return dayscript\laravelZohoCrm\laravelZohoCrm;
 
      */
-    public function createZoho($module,$arrayRecod){
+    public function createZoho($module){
+
+      $arrayRecod = [
+        'mail' =>  $this->entityInformation[0]->mail,
+        'field_no_identificacion' =>  (string)$this->identification,
+        'field_nombres' =>  $this->entityInformation[0]->nombres,
+        'field_apellidos' =>  $this->entityInformation[0]->apellidos,
+        'field_telephone' => $this->entityInformation[0]->telephone,
+        'asesor' => $this->entityInformation[0]->asesor,
+        'cedula_del_asesor' => $this->entityInformation[0]->no_identificacion_asesor,
+        'field_gender' => $this->entityInformation[0]->no_identificacion_gender,
+        'fecha_de_registro'=>str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00',
+        'field_birthdate' => $this->entityInformation[0]->birthdate,
+        'roles' => $this->entityInformation[0]->roles
+      ];
+
       $zoho = new laravelZohoCrm();
       $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
 
@@ -248,17 +310,19 @@ class Entity extends Model
         if(isset($arrayRecod[$value])){
           $this->zohoFields[$key] = $arrayRecod[$value];
         } else {
-          $this->zohoFields[$key] = $value;
+          $this->zohoFields[$key] = null;
         }
       }
 
-      $this->zohoFields['Fecha_de_Preregistro'] = $date;
-      $this->zohoFields['Fuente_de_Adquisicion'] = $this->detectResouceSubcription($arrayRecod['roles']);
-      $this->zohoFields['Salutation'] = $this->detectGender($arrayRecod['field_gender']);
+      $this->zohoFields['Fecha_de_Preregistro'] = str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00';
+      $this->zohoFields['Fuente_de_Adquisicion'] = $this->detectResouceSubcription( [ $this->entityInformation[0]->roles ] );
+      $this->zohoFields['Salutation'] = $this->detectGender($this->entityInformation[0]->gender);
 
-      $zoho->addModuleRecord($module, [$this->zohoFields] );
-
-      return $zoho;
+      $zoho->addModuleRecord( $module, [$this->zohoFields] );
+      $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
+      $this->entityInformation[0]->zoho_module = $module;
+      $this->entityInformation[0]->save();
+      return $zoho->response;
     }
 
     /**
@@ -293,22 +357,35 @@ class Entity extends Model
       return $zoho;
     }
 
+    // public function createRest($arrayRecod = array() ){
+    public function createRest( ){
+      $arrayRecod = [
+        'name' => array( 'value'=> $this->entityInformation[0]->name ),
+        'pass' => array( 'value'=> $this->entityInformation[0]->pass ),
+        'mail' => array( 'value'=> $this->entityInformation[0]->mail),
+        'status' => array( 'value'=> $this->entityInformation[0]->status ),
+        'field_no_identificacion' => array( 'value'=> $this->entityInformation[0]->no_identificacion),
+        'field_nombres' => array( 'value'=> $this->entityInformation[0]->nombres),
+        'field_apellidos' => array( 'value'=> $this->entityInformation[0]->apellidos ),
+        'field_acepto_terminos_y_condicio' => array( 'value' => $this->entityInformation[0]->acepto_terminos_y_condicio ),
+        'field_acepto_politica_de_datos_p' => array( 'value' => $this->entityInformation[0]->acepto_politica_de_datos_p ),
+        'field_birthdate' => array( 'value'=> $this->entityInformation[0]->birthdate ),
+        'field_gender' => array( 'value'=> $this->entityInformation[0]->gender ),
+        'field_telephone' => array( 'value'=> $this->entityInformation[0]->telephone ),
+        'roles' => array( $this->entityInformation[0]->roles ),
+      ];
 
-    public function createRest($arrayRecod = array() ){
+      $client = new Client(['base_uri' => 'https://kokoriko.demodayscript.com/']);
+      $headers = array(
+          'headers' => [
+              'Authorization' => 'Basic '.base64_encode('admin:p0p01234'),
+              'Content-Type'  => 'application/json'
+            ],
+          'body'=>  json_encode($arrayRecod)
+          );
+      $res = $client->request('POST', 'api/user', $headers );
 
-        $client = new Client(['base_uri' => 'https://kokoriko.demodayscript.com/']);
-
-        $headers = array(
-            'headers' => [
-                'Authorization' => 'Basic '.base64_encode('admin:p0p01234'),
-                'Content-Type'  => 'application/json'
-              ],
-            'body'=>  json_encode($arrayRecod)
-            );
-
-        $res = $client->request('POST', 'api/user', $headers );
-
-        return $res->getBody();
+      return $res->getBody();
     }
 
     /**

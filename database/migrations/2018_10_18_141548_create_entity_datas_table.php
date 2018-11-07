@@ -13,14 +13,25 @@ class CreateEntityDatasTable extends Migration
      */
     public function up()
     {
-        Schema::create('entity_datas', function (Blueprint $table) {
+        Schema::create('information', function (Blueprint $table) {
+            $table->increments('id');
+            // $table->integer('entity_id')->nullable()->unsigned();
+            // $table->foreign('entity_id')->references('id')->on('entities')->onDelete('cascade');
+            $table->string('mail')->nullable();
+            $table->string('telephone')->nullable();
+            $table->boolean('status')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create('entity_information', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('entity_id')->nullable()->unsigned();
             $table->foreign('entity_id')->references('id')->on('entities')->onDelete('cascade');
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->boolean('status')->default(false);
-            $table->date('real_date_up')->nullable();
+            $table->integer('information_id')->nullable()->unsigned();
+            $table->foreign('information_id')->references('id')->on('information')->onDelete('cascade');
+            // $table->string('mail')->nullable();
+            // $table->string('telephone')->nullable();
+            // $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
@@ -32,6 +43,8 @@ class CreateEntityDatasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('entity_datas');
+        Schema::dropIfExists('information');
+        Schema::dropIfExists('entity_information');
+
     }
 }
