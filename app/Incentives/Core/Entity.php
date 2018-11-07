@@ -124,7 +124,7 @@ class Entity extends Model
      */
     public function data()
     {
-        return $this->hasOne(EntityData::class,'entity_id');
+        return '';//$this->hasOne(EntityData::class,'entity_id');
     }
 
     /**

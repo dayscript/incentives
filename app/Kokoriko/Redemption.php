@@ -63,11 +63,10 @@ class Redemption extends Model
     public function createZoho($module = 'Redenciones'){
       $zoho = new laravelZohoCrm();
       $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
-
       $this->zohoFields = [
         'Created_By' => '',
         'Created_Time' => '',
-        'Email' => $this->entity->data->email,
+        'Email' => $this->entity->entityInformation[0]->mail,
         'Fecha_de_Redencion' => $date,
         'Last_Activity_Time' => null,
         'Modified_By' => null,
@@ -85,7 +84,7 @@ class Redemption extends Model
     }
 
 
-    
+
 
 
 }

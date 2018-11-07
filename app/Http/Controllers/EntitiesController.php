@@ -64,7 +64,7 @@ class EntitiesController extends Controller
       $to_zoho = $request->all();
       $entity = Entity::firstOrCreate( $to_create );
       $entity->createInformation($to_zoho);
-      
+
       $entity->subscriptionPoints();
       $entity->createZoho('Contacts');
 
