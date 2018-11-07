@@ -349,6 +349,7 @@ class EntitiesController extends Controller
           }
 
           $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'] ]);
+          $entity->subscriptionPoints();
           $entity->createInformation($new_entity);
           $entity->entityInformation;
 
