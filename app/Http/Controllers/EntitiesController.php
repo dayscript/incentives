@@ -63,10 +63,11 @@ class EntitiesController extends Controller
       $to_create = ['identification' => $request->input('identification'),'name' => $request->input('name')];
       $to_zoho = $request->all();
       $entity = Entity::firstOrCreate( $to_create );
+
       $entity->createInformation($to_zoho);
 
       $entity->subscriptionPoints();
-      $entity->createZoho('Contacts');
+      $entity->createZoho('Leads');
 
       $results['entity'] = $entity;
       $results['status'] = '200';
@@ -97,12 +98,10 @@ class EntitiesController extends Controller
         $entity->totalpoints = $entity->getPoints();
 
         $entity->point_values    = $points;
-        $entity->data;
+        $entity->entityInformation[0];
         $entity->redemptions;
         $entity->invoices;
-        $results['entity'] = $entity;
-
-        return $results;
+        return $entity;
     }
 
     /**
@@ -113,6 +112,7 @@ class EntitiesController extends Controller
      */
     public function showByIdentification($identification)
     {
+
         $results = [];
         if ($entity = Entity::where('identification', $identification)->first()) {
 
@@ -152,15 +152,12 @@ class EntitiesController extends Controller
             $entity->points_overcome = $entity->overcomePoints();
             $entity->redemptions;
             $entity->invoices;
-            $results['entity']  = $entity;
+            $entity->entityInformation[0];
+
+            return $entity;
         } else {
-          $results['status']  = '404';
-          $results['message'] = __('No existe la entidad');
-          return \Response::json([$results], 404); // Status code here
+          return \Response::json([], 404); // Status code here
         }
-
-
-        return $results;
     }
 
     /**
@@ -183,7 +180,16 @@ class EntitiesController extends Controller
      */
     public function update(Request $request, Entity $entity)
     {
-        //
+
+        $entity->update($request->all());
+        if( $request->input('zoho_lead_to_contact') ){
+            $entity->entityInformation[0]->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
+            $entity->entityInformation[0]->save();
+            return $entity->updateZoho();
+        }
+
+        return $entity;
+
     }
 
     /**

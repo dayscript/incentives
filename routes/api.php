@@ -21,6 +21,9 @@ Route::get('/test', function () {
 Route::get('clients/{client}/dategoalvalues/{date?}', 'ClientsController@dategoalvalues');
 
 Route::get('entities/{identification}', 'EntitiesController@showByIdentification');
+Route::put('entities/{entity}', 'EntitiesController@update');
+
+
 
 Route::post('entities/{identification}/addvalue', 'EntitiesController@addvalue');
 Route::post('entities/{identification}/addgoalvalue', 'EntitiesController@addgoalvalue');

@@ -62,8 +62,10 @@ class Entity extends Model
       'Positive_Touch_Point_Score'  => NULL,
       'Score'                       => NULL,
       'Touch_Point_Score'           => NULL,
-      'Twitter'                     => NULL
+      'Twitter'                     => NULL,
+      'Convertir_en_Contacto'       => 'to_contact'
     ];
+
 
     /**
      * The attributes that are mass assignable.
@@ -84,7 +86,7 @@ class Entity extends Model
          'field_birthdate' => null,
          'field_gender' => null,
          'field_telephone' => null,
-         'roles' => null
+         'roles' => null,
      ];
 
 
@@ -117,15 +119,15 @@ class Entity extends Model
        return $this->hasMany(EntityGoal::class,'entity_id');
      }
 
-    /**
-     * Relationship with associated rules values
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function data()
-    {
-        return '';//$this->hasOne(EntityData::class,'entity_id');
-    }
+    // /**
+    //  * Relationship with associated rules values
+    //  *
+    //  * @return \Illuminate\Database\Eloquent\Relations\HasOne
+    //  */
+    // public function data()
+    // {
+    //     return '';//$this->hasOne(EntityData::class,'entity_id');
+    // }
 
     /**
      * Relationship with associated rules values
@@ -300,7 +302,8 @@ class Entity extends Model
         'field_gender' => $this->entityInformation[0]->no_identificacion_gender,
         'fecha_de_registro'=>str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00',
         'field_birthdate' => $this->entityInformation[0]->birthdate,
-        'roles' => $this->entityInformation[0]->roles
+        'roles' => $this->entityInformation[0]->roles,
+        'to_contact' => $this->entityInformation[0]->zoho_lead_to_contact
       ];
 
       $zoho = new laravelZohoCrm();
@@ -331,7 +334,22 @@ class Entity extends Model
      * @return dayscript\laravelZohoCrm\laravelZohoCrm;
 
      */
-    public function updateZoho($module, $entity_id){
+    public function updateZoho(){
+      $arrayRecod = [
+        'mail' =>  $this->entityInformation[0]->mail,
+        'field_no_identificacion' =>  (string)$this->identification,
+        'field_nombres' =>  $this->entityInformation[0]->nombres,
+        'field_apellidos' =>  $this->entityInformation[0]->apellidos,
+        'field_telephone' => $this->entityInformation[0]->telephone,
+        'asesor' => $this->entityInformation[0]->asesor,
+        'cedula_del_asesor' => $this->entityInformation[0]->no_identificacion_asesor,
+        'field_gender' => $this->entityInformation[0]->no_identificacion_gender,
+        'fecha_de_registro'=>str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00',
+        'field_birthdate' => $this->entityInformation[0]->birthdate,
+        'roles' => $this->entityInformation[0]->roles,
+        'to_contact' => ($this->entityInformation[0]->zoho_lead_to_contact) ? true:false,
+      ];
+
       $zoho = new laravelZohoCrm();
       foreach ($this->zohoFields as $key => $value) {
         if(isset($arrayRecod[$value])){
@@ -340,8 +358,14 @@ class Entity extends Model
           $this->zohoFields[$key] = $value;
         }
       }
-      $zoho->updateModuleRecord($module, $entity_id, $recordArray);
-      return $zoho;
+      $zoho->updateModuleRecord($this->entityInformation[0]->zoho_module, $this->entityInformation[0]->zoho_id, [$this->zohoFields]);
+      if( $zoho->response['code'] = 'SUCCESS'){
+          $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
+          $this->entityInformation[0]->zoho_module = 'Contacts';
+          $this->entityInformation[0]->save();
+      }
+
+      return $zoho->response;
 
     }
 

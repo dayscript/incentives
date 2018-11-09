@@ -14,7 +14,7 @@ class Information extends Model
      *
      * @var array
      */
-    protected $fillable = ['mail', 'telephone', 'status'];
+    protected $fillable = ['mail', 'telephone', 'status','zoho_lead_to_contact'];
 
 
     public function setAsesorAttribute($value)
@@ -65,6 +65,16 @@ class Information extends Model
       }else{
         $this->attributes['no_identificacion_asesor'] = $value;
       }
+    }
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function entity()
+    {
+        return $this->belongsTo(Entity::class);
     }
 
 
