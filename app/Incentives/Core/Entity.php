@@ -359,7 +359,7 @@ class Entity extends Model
         }
       }
       $zoho->updateModuleRecord($this->entityInformation[0]->zoho_module, $this->entityInformation[0]->zoho_id, [$this->zohoFields]);
-      if( $zoho->response['code'] = 'SUCCESS'){
+      if( $zoho->response['code'] == 'SUCCESS'){
           $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
           $this->entityInformation[0]->zoho_module = 'Contacts';
           $this->entityInformation[0]->save();
