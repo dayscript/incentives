@@ -369,7 +369,7 @@ class Entity extends Model
           $this->zohoFields[$key] = $arrayRecod[$value];
         } else {
           $this->zohoFields[$key] = $value;
-        }
+        } 
       }
 
 
