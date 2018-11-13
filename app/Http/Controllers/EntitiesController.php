@@ -180,9 +180,11 @@ class EntitiesController extends Controller
      */
     public function update(Request $request, Entity $entity)
     {
-
         $entity->update($request->all());
         if( $request->input('zoho_lead_to_contact') ){
+            $entity->entityInformation[0]->birthdate = $request->input('field_birthdate');
+            $entity->entityInformation[0]->gender = $request->input('field_gender');
+            $entity->entityInformation[0]->telephone = $request->input('field_telephone');
             $entity->entityInformation[0]->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
             $entity->entityInformation[0]->save();
             return $entity->updateZoho();
@@ -385,13 +387,19 @@ class EntitiesController extends Controller
       return $return;
     }
 
-    public function Devel(){
-      $entity = Entity::find(127);
-      $information = Information::create(['mail'=>'ariel.acevedo@dayscript.com','phone'=>'3167490905','status'=>1]);
-      $entity->entityInformation()->attach($information);
-      $entity->entityInformation;
 
-      return $entity;
+    public function devel(){
+      $file = new File;
+      // $name = $file->getFolder()[1];
+      // dd($file->getContentsFile($name,';'));
+
+      // $file = File::where('name','preregistro/preregistro_BOGOTA-2018-10-05.csv')->first();
+      // dd($file->getContentsFile(null,';'));
+      foreach( $file->getFolder('preregistro/') as $key => $name ){
+        $search_file = File::firstOrCreate(['name' => $name]);
+        $search_file->getContentsFile(null,';');
+        $search_file->process('entity');
+      }
+
     }
-
 }

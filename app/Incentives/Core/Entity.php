@@ -29,6 +29,13 @@ class Entity extends Model
      */
     protected $fillable = ['identification', 'name'];
 
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords(strtolower($value));
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -358,6 +365,8 @@ class Entity extends Model
           $this->zohoFields[$key] = $value;
         }
       }
+
+
       $zoho->updateModuleRecord($this->entityInformation[0]->zoho_module, $this->entityInformation[0]->zoho_id, [$this->zohoFields]);
       if( $zoho->response['code'] == 'SUCCESS'){
           $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
@@ -399,10 +408,10 @@ class Entity extends Model
         'roles' => array( $this->entityInformation[0]->roles ),
       ];
 
-      $client = new Client(['base_uri' => 'https://kokoriko.demodayscript.com/']);
+      $client = new Client(['base_uri' => env('DRUPAL_URL')]);
       $headers = array(
           'headers' => [
-              'Authorization' => 'Basic '.base64_encode('admin:p0p01234'),
+              'Authorization' => 'Basic '.base64_encode( env('DRUPAL_USER') . ':' . env('DRUPAL_PASS') ),
               'Content-Type'  => 'application/json'
             ],
           'body'=>  json_encode($arrayRecod)

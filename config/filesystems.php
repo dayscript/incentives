@@ -65,9 +65,9 @@ return [
 
         'ftp' => [
           'driver'   => 'ftp',
-          'host'     => '107.180.97.21',
-          'username' => 'kokoriko@pianoproducciones.com.co',
-          'password' => '#1Rf#1Hj&-TF',
+          'host'     =>  '107.180.97.21',// env('FTP_HOST'),
+          'username' =>  'kokoriko@pianoproducciones.com.co',// env('FTP_USER'),
+          'password' =>  '#1Rf#1Hj&-TF',// env('FTP_PASS'),
 
           // Optional FTP Settings...
           'port'     => 21,

@@ -17,6 +17,16 @@ class Information extends Model
     protected $fillable = ['mail', 'telephone', 'status','zoho_lead_to_contact'];
 
 
+    public function setNombresAttribute($value)
+    {
+        $this->attributes['nombres'] = ucwords(strtolower($value));
+    }
+
+    public function setApellidosAttribute($value)
+    {
+        $this->attributes['apellidos'] = ucwords(strtolower($value));
+    }
+
     public function setAsesorAttribute($value)
     {
         $this->attributes['asesor'] = ucwords(strtolower($value));
