@@ -26,8 +26,7 @@ class StoreRedemtionPost extends FormRequest
     {
         return [
           'entity_id'     => 'required|numeric',
-          'value'         => 'required|numeric',
-          // new RedemptionMaxValue
+          'value'         => 'required|numeric|max:5',
         ];
     }
 
