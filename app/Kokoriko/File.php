@@ -81,22 +81,25 @@ class File extends Model
                 $new_entity[$file_keys[$row]] = $value;
               }
 
+
               $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'] ]);
+              print_r($entity->wasRecentlyCreated);
+              if(!$entity->wasRecentlyCreated){
+                  continue;
+              }
+
               $entity->subscriptionPoints();
               $entity->createInformation($new_entity);
               $entity->entityInformation;
-
               Log::info('Enitity Create OK: '.$entity->id);
+
               try {
                 $entity->createRest();
+                $zoho = $entity->createZoho('Leads');
                 Log::info('Entity create Drupal OK : '.$entity->identification);
-
               } catch (\Exception $e) {
-
                 Log::info('Entity exist in Drupal : '.$entity->identification);
-
               }
-              $zoho = $entity->createZoho('Leads');
             }
             break;
 

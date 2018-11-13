@@ -17,6 +17,8 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 
+
+use Log;
 /**
  * @property mixed rules
  */
@@ -154,7 +156,7 @@ class Entity extends Model
       public function createInformation( $entity_information = array() )
       {
 
-        $name_and_last_name = explode(' ',$entity_information['name']);
+        $name_and_last_name = explode(' ',$this->name);
 
 
         $information = new Information;
@@ -329,9 +331,13 @@ class Entity extends Model
       $this->zohoFields['Salutation'] = $this->detectGender($this->entityInformation[0]->gender);
 
       $zoho->addModuleRecord( $module, [$this->zohoFields] );
-      $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
-      $this->entityInformation[0]->zoho_module = $module;
-      $this->entityInformation[0]->save();
+      $response = json_encode($zoho->response);
+      Log::info($response);
+      if( $zoho->response['code'] == 'SUCCESS'){
+        $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
+        $this->entityInformation[0]->zoho_module = $module;
+        $this->entityInformation[0]->save();
+      }
       return $zoho->response;
     }
 
@@ -368,6 +374,8 @@ class Entity extends Model
 
 
       $zoho->updateModuleRecord($this->entityInformation[0]->zoho_module, $this->entityInformation[0]->zoho_id, [$this->zohoFields]);
+      $response = json_encode($zoho->response);
+      Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
           $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
           $this->entityInformation[0]->zoho_module = 'Contacts';
