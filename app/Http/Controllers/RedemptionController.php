@@ -7,6 +7,9 @@ use App\Incentives\Core\Entity;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+use App\Http\Requests\StoreRedemtionPost;
+
+use Validator;
 class RedemptionController extends Controller
 {
 
@@ -41,17 +44,19 @@ class RedemptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRedemtionPost $request)
     {
       $redemption         = '';
       $results            = [];
 
       sleep(1);
-      $this->validate(request(), [
-          'entity_id'     => 'required|numeric',
-          'value'         => 'required|numeric',
-      ]);
+      $validator = $request->validated();
 
+      // $validator = Validator::make($request->all(), [
+      //     'entity_id'     => 'required|numeric',
+      //     'value'         => 'required|numeric',
+      // ])->validate();
+      return;
       $entity = Entity::find($request->input('entity_id'));
       if( $request->input('value') <= $entity->getPoints() && $request->input('value') > 0   ){
           $redemption = Redemption::create(request()->all());

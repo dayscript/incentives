@@ -17,9 +17,9 @@ use Illuminate\Http\Request;
 Route::get('/test', function () {
     \Illuminate\Support\Facades\Log::info('OK');
     return 'API authentication OK';
-});
-Route::get('clients/{client}/dategoalvalues/{date?}', 'ClientsController@dategoalvalues');
+})->middleware('auth:api');
 
+Route::get('clients/{client}/dategoalvalues/{date?}', 'ClientsController@dategoalvalues');
 Route::get('entities/{identification}', 'EntitiesController@showByIdentification');
 Route::put('entities/{entity}', 'EntitiesController@update');
 
