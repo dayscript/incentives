@@ -26,7 +26,7 @@ class StoreRedemtionPost extends FormRequest
     {
         return [
           'entity_id'     => 'required|numeric',
-          'value'         => 'required|numeric|max:5',
+          'value'         => 'required|numeric|min:1|points:'.$this->input('entity_id'),
         ];
     }
 
@@ -42,6 +42,9 @@ class StoreRedemtionPost extends FormRequest
             'entity_id.numeric'  => 'Solo se admiten numeros',
             'value.required'     => 'Debes Escribir el numero de Kokoripesos a redimir',
             'value.numeric'      => 'Solo se admiten numeros',
+            'points'             => 'No es posible redimir ese monto de kokoripesos',
+            'min'                => 'No es posible redimir redimir ese monto de kokoripesos'
+
         ];
     }
 }
