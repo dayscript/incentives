@@ -52,11 +52,6 @@ class RedemptionController extends Controller
       sleep(1);
       $validator = $request->validated();
 
-      // $validator = Validator::make($request->all(), [
-      //     'entity_id'     => 'required|numeric',
-      //     'value'         => 'required|numeric',
-      // ])->validate();
-      return;
       $entity = Entity::find($request->input('entity_id'));
       if( $request->input('value') <= $entity->getPoints() && $request->input('value') > 0   ){
           $redemption = Redemption::create(request()->all());
