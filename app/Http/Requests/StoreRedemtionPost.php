@@ -39,9 +39,9 @@ class StoreRedemtionPost extends FormRequest
     {
         return [
             'entity_id.required' => 'Hubo un error, intentalo más tarde',
-            'entity_id.numeric'  => 'Solo se admiten numeros',
-            'value.required'     => 'Debes Escribir el numero de Kokoripesos a redimir',
-            'value.numeric'      => 'Solo se admiten numeros',
+            'entity_id.numeric'  => 'Solo se admiten números',
+            'value.required'     => 'Debes Escribir el número de Kokoripesos a redimir',
+            'value.numeric'      => 'Solo se admiten números',
             'points'             => 'No es posible redimir ese monto de kokoripesos',
             'min'                => 'No es posible redimir ese monto de kokoripesos'
 
