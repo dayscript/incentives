@@ -50,25 +50,18 @@ class RedemptionController extends Controller
       $results            = [];
 
       sleep(1);
-      $validator = $request->validated();
+      $validator = $request->validate();
+
 
       $entity = Entity::find($request->input('entity_id'));
-      if( $request->input('value') <= $entity->getPoints() && $request->input('value') > 0   ){
-          $redemption = Redemption::create(request()->all());
-          $redemption->token = str_random(15);
-          $redemption->save();
-          $redemption->createZoho();
-          $results['vars']    = $redemption;
-          $results['status']  = 200;
-          $results['message'] = __('Has redimido con exito' . $request->input('value') . ', se ha enviado una notificación a tu correo electronico con los detalles' );
-      }else{
-        $results['vars']    = $redemption;
-        $results['status']  = 401;
-        $results['message'] = __('El numero de kokoripesos a redirmir no es valido');
-        return \Response::json([
-            $results
-        ], 401); // Status code here
-      }
+      $redemption = Redemption::create(request()->all());
+      $redemption->token = str_random(15);
+      $redemption->save();
+      $redemption->createZoho();
+
+      $results['vars']    = $redemption;
+      $results['status']  = 200;
+      $results['message'] = __('Has redimido con exito' . $request->input('value') . ', se ha enviado una notificación a tu correo electronico con los detalles' );
 
       return $results;
     }
