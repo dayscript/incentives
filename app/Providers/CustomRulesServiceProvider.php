@@ -17,7 +17,7 @@ class CustomRulesServiceProvider extends ServiceProvider
     {
       Validator::extend('points', function ($attribute, $value, $parameters, $validator) {
           $entity = Entity::find($parameters[0]);
-          return $value <= (int)$entity->totalpoints();
+          return ($value <= (int)$entity->getPoints());
 
       });
     }
