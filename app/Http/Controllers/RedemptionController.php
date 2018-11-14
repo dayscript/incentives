@@ -61,8 +61,7 @@ class RedemptionController extends Controller
 
 
       $results['status']  = 200;
-      $results['message'] = __('Has redimido con exito ' . $redemption->value . ' kokoripeso,
-      se ha enviado una notificación a tu correo electronico con las instrucciones para disfrutarlo' );
+      $results['message'] = __('Has redimido con exito ' . $redemption->value . " kokoripesos\n, se ha enviado una notificación a tu correo electronico con las instrucciones para disfrutarlo" );
 
       return $results;
     }
