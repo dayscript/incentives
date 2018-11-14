@@ -43,7 +43,7 @@ class StoreRedemtionPost extends FormRequest
             'value.required'     => 'Debes Escribir el numero de Kokoripesos a redimir',
             'value.numeric'      => 'Solo se admiten numeros',
             'points'             => 'No es posible redimir ese monto de kokoripesos',
-            'min'                => 'No es posible redimir redimir ese monto de kokoripesos'
+            'min'                => 'No es posible redimir ese monto de kokoripesos'
 
         ];
     }
