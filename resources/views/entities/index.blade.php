@@ -44,7 +44,7 @@
 
                     </div>
                     <div class="media-right media-middle">
-                        <span class="badge bg-teal">{{ number_format($entity->totalpoints(),2,',','.') }}</span>
+                        <span class="badge bg-teal">{{ number_format($entity->getPoints(),2,',','.') }}</span>
                     </div>
                     <div class="media-right">
 
