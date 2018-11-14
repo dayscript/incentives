@@ -59,9 +59,9 @@ class RedemptionController extends Controller
       $redemption->save();
       $redemption->createZoho();
 
-      $results['vars']    = $redemption;
+
       $results['status']  = 200;
-      $results['message'] = __('Has redimido con exito' . $request->input('value') . ', se ha enviado una notificación a tu correo electronico con los detalles' );
+      $results['message'] = __('Has redimido con exito ' . $redemption->value . ', se ha enviado una notificación a tu correo electronico con los detalles' );
 
       return $results;
     }
