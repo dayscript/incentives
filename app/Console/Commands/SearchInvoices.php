@@ -3,25 +3,24 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Incentives\Core\Entity;
-use App\Incentives\Core\Information;
 use App\Kokoriko\File;
 
-class SearchEntities extends Command
+
+class SearchInvoices extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'entity:search';
+    protected $signature = 'invoice:search';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Search entities from files FTP';
+    protected $description = 'Search invoices from files FTP';
 
     /**
      * Create a new command instance.
@@ -42,10 +41,10 @@ class SearchEntities extends Command
     {
         $this->info('Starting.');
         $file = new File;
-        foreach( $file->getFolder('preregistro/') as $key => $name ){
+        foreach( $file->getFolder('ventas/') as $key => $name ){
           $search_file = File::firstOrCreate(['name' => $name]);
-          $search_file->getContentsFile($name,';');
-          $search_file->process('entity'); 
+          $search_file->getContentsFile($name,'|');
+          $search_file->process('invoice');  
         }
         exit;
     }
