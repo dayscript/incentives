@@ -149,7 +149,13 @@ class File extends Model
               $invoice->value           = $new_invoice['value'];
               $invoice->invoice_date_up = $new_invoice['invoice_date_up'];
               $invoice->save();
-              $invoice->createZoho('Invoices');
+              try {
+                $invoice->createZoho('Invoices');
+                Log::info('Entity create Zoho OK : '.$invoice->identification);
+              } catch (\Exception $e) {
+                Log::info('Entity exist in Zoho : '.$e);
+              }
+              
             }
             print_r($this->process_counter.' processed '.$model.'.');
             break;
