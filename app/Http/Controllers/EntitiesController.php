@@ -329,7 +329,14 @@ class EntitiesController extends Controller
      */
     public function createFromFile(){
 
-      $limit_process_entityes = env('LIMIT_IMPORT_ENTITIES',0);
+      $file = new File;
+      foreach( $file->getFolder('preregistro/') as $key => $name ){
+        $search_file = File::firstOrCreate(['name' => $name]);
+        $search_file->getContentsFile($name,';');
+        $search_file->process('entity');
+      }
+
+      /*$limit_process_entityes = env('LIMIT_IMPORT_ENTITIES',0);
       $file_keys = array('field_no_identificacion','name','mail','field_telephone','fecha_de_registro','cedula_del_asesor','nombre_asesor','line_break');
       $return = array();
       $entities = [];
@@ -384,7 +391,7 @@ class EntitiesController extends Controller
       $return['entities'] = $entities;
       $return['message'] = $message;
 
-      return $return;
+      return $return;*/
     }
 
 
