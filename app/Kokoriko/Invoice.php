@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use dayscript\laravelZohoCrm\laravelZohoCrm;
 use App\Incentives\Core\Information;
 use App\Incentives\Core\Entity;
+use Log;
 
 
 class Invoice extends Model
@@ -39,7 +40,8 @@ class Invoice extends Model
      'Modified_Time' =>  null,
      'Subject' =>  null,
      'Tipo_de_Venta' =>  null,
-     'Valor_de_compra' => null
+     'Valor_de_compra' => null,
+     'test_email' => null
    ];
 
    /**
@@ -68,7 +70,8 @@ class Invoice extends Model
        // 'Modified_Time' =>  null,
        'Subject' =>  $this->identification,
        'Tipo_de_Venta' =>  $this->sale_type,
-       'Valor_de_compra' => $this->value
+       'Valor_de_compra' => $this->value,
+       'Contact_Name' => 3609958000000679036
      ];
 
 

@@ -55,7 +55,7 @@ class RedemptionController extends Controller
 
       $entity = Entity::find($request->input('entity_id'));
       $redemption = Redemption::create(request()->all());
-      $redemption->token = str_random(15);
+      $redemption->token = strtolower(str_random(8));
       $redemption->save();
       $redemption->createZoho();
 

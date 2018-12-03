@@ -26,6 +26,7 @@ Route::resource('clients','ClientsController');
 
 Route::get('entities/create-from-file','EntitiesController@createFromFile');
 Route::get('invoices/create-from-file','InvoiceController@createFromFile');
+Route::get('contacts/create-from-file','EntitiesController@createFromContactFile');
 
 Route::resource('vars','VarsController');
 Route::resource('rules','RulesController');

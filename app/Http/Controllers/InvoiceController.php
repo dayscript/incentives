@@ -100,7 +100,7 @@ class InvoiceController extends Controller
       foreach( $file->getFolder('ventas/') as $key => $name ){ 
         $search_file = File::firstOrCreate(['name' => $name]);
         $search_file->getContentsFile($name,'|');
-        $search_file->process('invoice');
+        $search_file->process('Invoice');
       }
 
       /*$limit_process_invoices = env('LIMIT_IMPORT_ENTITIES',0);

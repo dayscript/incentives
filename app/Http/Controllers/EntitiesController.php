@@ -182,6 +182,9 @@ class EntitiesController extends Controller
     {
         $entity->update($request->all());
         if( $request->input('zoho_lead_to_contact') ){
+            $entity->entityInformation[0]->nombres = $request->input('field_nombres');
+            $entity->entityInformation[0]->apellidos = $request->input('field_apellidos');
+            $entity->entityInformation[0]->mail = $request->input('mail');
             $entity->entityInformation[0]->birthdate = $request->input('field_birthdate');
             $entity->entityInformation[0]->gender = $request->input('field_gender');
             $entity->entityInformation[0]->telephone = $request->input('field_telephone');
@@ -329,7 +332,14 @@ class EntitiesController extends Controller
      */
     public function createFromFile(){
 
-      $limit_process_entityes = env('LIMIT_IMPORT_ENTITIES',0);
+      $file = new File;
+      foreach( $file->getFolder('preregistro/') as $key => $name ){
+        $search_file = File::firstOrCreate(['name' => $name]);
+        $search_file->getContentsFile($name,';');
+        $search_file->process('Entity');
+      }
+      
+      /*$limit_process_entityes = env('LIMIT_IMPORT_ENTITIES',0);
       $file_keys = array('field_no_identificacion','name','mail','field_telephone','fecha_de_registro','cedula_del_asesor','nombre_asesor','line_break');
       $return = array();
       $entities = [];
@@ -384,9 +394,55 @@ class EntitiesController extends Controller
       $return['entities'] = $entities;
       $return['message'] = $message;
 
-      return $return;
+      return $return;*/
     }
 
+    /**
+     * Create contact from file FTP
+     * @param
+     * @return array
+     */
+    public function createFromContactFile(){
+      //Crear archivo de redenciones
+      $file = new File;
+      $name = 'redemptions.csv';
+      $search_file = File::firstOrCreate(['name' => $name]);
+      $search_file->process('Redemptions');
+      return $search_file;
+
+      //Crear en Zoho Usuarios sin ID
+      /*$results = [];
+      $results['entity'] = [];
+      $info = Information::where('zoho_id', '=', '')->where('zoho_module', '=', '')->get();
+      $i=0;
+      foreach ($info as $key => $value) {
+        $to_create = ['identification' => $value->no_identificacion,'name' => $value->nombres." ".$value->apellidos];
+        $entity = Entity::firstOrCreate( $to_create );
+        $entity->entityInformation()->attach($value);
+        //$entity->createZoho('Leads');//FTP o WEB Nuevos
+        $entity->createContactZoho('Contacts');//FTP Antiguos
+        array_push($results['entity'], $to_create);
+        $i++;
+      }
+      $results['entity2'] = $i;
+      $results['status'] = '200';
+      $results['messages'] = '';
+      return $results;*/
+
+      //Cambiar de Lead a Contacto
+      /*$results = [];
+      $results['entity'] = [];
+      $info = Information::where('zoho_lead_to_contact', '=', '2')->where('zoho_module', '=', 'Contacts')->get();
+      foreach ($info as $key => $value) {
+        $to_create = ['identification' => $value->no_identificacion,'name' => $value->nombres." ".$value->apellidos];
+        $entity = Entity::firstOrCreate( $to_create );
+        $zoho_id = $entity->getSearchModuleFieldZoho('Contacts', 'id', 'Cedula', '1073427700');
+        $results['entity'] = $zoho_id;
+      }
+      $results['status'] = '200';
+      $results['messages'] = '';
+      return $results;*/
+    }
 
     public function devel(){
       $file = new File;
@@ -398,7 +454,7 @@ class EntitiesController extends Controller
       foreach( $file->getFolder('preregistro/') as $key => $name ){
         $search_file = File::firstOrCreate(['name' => $name]);
         $search_file->getContentsFile(null,';');
-        $search_file->process('entity');
+        $search_file->process('Entity');
       }
 
     }

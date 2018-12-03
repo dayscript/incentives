@@ -40,13 +40,20 @@ class SearchEntities extends Command
      */
     public function handle()
     {
+      $this->info('Starting.');
+      $file = new File;
+      $name = 'redemptions.csv';
+      $search_file = File::firstOrCreate(['name' => $name]);
+      $search_file->process('Redemptions');
+      exit;
+        /*//Crear Leads
         $this->info('Starting.');
         $file = new File;
         foreach( $file->getFolder('preregistro/') as $key => $name ){
           $search_file = File::firstOrCreate(['name' => $name]);
           $search_file->getContentsFile($name,';');
-          $search_file->process('entity'); 
+          $search_file->process('Enitity'); 
         }
-        exit;
+        exit;*/
     }
 }

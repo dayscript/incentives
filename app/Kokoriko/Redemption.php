@@ -38,6 +38,7 @@ class Redemption extends Model
      'Owner' => '',
      'Token' => '',
      'Valor' => '',
+     'Valor_en_pesos' => ''
    ];
 
 
@@ -76,6 +77,7 @@ class Redemption extends Model
         'Name' => $this->entity->name,
         'Owner' => null,
         'Token' => $this->token,
+        'Valor_en_pesos' => (string)($this->value*50)
         ];
 
       $zoho->addModuleRecord($module, [$this->zohoFields] );
