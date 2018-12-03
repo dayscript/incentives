@@ -338,7 +338,7 @@ class EntitiesController extends Controller
         $search_file->getContentsFile($name,';');
         $search_file->process('Entity');
       }
-      
+
       /*$limit_process_entityes = env('LIMIT_IMPORT_ENTITIES',0);
       $file_keys = array('field_no_identificacion','name','mail','field_telephone','fecha_de_registro','cedula_del_asesor','nombre_asesor','line_break');
       $return = array();
