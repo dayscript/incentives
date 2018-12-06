@@ -35,8 +35,8 @@ class File extends Model
      */
     public function getFolder( $path = '/' ){
       $active_files = [];
-      $this->files = Storage::disk('ftp')->allFiles($path);    
-      
+      $this->files = Storage::disk('ftp')->allFiles($path);
+
       //$aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
       $current_date = date ( 'Y-m-d');
 
@@ -63,7 +63,7 @@ class File extends Model
       }
 
       $rows = [];
-      
+
       if( is_null($parse) ){
         return $this->file;
       }
@@ -119,7 +119,7 @@ class File extends Model
                 Log::info('Entity exist in Drupal : '.$entity->identification);
               }
             }
-            
+
             $info = Information::where('zoho_id', '=', null)->where('zoho_module', '=', null)->get();
             foreach ($info as $key => $value) {
               $to_create = ['identification' => $value->no_identificacion,'name' => $value->nombres." ".$value->apellidos];
@@ -128,7 +128,7 @@ class File extends Model
               $entity->createZoho('Leads');//FTP o WEB Nuevos
               array_push($results['entity'], $to_create);
             }
-            
+
             print_r($this->process_counter.' processed '.$model.'.');
             break;
           case 'Invoice':
@@ -169,7 +169,7 @@ class File extends Model
               } catch (\Exception $e) {
                 Log::info('Invoice exist in Zoho : '.$e);
               }
-              
+
             }
             print_r($this->process_counter.' processed '.$model.'.');
             break;
@@ -236,7 +236,7 @@ class File extends Model
                 Log::info('Contacts exist in Drupal : '.$entity->identification);
               }
             }*/
-            
+
             /*$info = Information::where('zoho_id', '=', null)->where('zoho_module', '=', null)->get();
             foreach ($info as $key => $value) {
               $to_create = ['identification' => $value->no_identificacion,'name' => $value->nombres." ".$value->apellidos];
@@ -256,7 +256,9 @@ class File extends Model
 
             foreach ($redemptions as $key => $item) {
               $entity = Entity::where('id', '=', $item->entity_id)->first();
-              $contents = $contents.$entity->identification.",".$item->token.",".$item->created_at->format('Y-m-d').PHP_EOL;
+              //$entity->identification
+              $value = (int)$item->value*50;
+              $contents = $contents.$item->token.",".$item->created_at->format('Y-m-d').","."NULL".",".$value.PHP_EOL;
             }
 
             $response = Storage::disk('ftp')->put( 'redemptions.csv' , $contents);

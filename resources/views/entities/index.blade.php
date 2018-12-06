@@ -40,6 +40,7 @@
                         {{ $entity->created_at }}
                         <ul class="list-inline mt-5">
                             <li><a href="/api/entities/{{ $entity->identification }}">{{ __('Resumen JSON') }}</a></li>
+                            <li><a href="/entities/{{ $entity->id }}/edit">{{ __('View') }}</a></li>
                         </ul>
 
                     </div>

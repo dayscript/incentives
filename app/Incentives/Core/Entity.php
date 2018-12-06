@@ -225,7 +225,7 @@ class Entity extends Model
       $invoices = [];
       $redemptions = [];
       $entity_goals =[];
-      $total = 0;
+      $rule_points = 0;
       $date = Carbon::now()->subYears(1);
 
 
@@ -242,10 +242,12 @@ class Entity extends Model
       }
 
       foreach ($this->rules as $rule){
-          $total += $rule->pivot->points;
+          $rule_points += $rule->pivot->points;
       }
 
-      return (int)number_format( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) + $total ) - array_sum($redemptions),0 ) ;
+      $total = ( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
+
+      return (int)number_format($total,0);
     }
 
     /**
@@ -371,7 +373,7 @@ class Entity extends Model
           $this->zohoFields[$key] = $arrayRecod[$value];
         } else {
           $this->zohoFields[$key] = $value;
-        } 
+        }
       }
 
       $zoho->updateModuleRecord($this->entityInformation[0]->zoho_module, $this->entityInformation[0]->zoho_id, [$this->zohoFields]);
@@ -380,7 +382,7 @@ class Entity extends Model
       if( $zoho->response['code'] == 'SUCCESS'){
           if($this->entityInformation[0]->zoho_module == 'Contacts'){
             $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
-            $this->entityInformation[0]->zoho_module = 'Contacts';   
+            $this->entityInformation[0]->zoho_module = 'Contacts';
           }else{
             sleep(2);
             $this->entityInformation[0]->zoho_id = $this->getSearchModuleFieldZoho('Contacts', 'id', 'Cedula', (string)$this->identification);
@@ -533,7 +535,7 @@ class Entity extends Model
         $this->rules()->attach($rule,$params);
       }
     }
-    
+
     /**
      * Relationship with associated rules values
      *

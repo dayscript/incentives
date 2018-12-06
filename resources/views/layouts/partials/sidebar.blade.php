@@ -65,7 +65,8 @@
                     <li class="{{ request()->is('templates/*') ?'active':''}}">
                         <a href="#"><i class="icon-add-to-list"></i> <span>{{ __('Herramientas') }}</span></a>
                         <ul>
-                            <li class="{{ request()->is('Plantillas')?'active':'' }}"><a href="/templates">{{ __('Plantillas') }}</a></li>
+                            <li class="{{ request()->is('templates')?'active':'' }}"><a href="/templates">{{ __('Plantillas') }}</a></li>
+                            <li class="{{ request()->is('tools/export')?'active':'' }}"><a href="{{ route('tools.export') }}">{{ __('Exportar') }}</a></li>
                         </ul>
                     </li>
                     <li>

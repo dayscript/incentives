@@ -112,8 +112,18 @@ class RedemptionController extends Controller
     }
 
 
-    public function Devel(){
-      $redemtion = Redemption::find(5);
-      return $redemtion->createZoho();
+    public function devel(){
+      $redemtions = Redemption::all();
+      $entities_points_less = array();
+
+      foreach ($redemtions as $key => $redemtion) {
+        $points = $redemtion->entity->getPoints();
+        if ($points < 0){
+            $entities_points_less[] = $redemtion->entity;
+        }
+      }
+      return $entities_points_less;
     }
+
+
 }

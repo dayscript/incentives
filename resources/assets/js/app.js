@@ -36,9 +36,11 @@ Vue.component('edit-client', require('./components/clients/EditClient.vue'));
 Vue.component('edit-rule', require('./components/rules/EditRule.vue'));
 Vue.component('edit-var', require('./components/vars/EditVar.vue'));
 Vue.component('edit-template', require('./components/templates/EditTemplate.vue'));
-
-
 Vue.component('edit-goal', require('./components/goals/EditGoal.vue'));
+Vue.component('edit-entity', require('./components/entities/EditEntity.vue'));
+Vue.component('tools-export', require('./components/tools/ToolsExport.vue'));
+
+
 // Vue.component('avatar',require('vue-avatar/dist/Avatar'));
 import Avatar from 'vue-avatar-component'
 // import VueI18n from 'vue-i18n'

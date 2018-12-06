@@ -168,7 +168,7 @@ class EntitiesController extends Controller
      */
     public function edit(Entity $entity)
     {
-        //
+      return view('entities.edit', compact('entity'));
     }
 
     /**
@@ -192,9 +192,7 @@ class EntitiesController extends Controller
             $entity->entityInformation[0]->save();
             return $entity->updateZoho();
         }
-
         return $entity;
-
     }
 
     /**
