@@ -22,43 +22,15 @@
 @section('content')
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h6 class="panel-title">{{ __('Entidades') }}</h6>
-            <div class="heading-elements">
-                {{ $entities->links() }}
-            </div>
+            @include('entities.search')
         </div>
         <div class="panel-body">
-        <ul class="media-list media-list-linked media-list-bordered">
-            @foreach($entities as $entity)
-            <li class="media">
-
-                    <div class="media-left">
-                        ID: {{ $entity->id }}
-                    </div>
-                    <div class="media-body">
-                        <h6 class="media-heading">{{ $entity->identification }} {{ $entity->name }}</h6>
-                        {{ $entity->created_at }}
-                        <ul class="list-inline mt-5">
-                            <li><a href="/api/entities/{{ $entity->identification }}">{{ __('Resumen JSON') }}</a></li>
-                            <li><a href="/entities/{{ $entity->id }}/edit">{{ __('View') }}</a></li>
-                        </ul>
-
-                    </div>
-                    <div class="media-right media-middle">
-                        <span class="badge bg-teal">{{ number_format($entity->getPoints(),2,',','.') }}</span>
-                    </div>
-                    <div class="media-right">
-
-                    </div>
-
-            </li>
-            @endforeach
-        </ul>
+          @include('entities.card',['entityes' => $entities] )
         </div>
         <div class="panel-footer"><a class="heading-elements-toggle"><i class="icon-more"></i></a>
             <div class="heading-elements">
                 <div class="pull-right">
-                    {{ $entities->links() }}
+                    {{-- {{ $entities->links()  }} --}}
                 </div>
             </div>
         </div>

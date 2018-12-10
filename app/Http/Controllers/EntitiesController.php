@@ -26,9 +26,15 @@ class EntitiesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $entities = Entity::orderBy('name')->paginate(10);
+
+        if($request->input('identification')){
+          $entities = Entity::where('identification','=',$request->input('identification'))->get();
+        }
+        else{
+          $entities = Entity::orderBy('created_at','desc')->paginate(10);
+        }
 
         return view('entities.index', compact('entities'));
 

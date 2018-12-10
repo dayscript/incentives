@@ -1,6 +1,5 @@
 <template>
   <form action="#">
-
     <div class="form-group">
       <label>Cliente:</label>
       <select name="client_id" id="client_id" class="select" v-model="entity.client_id">
@@ -26,54 +25,8 @@
       </transition>
     </div>
 
-    <div class="form-group" :class="{'has-error': errors.name}">
-      <label>Puntos Totales: {{ entity.totalpoints }}</label>
-      <!-- <input type="text" class="form-control" placeholder="Nombre de la meta" v-model="entity.totalpoints" v-on:keyup="resetErrors('name')">
-      <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
-        <span ref="errors.name" v-if="errors.name" class="help-block text-danger">{{ errors.name[0] }}</span>
-        <span ref="noerrors.name" v-else class="help-block">Puntos Totales</span>
-      </transition> -->
-    </div>
 
-    <div class="form-group">
-      <label>Acomulación:</label>
-      <div class="points" id="points">
-          <div v-for="points in entity.point_values">
-              <div class="col-md-6">
-                {{points.description}}
-              </div>
-              <div class="col-md-6">
-                {{points.value}}
-              </div>
-          </div>
-      </div>
-
-      <!-- <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
-        <span ref="errors.modifier" v-if="errors.modifier" class="help-block text-danger">{{ errors.modifier[0] }}</span>
-        <span ref="noerrors.modifier" v-else class="help-block">Un modificador permite alterar el resultado del cálculo de cumplimiento de la meta</span>
-      </transition> -->
-    </div>
-
-    <div class="form-group">
-      <label>Redenciones:</label>
-      <div class="points" id="points">
-          <div v-for="points in entity.redemptions">
-              <div class="col-md-6">
-                {{points.token}}
-              </div>
-              <div class="col-md-6">
-                {{points.value}}
-              </div>
-          </div>
-      </div>
-
-      <!-- <transition enter-active-class="animated fadeIn" mode="out-in" leave-active-class="animated fadeOut">
-        <span ref="errors.modifier" v-if="errors.modifier" class="help-block text-danger">{{ errors.modifier[0] }}</span>
-        <span ref="noerrors.modifier" v-else class="help-block">Un modificador permite alterar el resultado del cálculo de cumplimiento de la meta</span>
-      </transition> -->
-    </div>
-
-    <div class="text-right">
+      <div class="text-right">
       <a class="btn" href="/entities"><i class=" icon-arrow-left15 left"></i> Regresar</a>
       <button v-if="entity.id>0" @click.prevent="updateGoal" class="btn btn-success">Guardar <i class="icon-checkmark4 position-right"></i>
       </button>
@@ -111,7 +64,7 @@
                 },
                 clients: [],
                 modifiers: [
-                    
+
                 ],
                 errors: {},
                 adittionaldata: {

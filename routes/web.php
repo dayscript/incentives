@@ -32,6 +32,7 @@ Route::post('users/{user}','UsersController@update');
 
 //Route::get('uploads/{folder}/{file}','Utils\UploadsController@show');
 
+Route::post('entities','EntitiesController@index');
 Route::get('entities/create-from-file','EntitiesController@createFromFile');
 
 Route::get('invoices/create-from-file','InvoiceController@createFromFile');

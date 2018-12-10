@@ -38,6 +38,10 @@ Vue.component('edit-var', require('./components/vars/EditVar.vue'));
 Vue.component('edit-template', require('./components/templates/EditTemplate.vue'));
 Vue.component('edit-goal', require('./components/goals/EditGoal.vue'));
 Vue.component('edit-entity', require('./components/entities/EditEntity.vue'));
+Vue.component('edit-entity-rules', require('./components/entities/EditEntityRules.vue'));
+Vue.component('edit-entity-redemption', require('./components/entities/EditEntityRedemption.vue'));
+
+
 Vue.component('tools-export', require('./components/tools/ToolsExport.vue'));
 
 

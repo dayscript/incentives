@@ -19,3 +19,14 @@
 @import "avatar";
 // Bootstrap
 //@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+
+//customize
+.card{
+  border: 1px solid #dadada;
+    padding: 10px;
+}
+
+.show-grid{
+  margin: 10px 0 10px 0;
+}
