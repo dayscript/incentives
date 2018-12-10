@@ -230,15 +230,15 @@ class Entity extends Model
 
 
       foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
-          $invoices[] = (int)$invoice->value;
+          $invoices[] = $invoice->value;
       }
 
       foreach ( $this->redemptions->where('created_at','>', $date->format('Y-m-d') )  as $key => $redemption ) {
-          $redemptions[] = (int)$redemption->value;
+          $redemptions[] = $redemption->value;
       }
 
       foreach ($this->entityGoals as $key => $value) {
-        $entity_goals[] = (int)$value->value;
+        $entity_goals[] = $value->value;
       }
 
       foreach ($this->rules as $rule){
@@ -247,7 +247,7 @@ class Entity extends Model
 
       $total = ( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
 
-      return (int)number_format($total,0);
+      return (int)number_format($total,'2','.','');
     }
 
     /**
