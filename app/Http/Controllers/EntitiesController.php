@@ -99,6 +99,8 @@ class EntitiesController extends Controller
               'points'      => $rule->pivot->points,
               'value'       => $rule->pivot->value,
               'description' => $rule->pivot->description,
+              'id'          => $rule->pivot->id,
+              'rule_id'     => $rule->pivot->rule_id
             ];
         }
         $entity->totalpoints = $entity->getPoints();
@@ -127,11 +129,13 @@ class EntitiesController extends Controller
             foreach ($entity->rules as $rule) {
                 $points[] = [
                   'id'          => $rule->pivot->id,
-                  'created_at'  => $rule->pivot->created_at->toDateTimeString(),
-                  'points'      => $rule->pivot->points,
-                  'value'       => $rule->pivot->value,
-                  'description' => $rule->pivot->description,
-                  'rule_id'     => $rule->id
+                  // 'created_at'  => $rule->pivot->created_at->toDateTimeString(),
+                  // 'points'      => $rule->pivot->points,
+                  // 'value'       => $rule->pivot->value,
+                  // 'description' => $rule->pivot->description,
+                  // 'rule_id'     => $rule->id,
+                  'vue'      => '(string)$rule->id',
+
                 ];
             }
             $goals = [];
@@ -238,6 +242,44 @@ class EntitiesController extends Controller
             $results['value'] = $rvalue;
         }
         $results['entity'] = $entity;
+
+        return $results;
+    }
+
+    /**
+     * Adds rule value to given entity
+     * @param $identification
+     * @return array
+     */
+    public function setRule(Request $request)
+    {
+        $this->validate(request(), [
+          'rule_id' => 'required',
+          'entity_id' => 'required',
+        ]);
+        $results = [];
+
+        $entity  = Entity::find($request->input('entity_id'));
+        $rule = Rule::find($request->input('rule_id'));
+        $entity->rules()->attach($rule->id, ['value' => $rule->value, 'points' => $rule->points, 'description' => $rule->description]);
+
+        return $results;
+    }
+
+    /**
+     * Adds rule value to given entity
+     * @param $identification
+     * @return array
+     */
+    public function delRule(Request $request)
+    {
+        $this->validate(request(), [
+          'id' => 'required',
+          'entity_id' => 'required'
+        ]);
+        $results = [];
+        $entity  = Entity::find($request->input('entity_id'));
+        $entity->rules()->wherePivot('id', $request->input('id'))->detach();
 
         return $results;
     }

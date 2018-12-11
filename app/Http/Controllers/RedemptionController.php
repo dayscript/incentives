@@ -111,6 +111,18 @@ class RedemptionController extends Controller
         //
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Kokoriko\Redemption  $redemption
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        $redemption = Redemption::find($request->input('id'))->delete();
+        return 'OK';
+    }
+
 
     public function devel(){
       $redemtions = Redemption::all();
