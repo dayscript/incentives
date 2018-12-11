@@ -244,7 +244,7 @@ class Entity extends Model
       foreach ($this->rules as $rule){
           $rule_points += $rule->pivot->points;
       }
-      
+
       $total = ( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
 
       return (int)number_format($total,'2','.','');
