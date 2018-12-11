@@ -129,12 +129,11 @@ class EntitiesController extends Controller
             foreach ($entity->rules as $rule) {
                 $points[] = [
                   'id'          => $rule->pivot->id,
-                  // 'created_at'  => $rule->pivot->created_at->toDateTimeString(),
-                  // 'points'      => $rule->pivot->points,
-                  // 'value'       => $rule->pivot->value,
-                  // 'description' => $rule->pivot->description,
-                  // 'rule_id'     => $rule->id,
-                  'vue'      => '(string)$rule->id',
+                  'created_at'  => $rule->pivot->created_at->toDateTimeString(),
+                  'points'      => $rule->pivot->points,
+                  'value'       => $rule->pivot->value,
+                  'description' => $rule->pivot->description,
+                  'rule_id'     => $rule->id,
 
                 ];
             }
