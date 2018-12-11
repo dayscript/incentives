@@ -26,7 +26,7 @@
 							</thead>
 							<tbody>
 								<tr v-for="points in entity.point_values">
-									<td> 0 </td>
+									<td> {{points.id}} </td>
 									<td>{{ points.points }}</td>
 									<td>{{ points.description }}</td>
                   <td><button class="btn btn-danger" @click.prevent="deleteRule(points.id)">Eliminar<i></i></button></td>
