@@ -33,6 +33,8 @@
                   <td>{{ points.value }}</td>
                   <td>$ {{ points.value * 50 }}</td>
                   <td>{{ points.token }}</td>
+                  <td>{{ points.created_at }}</td>
+
                   <td> <button @click.prevent="deleteRedemption(points.id)" class="btn btn-danger">Eliminar <i class="icon-trash position-right"></i></button> </td>
                 </tr>
 
