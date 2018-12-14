@@ -109,17 +109,25 @@ class UpdateEntities extends Command
                 if($transaction->factura == ''){
                   $transaction->factura = NULL;
                 }
-                $invoice = Invoice::firstOrCreate( ['kokoriko_id' =>  $transaction->id] );
-                $invoice->identification  = $transaction->id_ju1;
-                $invoice->restaurant_code = NULL;
-                $invoice->product_code    = $transaction->id_jp1;
-                $invoice->sale_type       = $transaction->canal;
-                $invoice->quantity        = $transaction->cantidad;
-                $invoice->value           = $transaction->monto;
-                $invoice->invoice_date_up = $transaction->fecha_inicio;
-                $invoice->invoice_code    = $transaction->factura;
 
-                $invoice->save();
+                try {
+                  $invoice = Invoice::firstOrCreate( ['kokoriko_id' =>  $transaction->id] );
+                  $invoice->identification  = $transaction->id_ju1;
+                  $invoice->restaurant_code = NULL;
+                  $invoice->product_code    = $transaction->id_jp1;
+                  $invoice->sale_type       = $transaction->canal;
+                  $invoice->quantity        = $transaction->cantidad;
+                  $invoice->value           = $transaction->monto;
+                  $invoice->points          = $transaction->puntos_acum;
+                  $invoice->invoice_date_up = $transaction->fecha_inicio;
+                  $invoice->invoice_code    = $transaction->factura;
+                  $invoice->save();
+                } catch (\Exception $e) {
+                  Log::info( 'error: ' . $transaction->id .' '. $e->getMessage() );
+                  continue;
+                }
+
+
 
                 //$zoho = $incoide->createZoho();
             }
@@ -139,11 +147,18 @@ class UpdateEntities extends Command
 
                 if($redem->puntos == 0) continue;
 
-                $redemption = Redemption::firstOrCreate(['token'=> $redem->codigo,'value'=>$redem->puntos]);
-                $redemption->entity_id = $entity->id;
-                $redemption->value = $redem->puntos;
-                $redemption->token = $redem->codigo;
-                $redemption->save();
+                try {
+
+                  $redemption = Redemption::firstOrCreate(['token'=> $redem->codigo,'value'=>$redem->puntos]);
+                  $redemption->entity_id = $entity->id;
+                  $redemption->value = $redem->puntos;
+                  $redemption->token = $redem->codigo;
+                  $redemption->save();
+                } catch (\Exception $e) {
+                  Log::info( 'error: ' . $redem->id .' '. $e->getMessage() );
+                  continue;
+                }
+
                 // $zoho = $redemption->createZoho();
             }
             $this->info('Redenciones actualizadas');

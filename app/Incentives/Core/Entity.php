@@ -229,11 +229,12 @@ class Entity extends Model
       $date = Carbon::now()->subYears(1);
 
 
-      foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
-          $invoices[] = $invoice->value;
+      // foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
+      foreach ( $this->invoices as $key => $invoice ) {
+          $invoices[] = $invoice->points;
       }
 
-      foreach ( $this->redemptions->where('created_at','>', $date->format('Y-m-d') )  as $key => $redemption ) {
+      foreach ( $this->redemptions as $key => $redemption ) {
           $redemptions[] = $redemption->value;
       }
 
@@ -245,8 +246,9 @@ class Entity extends Model
           $rule_points += $rule->pivot->points;
       }
 
-      $total = ( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
+      $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
 
+      
       return (int)number_format($total,'2','.','');
     }
 

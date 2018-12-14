@@ -161,6 +161,7 @@ class File extends Model
               $invoice->sale_type       = $new_invoice['sale_type'];
               $invoice->quantity        = $new_invoice['quantity'];
               $invoice->value           = $new_invoice['value'];
+              $invoice->points          = round($new_invoice['value']/1000);
               $invoice->invoice_date_up = $new_invoice['invoice_date_up'];
               $invoice->save();
               try {
