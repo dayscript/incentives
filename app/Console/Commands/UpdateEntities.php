@@ -52,9 +52,9 @@ class UpdateEntities extends Command
 
         $pdo = new PDOConnector(
               'localhost', // server
-              'root',      // user
-              'root',      // password
-              'kokoriko_old'   // database
+              'kokorikoold',      // user
+              'kokorikoold',      // password
+              'kokorikoold'   // database
           );
         $pdoConn = $pdo->connect('utf8', []); // charset, options
 
