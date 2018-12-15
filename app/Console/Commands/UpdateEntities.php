@@ -65,7 +65,7 @@ class UpdateEntities extends Command
 
         $dbConn = new Mysql($pdoConn);
 
-        $cedulas = $dbConn->fetchRowMany('SELECT cedula FROM ju1 limit 0,5000');
+        $cedulas = $dbConn->fetchRowMany('SELECT cedula FROM ju1 limit 5000,10000');
 
         foreach( $cedulas as $cedula ){
 
