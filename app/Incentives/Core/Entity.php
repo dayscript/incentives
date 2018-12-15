@@ -72,6 +72,7 @@ class Entity extends Model
       'Score'                       => NULL,
       'Touch_Point_Score'           => NULL,
       'Twitter'                     => NULL,
+      'Genero'                      => 'field_gender',
       'Convertir_en_Contacto'       => 'to_contact'
     ];
 
@@ -224,27 +225,31 @@ class Entity extends Model
       $invoices = [];
       $redemptions = [];
       $entity_goals =[];
-      $total = 0;
+      $rule_points = 0;
       $date = Carbon::now()->subYears(1);
 
 
-      foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
-          $invoices[] = (int)$invoice->value;
+      // foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
+      foreach ( $this->invoices as $key => $invoice ) {
+          $invoices[] = $invoice->points;
       }
 
-      foreach ( $this->redemptions->where('created_at','>', $date->format('Y-m-d') )  as $key => $redemption ) {
-          $redemptions[] = (int)$redemption->value;
+      foreach ( $this->redemptions as $key => $redemption ) {
+          $redemptions[] = $redemption->value;
       }
 
       foreach ($this->entityGoals as $key => $value) {
-        $entity_goals[] = (int)$value->value;
+        $entity_goals[] = $value->value;
       }
 
       foreach ($this->rules as $rule){
-          $total += $rule->pivot->points;
+          $rule_points += $rule->pivot->points;
       }
 
-      return (int)number_format( ( array_sum($invoices)  / 1000 ) + ( array_sum($entity_goals) + $total ) - array_sum($redemptions),0 ) ;
+      $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
+
+      
+      return (int)number_format($total,'2','.','');
     }
 
     /**
@@ -308,7 +313,7 @@ class Entity extends Model
         'field_telephone' => $this->entityInformation[0]->telephone,
         'asesor' => $this->entityInformation[0]->asesor,
         'cedula_del_asesor' => $this->entityInformation[0]->no_identificacion_asesor,
-        'field_gender' => $this->entityInformation[0]->no_identificacion_gender,
+        'field_gender' => $this->entityInformation[0]->gender,
         'fecha_de_registro'=>str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00',
         'field_birthdate' => $this->entityInformation[0]->birthdate,
         'roles' => $this->entityInformation[0]->roles,
@@ -329,6 +334,7 @@ class Entity extends Model
       $this->zohoFields['Fecha_de_Preregistro'] = str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00';
       $this->zohoFields['Fuente_de_Adquisicion'] = $this->detectResouceSubcription( [ $this->entityInformation[0]->roles ] );
       $this->zohoFields['Salutation'] = $this->detectGender($this->entityInformation[0]->gender);
+      $this->zohoFields['Tipo_de_Usuario'] = 'Nuevo';
 
       $zoho->addModuleRecord( $module, [$this->zohoFields] );
       $response = json_encode($zoho->response);
@@ -356,7 +362,7 @@ class Entity extends Model
         'field_telephone' => $this->entityInformation[0]->telephone,
         'asesor' => $this->entityInformation[0]->asesor,
         'cedula_del_asesor' => $this->entityInformation[0]->no_identificacion_asesor,
-        'field_gender' => $this->entityInformation[0]->no_identificacion_gender,
+        'field_gender' => $this->entityInformation[0]->gender,
         'fecha_de_registro'=>str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00',
         'field_birthdate' => $this->entityInformation[0]->birthdate,
         'roles' => $this->entityInformation[0]->roles,
@@ -369,16 +375,21 @@ class Entity extends Model
           $this->zohoFields[$key] = $arrayRecod[$value];
         } else {
           $this->zohoFields[$key] = $value;
-        } 
+        }
       }
-
 
       $zoho->updateModuleRecord($this->entityInformation[0]->zoho_module, $this->entityInformation[0]->zoho_id, [$this->zohoFields]);
       $response = json_encode($zoho->response);
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
-          $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
-          $this->entityInformation[0]->zoho_module = 'Contacts';
+          if($this->entityInformation[0]->zoho_module == 'Contacts'){
+            $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
+            $this->entityInformation[0]->zoho_module = 'Contacts';
+          }else{
+            sleep(2);
+            $this->entityInformation[0]->zoho_id = $this->getSearchModuleFieldZoho('Contacts', 'id', 'Cedula', (string)$this->identification);
+            $this->entityInformation[0]->zoho_module = 'Contacts';
+          }
           $this->entityInformation[0]->save();
       }
 
@@ -463,4 +474,85 @@ class Entity extends Model
         }
         return NULL;
     }
+        /**
+     * Relationship with associated rules values
+     *
+     * @return dayscript\laravelZohoCrm\laravelZohoCrm;
+
+     */
+    public function createContactZoho($module){
+
+      $this->identification = explode('.',$this->identification)[0];
+
+      $arrayRecod = [
+        'mail' =>  $this->entityInformation[0]->mail,
+        'field_no_identificacion' =>  (string)$this->identification,
+        'field_nombres' =>  $this->entityInformation[0]->nombres,
+        'field_apellidos' =>  $this->entityInformation[0]->apellidos,
+        'field_telephone' => $this->entityInformation[0]->telephone,
+        'asesor' => $this->entityInformation[0]->asesor,
+        'cedula_del_asesor' => $this->entityInformation[0]->no_identificacion_asesor,
+        'field_gender' => $this->entityInformation[0]->gender,
+        'fecha_de_registro'=>str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00',
+        'field_birthdate' => $this->entityInformation[0]->birthdate,
+        'roles' => $this->entityInformation[0]->roles,
+        'to_contact' => true
+      ];
+
+      $zoho = new laravelZohoCrm();
+      $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
+
+      foreach ($this->zohoFields as $key => $value) {
+        if(isset($arrayRecod[$value])){
+          $this->zohoFields[$key] = $arrayRecod[$value];
+        } else {
+          $this->zohoFields[$key] = null;
+        }
+      }
+
+      $this->zohoFields['Fecha_de_Preregistro'] = str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00';
+      $this->zohoFields['Fuente_de_Adquisicion'] = $this->detectResouceSubcription( [ $this->entityInformation[0]->roles ] );
+      $this->zohoFields['Salutation'] = $this->detectGender($this->entityInformation[0]->gender);
+      $this->zohoFields['Tipo_de_Usuario'] = 'Antiguo';
+      $zoho->addModuleRecord( $module, [$this->zohoFields] );
+      $response = json_encode($zoho->response);
+      Log::info($response);
+      if( $zoho->response['code'] == 'SUCCESS'){
+        $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
+        $this->entityInformation[0]->zoho_module = $module;
+        $this->entityInformation[0]->save();
+      }
+      return $zoho->response;
+    }
+        /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptionContactPoints($entity_information = array()){
+      $rule = Rule::where('name', '=', 'Usuario Antiguo')->first();
+      if($rule){
+        $rule->points = $entity_information['points'];
+        $params = ['value'=>$rule->points, 'points'=>$rule->points,'description'=>$rule->description];
+        $this->rules()->attach($rule,$params);
+      }
+    }
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return dayscript\laravelZohoCrm\laravelZohoCrm;
+
+     */
+    public function getSearchModuleFieldZoho($module, $search, $field, $value){
+      $zoho = new laravelZohoCrm();
+      $a = $zoho->getModuleRecords($module);
+      foreach ($a['data'] as $key => $item) {
+        if($item[$field] == $value){
+          Log::info('Zoho ID: '.$item[$search]);
+          return $item[$search];
+        }
+      }
+    }
+
 }

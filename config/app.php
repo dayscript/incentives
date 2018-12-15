@@ -179,7 +179,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         Nathanmac\Utilities\Parser\ParserServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-        App\Providers\CustomRulesServiceProvider::class
+        App\Providers\CustomRulesServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
 
 
     ],
@@ -230,7 +232,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Parser'       => Nathanmac\Utilities\Parser\Facades\Parser::class,
+        'Parser' => Nathanmac\Utilities\Parser\Facades\Parser::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

@@ -3,6 +3,9 @@
 namespace App\Console;
 
 use App\Console\Commands\SearchEntities;
+use App\Console\Commands\SearchInvoices;
+use App\Console\Commands\UpdateEntities;
+
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -16,6 +19,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         SearchEntities::class,
+        SearchInvoices::class,
+        UpdateEntities::class,
+
     ];
 
     /**

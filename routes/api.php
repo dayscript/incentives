@@ -29,8 +29,13 @@ Route::post('entities/{identification}/addvalue', 'EntitiesController@addvalue')
 Route::post('entities/{identification}/addgoalvalue', 'EntitiesController@addgoalvalue');
 Route::get('entities/{identification}/delvalue/{id}', 'EntitiesController@delvalue');
 Route::get('entities/{identification}/delgoalvalue/{id}', 'EntitiesController@delgoalvalue');
+Route::post('entities/set-rule','EntitiesController@setRule');
+Route::post('entities/del-rule','EntitiesController@delRule');
+
 
 Route::post('redemptions', 'RedemptionController@store');
+Route::post('redemptions/delete', 'RedemptionController@delete');
+
 Route::post('entities', 'EntitiesController@store');
 
 

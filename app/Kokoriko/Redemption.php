@@ -17,7 +17,7 @@ class Redemption extends Model
    *
    * @var array
    */
-  protected $fillable = ['entity_id','value'];
+  protected $fillable = ['entity_id','value','token'];
 
   /**
    * The attributes that are mass assignable.
@@ -38,6 +38,7 @@ class Redemption extends Model
      'Owner' => '',
      'Token' => '',
      'Valor' => '',
+     'Valor_en_pesos' => ''
    ];
 
 
@@ -62,7 +63,7 @@ class Redemption extends Model
 
     public function createZoho($module = 'Redenciones'){
       $zoho = new laravelZohoCrm();
-      $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
+      $date = str_replace(' ', 'T', $this->created_at.'-05:00');
       $this->zohoFields = [
         'Created_By' => '',
         'Created_Time' => '',
@@ -76,6 +77,7 @@ class Redemption extends Model
         'Name' => $this->entity->name,
         'Owner' => null,
         'Token' => $this->token,
+        'Valor_en_pesos' => (string)($this->value*50)
         ];
 
       $zoho->addModuleRecord($module, [$this->zohoFields] );

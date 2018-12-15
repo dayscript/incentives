@@ -96,7 +96,14 @@ class InvoiceController extends Controller
      */
     public function createFromFile(){
 
-      $limit_process_invoices = env('LIMIT_IMPORT_ENTITIES',0);
+      $file = new File;
+      foreach( $file->getFolder('ventas/') as $key => $name ){ 
+        $search_file = File::firstOrCreate(['name' => $name]);
+        $search_file->getContentsFile($name,'|');
+        $search_file->process('Invoice');
+      }
+
+      /*$limit_process_invoices = env('LIMIT_IMPORT_ENTITIES',0);
       $file_keys = array('identification','restaurant_code','invoice_code','product_code','sale_type','quantity','value','invoice_date_up','break_line');
       $message = '';
       $return = [];
@@ -153,6 +160,6 @@ class InvoiceController extends Controller
       Log::info('Impot invoices : '.$message);
       $return['status'] = 'success';
       $return['message'] = $message;
-      return $return;
+      return $return;*/
     }
 }

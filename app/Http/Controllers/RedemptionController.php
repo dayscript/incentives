@@ -55,7 +55,7 @@ class RedemptionController extends Controller
 
       $entity = Entity::find($request->input('entity_id'));
       $redemption = Redemption::create(request()->all());
-      $redemption->token = str_random(15);
+      $redemption->token = strtolower(str_random(8));
       $redemption->save();
       $redemption->createZoho();
 
@@ -111,9 +111,31 @@ class RedemptionController extends Controller
         //
     }
 
-
-    public function Devel(){
-      $redemtion = Redemption::find(5);
-      return $redemtion->createZoho();
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Kokoriko\Redemption  $redemption
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        $redemption = Redemption::find($request->input('id'))->delete();
+        return 'OK';
     }
+
+
+    public function devel(){
+      $redemtions = Redemption::all();
+      $entities_points_less = array();
+
+      foreach ($redemtions as $key => $redemtion) {
+        $points = $redemtion->entity->getPoints();
+        if ($points < 0){
+            $entities_points_less[] = $redemtion->entity;
+        }
+      }
+      return $entities_points_less;
+    }
+
+
 }
