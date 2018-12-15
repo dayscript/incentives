@@ -82,7 +82,7 @@ class UpdateEntities extends Command
 
           // Starting Update Personal Information
           $this->info('Actualizando entidad');
-          $personalData = (object)$dbConn->fetchRow('SELECT * FROM kokoriko_old.ju1 where cedula = :cedula;', ['cedula' => $cedula]);
+          $personalData = (object)$dbConn->fetchRow('SELECT * FROM ju1 where cedula = :cedula;', ['cedula' => $cedula]);
           $entity->name = $personalData->nombres . ' ' . $personalData->apellidos;
           $entity->save();
           $entity->entityInformation[0]->nombres   = $personalData->nombres;
@@ -136,7 +136,7 @@ class UpdateEntities extends Command
           }
           // End Create Invoices
 
-          $cursor = $dbConn->fetchRowMany('SELECT * FROM kokoriko_old.redenciones where id_ju = :cedula;', ['cedula' => $cedula]);
+          $cursor = $dbConn->fetchRowMany('SELECT * FROM redenciones where id_ju = :cedula;', ['cedula' => $cedula]);
           $redemptions = [];
           $puntosRedemp = 0;
           if($cursor){
