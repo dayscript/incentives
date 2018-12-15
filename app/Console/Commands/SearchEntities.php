@@ -41,6 +41,7 @@ class SearchEntities extends Command
     public function handle()
     {
         $this->info('Starting.');
+
         $file = new File;
         foreach( $file->getFolder('preregistro/') as $key => $name ){
           $search_file = File::firstOrCreate(['name' => $name]);
