@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use App\Incentives\Core\Entity;
 use App\Kokoriko\Invoice;
 use App\Kokoriko\Redemption;
+use App\Incentives\Rules\Rule;
+
 
 use Simplon\Mysql\PDOConnector;
 use Simplon\Mysql\Mysql;
