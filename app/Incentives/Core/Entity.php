@@ -248,7 +248,8 @@ class Entity extends Model
 
       $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
 
-      
+      if($total < 0) $total = 0;
+
       return (int)number_format($total,'2','.','');
     }
 
