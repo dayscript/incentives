@@ -137,7 +137,7 @@ class UpdateEntities extends Command
 
                 //$zoho = $incoide->createZoho();
             }
-            $rule = Rule::find(5);
+            $rule = Rule::find(6);
             $entity->rules()->attach($rule->id, ['value' => $puntos, 'points' => $puntos, 'description' => $rule->description]);
             $this->info('Transacciones actualizadas');
 
