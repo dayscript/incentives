@@ -103,35 +103,40 @@ class UpdateEntities extends Command
 
           if($cursor){
             $this->info('Actualizando transacciones');
-
+            $puntos = 0;
             foreach ($cursor as $transaction)
             {
                 $transaction = (object)$transaction;
-                if($transaction->factura == ''){
-                  $transaction->factura = NULL;
-                }
 
-                try {
-                  $invoice = Invoice::firstOrCreate( ['kokoriko_id' =>  $transaction->id] );
-                  $invoice->identification  = $transaction->id_ju1;
-                  $invoice->restaurant_code = NULL;
-                  $invoice->product_code    = $transaction->id_jp1;
-                  $invoice->sale_type       = $transaction->canal;
-                  $invoice->quantity        = $transaction->cantidad;
-                  $invoice->value           = $transaction->monto;
-                  $invoice->points          = $transaction->puntos_acum;
-                  $invoice->invoice_date_up = $transaction->fecha_inicio;
-                  $invoice->invoice_code    = $transaction->factura;
-                  $invoice->save();
-                } catch (\Exception $e) {
-                  Log::info( 'error: ' . $transaction->id .' '. $e->getMessage() );
-                  continue;
-                }
+                $puntos += $transaction->puntos_acum;
+                // if($transaction->factura == ''){
+                //   $transaction->factura = NULL;
+                // }
+
+                // try {
+                //
+                //   $invoice = Invoice::firstOrCreate( ['kokoriko_id' =>  $transaction->id] );
+                //   $invoice->identification  = $transaction->id_ju1;
+                //   $invoice->restaurant_code = NULL;
+                //   $invoice->product_code    = $transaction->id_jp1;
+                //   $invoice->sale_type       = $transaction->canal;
+                //   $invoice->quantity        = $transaction->cantidad;
+                //   $invoice->value           = $transaction->monto;
+                //   $invoice->points          = $transaction->puntos_acum;
+                //   $invoice->invoice_date_up = $transaction->fecha_inicio;
+                //   $invoice->invoice_code    = $transaction->factura;
+                //   $invoice->save();
+                // } catch (\Exception $e) {
+                //   Log::info( 'error: ' . $transaction->id .' '. $e->getMessage() );
+                //   continue;
+                // }
 
 
 
                 //$zoho = $incoide->createZoho();
             }
+            $rule = Rule::find(5);
+            $entity->rules()->attach($rule->id, ['value' => $puntos, 'points' => $puntos, 'description' => $rule->description]);
             $this->info('Transacciones actualizadas');
 
           }
