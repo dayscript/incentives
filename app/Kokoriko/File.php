@@ -38,15 +38,15 @@ class File extends Model
       $this->files = Storage::disk('ftp')->allFiles($path);
 
       //$aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
-      $current_date = date ( 'Y-m-d');
-
-      foreach ($this->files as $num_file => $file) {
-        preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
-        if (!empty($array) && $current_date == $array[0]) {
-          array_push($active_files, $file);
-        }
-      }
-      $this->files = $active_files;
+      // $current_date = date ( 'Y-m-d');
+      //
+      // foreach ($this->files as $num_file => $file) {
+      //   preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
+      //   if (!empty($array) && $current_date == $array[0]) {
+      //     array_push($active_files, $file);
+      //   }
+      // }
+      // $this->files = $active_files;
       return $this->files;
     }
 
@@ -97,40 +97,48 @@ class File extends Model
                 $new_entity[$file_keys[$row]] = $value;
               }
 
-              $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'] ]);
+              try {
+                $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'] ]);
 
-              if(!$entity->wasRecentlyCreated){
-                  continue;
-              }else{
-                $this->process_counter++;
+                if(!$entity->wasRecentlyCreated){
+                    continue;
+                }else{
+                  $this->process_counter++;
+                }
+
+                $entity->subscriptionPoints();
+                $entity->createInformation($new_entity);
+                $entity->entityInformation;
+                Log::info('Enitity Create OK: '.$entity->id);
+              } catch (\Exception $e) {
+                Log:info('error creando entidad desde ftp: '. $new_entity['field_no_identificacion'] . ' '.  $e->getMessage());
+                continue;
               }
 
-              $entity->subscriptionPoints();
-              $entity->createInformation($new_entity);
-              $entity->entityInformation;
-              Log::info('Enitity Create OK: '.$entity->id);
+
 
               try {
-                $entity->createRest();
+                // $entity->createRest();
                 Log::info('Entity create Drupal OK : '.$entity->identification);
-                $zoho = $entity->createZoho('Leads');
+                // $zoho = $entity->createZoho('Leads');
                 Log::info('Entity create Zoho OK : '.$entity->identification);
               } catch (\Exception $e) {
                 Log::info('Entity exist in Drupal : '.$entity->identification);
               }
             }
 
-            $info = Information::where('zoho_id', '=', null)->where('zoho_module', '=', null)->get();
-            foreach ($info as $key => $value) {
-              $to_create = ['identification' => $value->no_identificacion,'name' => $value->nombres." ".$value->apellidos];
-              $entity = Entity::firstOrCreate( $to_create );
-              $entity->entityInformation()->attach($value);
-              $entity->createZoho('Leads');//FTP o WEB Nuevos
-              array_push($results['entity'], $to_create);
-            }
-
-            print_r($this->process_counter.' processed '.$model.'.');
+            // $info = Information::where('zoho_id', '=', null)->where('zoho_module', '=', null)->get();
+            // foreach ($info as $key => $value) {
+            //   $to_create = ['identification' => $value->no_identificacion,'name' => $value->nombres." ".$value->apellidos];
+            //   $entity = Entity::firstOrCreate( $to_create );
+            //   $entity->entityInformation()->attach($value);
+            //   $entity->createZoho('Leads');//FTP o WEB Nuevos
+            //   array_push($results['entity'], $to_create);
+            // }
+            //
+            // print_r($this->process_counter.' processed '.$model.'.');
             break;
+
           case 'Invoice':
             $file_keys = array('identification','restaurant_code','invoice_code','product_code','sale_type','quantity','value','invoice_date_up','break_line');
 
