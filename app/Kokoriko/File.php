@@ -115,28 +115,27 @@ class File extends Model
                 continue;
               }
 
-
-
               try {
-                // $entity->createRest();
+                $entity->createRest();
                 Log::info('Entity create Drupal OK : '.$entity->identification);
-                // $zoho = $entity->createZoho('Leads');
+                $zoho = $entity->createZoho('Leads');
                 Log::info('Entity create Zoho OK : '.$entity->identification);
               } catch (\Exception $e) {
-                Log::info('Entity exist in Drupal : '.$entity->identification);
+                Log::info('Entity exist in Drupal : '.$entity->identification . ' '.$e->getMessage());
               }
             }
 
-            // $info = Information::where('zoho_id', '=', null)->where('zoho_module', '=', null)->get();
-            // foreach ($info as $key => $value) {
-            //   $to_create = ['identification' => $value->no_identificacion,'name' => $value->nombres." ".$value->apellidos];
-            //   $entity = Entity::firstOrCreate( $to_create );
-            //   $entity->entityInformation()->attach($value);
-            //   $entity->createZoho('Leads');//FTP o WEB Nuevos
-            //   array_push($results['entity'], $to_create);
-            // }
-            //
-            // print_r($this->process_counter.' processed '.$model.'.');
+            $info = Information::where('zoho_id', '=', null)->where('zoho_module', '=', null)->get();
+            foreach ($info as $key => $value) {
+              $to_create = ['identification' => $value->no_identificacion,'name' => $value->nombres." ".$value->apellidos];
+              $entity = Entity::firstOrCreate( $to_create );
+              $entity->entityInformation()->attach($value);
+              $entity->createZoho('Leads');//FTP o WEB Nuevos
+              array_push($results['entity'], $to_create);
+            }
+
+            Log::info($this->process_counter.' processed '.$model.'.');
+            
             break;
 
           case 'Invoice':
