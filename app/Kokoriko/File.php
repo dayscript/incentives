@@ -98,8 +98,8 @@ class File extends Model
               }
 
               try {
-                $identification = explode('.', $new_entity['field_no_identificacion'])[0];
-                $entity = Entity::firstOrCreate(['identification' => $identification, 'name' => $new_entity['name'] ]);
+                $new_entity['field_no_identificacion'] = explode('.', $new_entity['field_no_identificacion'])[0];
+                $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'] ]);
 
                 if(!$entity->wasRecentlyCreated){
                     continue;
@@ -112,7 +112,7 @@ class File extends Model
                 $entity->entityInformation;
                 Log::info('Enitity Create OK: '.$entity->id);
               } catch (\Exception $e) {
-                Log:info('error creando entidad desde ftp: '. $identification . ' '.  $e->getMessage());
+                Log:info('error creando entidad desde ftp: '. $new_entity['field_no_identificacion'] . ' '.  $e->getMessage());
                 continue;
               }
 
