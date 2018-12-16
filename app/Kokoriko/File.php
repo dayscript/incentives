@@ -40,13 +40,13 @@ class File extends Model
       $aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
       $current_date = date ( 'Y-m-d');
 
-      foreach ($this->files as $num_file => $file) {
-        preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
-        if (!empty($array) && $current_date == $array[0]) {
-          array_push($active_files, $file);
-        }
-      }
-      $this->files = $active_files;
+      // foreach ($this->files as $num_file => $file) {
+      //   preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
+      //   if (!empty($array) && $current_date == $array[0]) {
+      //     array_push($active_files, $file);
+      //   }
+      // }
+      // $this->files = $active_files;
       return $this->files;
     }
 
@@ -77,6 +77,7 @@ class File extends Model
           }
         }
         $this->rows = $rows;
+
         return $rows;
       }
     }
@@ -150,37 +151,48 @@ class File extends Model
               if( strpos($new_invoice['identification'], '.') != false ) {
                   $new_invoice['identification'] = explode('.',$new_invoice['identification'])[0];
               }
+              if($new_invoice['identification'] == 0 || $new_invoice['identification'] == 1 ){
+                continue;
+              }
+
               if( strpos($new_invoice['quantity'], '.') != false ) {
                   $new_invoice['quantity'] = explode('.',$new_invoice['quantity'])[0];
               }
               unset($new_invoice['break_line']);
 
-              $invoice = Invoice::firstOrCreate(['invoice_code' => $new_invoice['invoice_code']]);
+              try {
+                $invoice = Invoice::firstOrCreate(['invoice_code' => $new_invoice['invoice_code']]);
 
-              if(!$invoice->wasRecentlyCreated){
-                  continue;
-              }else{
-                $this->process_counter++;
+                if(!$invoice->wasRecentlyCreated){
+                    continue;
+                }else{
+                  $this->process_counter++;
+                }
+
+                $invoice->identification  = $new_invoice['identification'];
+                $invoice->restaurant_code = $new_invoice['restaurant_code'];
+                $invoice->product_code    = $new_invoice['product_code'];
+                $invoice->sale_type       = $new_invoice['sale_type'];
+                $invoice->quantity        = $new_invoice['quantity'];
+                $invoice->value           = $new_invoice['value'];
+                $invoice->points          = round($new_invoice['value']/1000);
+                $invoice->invoice_date_up = $new_invoice['invoice_date_up'];
+                $invoice->save();
+              } catch (\Exception $e) {
+                Log::info('Error :'. $new_invoice['invoice_code'] .' '.$e->getMessage());
+                continue;
               }
 
-              $invoice->identification  = $new_invoice['identification'];
-              $invoice->restaurant_code = $new_invoice['restaurant_code'];
-              $invoice->product_code    = $new_invoice['product_code'];
-              $invoice->sale_type       = $new_invoice['sale_type'];
-              $invoice->quantity        = $new_invoice['quantity'];
-              $invoice->value           = $new_invoice['value'];
-              $invoice->points          = round($new_invoice['value']/1000);
-              $invoice->invoice_date_up = $new_invoice['invoice_date_up'];
-              $invoice->save();
+
               try {
-                $zoho = $invoice->createZoho('Invoices');
+                // $zoho = $invoice->createZoho('Invoices');
                 Log::info('Invoice create Zoho OK : '.$invoice->identification);
               } catch (\Exception $e) {
                 Log::info('Invoice exist in Zoho : '.$e);
               }
 
             }
-            print_r($this->process_counter.' processed '.$model.'.');
+            Log::info($this->process_counter.' processed '.$model.'.');
             break;
           case 'Contacts':
           /*Actualizar puntos*/

@@ -44,8 +44,9 @@ class SearchInvoices extends Command
         foreach( $file->getFolder('ventas/') as $key => $name ){
           $search_file = File::firstOrCreate(['name' => $name]);
           $search_file->getContentsFile($name,'|');
-          $search_file->process('Invoice');  
+          $search_file->process('Invoice');
         }
+        $this->info('Finish');
         exit;
     }
 }

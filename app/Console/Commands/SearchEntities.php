@@ -49,6 +49,8 @@ class SearchEntities extends Command
           $search_file->getContentsFile($name,';');
           $search_file->process('Enitity');
         }
+        $this->info('Finish');
+
         exit;
     }
 }
