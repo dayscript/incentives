@@ -98,7 +98,8 @@ class File extends Model
               }
 
               try {
-                $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'] ]);
+                $identification = explode('.', $new_entity['field_no_identificacion'])[0];
+                $entity = Entity::firstOrCreate(['identification' => $identification, 'name' => $new_entity['name'] ]);
 
                 if(!$entity->wasRecentlyCreated){
                     continue;
@@ -111,7 +112,7 @@ class File extends Model
                 $entity->entityInformation;
                 Log::info('Enitity Create OK: '.$entity->id);
               } catch (\Exception $e) {
-                Log:info('error creando entidad desde ftp: '. $new_entity['field_no_identificacion'] . ' '.  $e->getMessage());
+                Log:info('error creando entidad desde ftp: '. $identification . ' '.  $e->getMessage());
                 continue;
               }
 
@@ -270,8 +271,6 @@ class File extends Model
             }
 
             $response = Storage::disk('ftp')->put( 'redemptions.csv' , $contents);
-            dd($response);
-
           break;
           default:
             // code...
