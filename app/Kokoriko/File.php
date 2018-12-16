@@ -37,16 +37,16 @@ class File extends Model
       $active_files = [];
       $this->files = Storage::disk('ftp')->allFiles($path);
 
-      //$aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
-      // $current_date = date ( 'Y-m-d');
-      //
-      // foreach ($this->files as $num_file => $file) {
-      //   preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
-      //   if (!empty($array) && $current_date == $array[0]) {
-      //     array_push($active_files, $file);
-      //   }
-      // }
-      // $this->files = $active_files;
+      $aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
+      $current_date = date ( 'Y-m-d');
+
+      foreach ($this->files as $num_file => $file) {
+        preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
+        if (!empty($array) && $current_date == $array[0]) {
+          array_push($active_files, $file);
+        }
+      }
+      $this->files = $active_files;
       return $this->files;
     }
 
