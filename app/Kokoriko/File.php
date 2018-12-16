@@ -40,13 +40,13 @@ class File extends Model
       $aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
       $current_date = date ( 'Y-m-d');
 
-      // foreach ($this->files as $num_file => $file) {
-      //   preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
-      //   if (!empty($array) && $current_date == $array[0]) {
-      //     array_push($active_files, $file);
-      //   }
-      // }
-      // $this->files = $active_files;
+      foreach ($this->files as $num_file => $file) {
+        preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
+        if (!empty($array) && $current_date == $array[0]) {
+          array_push($active_files, $file);
+        }
+      }
+      $this->files = $active_files;
       return $this->files;
     }
 
@@ -174,8 +174,8 @@ class File extends Model
                 $invoice->product_code    = $new_invoice['product_code'];
                 $invoice->sale_type       = $new_invoice['sale_type'];
                 $invoice->quantity        = $new_invoice['quantity'];
-                $invoice->value           = $new_invoice['value'];
-                $invoice->points          = round($new_invoice['value']/1000);
+                $invoice->value           = $invoice->value += $new_invoice['value'];
+                $invoice->points          = round($invoice->value += $new_invoice['value']/1000);
                 $invoice->invoice_date_up = $new_invoice['invoice_date_up'];
                 $invoice->save();
               } catch (\Exception $e) {
