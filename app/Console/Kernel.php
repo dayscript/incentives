@@ -5,6 +5,8 @@ namespace App\Console;
 use App\Console\Commands\SearchEntities;
 use App\Console\Commands\SearchInvoices;
 use App\Console\Commands\UpdateEntities;
+use App\Console\Commands\UploadRedemptions;
+
 
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -21,6 +23,8 @@ class Kernel extends ConsoleKernel
         SearchEntities::class,
         SearchInvoices::class,
         UpdateEntities::class,
+        UploadRedemptions::class,
+
 
     ];
 
