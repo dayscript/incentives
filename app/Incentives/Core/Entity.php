@@ -6,6 +6,8 @@ use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
 use App\Incentives\Core\EntityGoal;
 use App\Incentives\Core\Information;
+use App\Incentives\Core\Type;
+
 use App\Kokoriko\Redemption;
 use App\Kokoriko\Invoice;
 use Carbon\Carbon;
@@ -98,6 +100,15 @@ class Entity extends Model
          'field_telephone' => null,
          'roles' => null,
      ];
+
+   /**
+    * Relationship with associated rules values
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\Type
+    */
+    public function type(){
+      return $this->belongsToMany(Type::class);
+    }
 
 
     /**

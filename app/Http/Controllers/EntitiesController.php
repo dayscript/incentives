@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Incentives\Core\Entity;
 use App\Incentives\Core\Information;
+use App\Incentives\Core\Type;
+
 use App\Kokoriko\File;
 use App\Incentives\Rules\Goal;
 use App\Incentives\Rules\Rule;
@@ -490,20 +492,8 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-      // $file = new File;
-      // $name = $file->getFolder()[1];
-      // dd($file->getContentsFile($name,';'));
-
-      // $file = File::where('name','preregistro/preregistro_BOGOTA-2018-10-05.csv')->first();
-      // dd($file->getContentsFile(null,';'));
-      // foreach( $file->getFolder('preregistro/') as $key => $name ){
-      //   $search_file = File::firstOrCreate(['name' => $name]);
-      //   $search_file->getContentsFile(null,';');
-      //   $search_file->process('Entity');
-      // }
-      $entities = Entity::where('identification','=',1079307429)->get()->first();
-
-      dd($entities);
-
-    }
+      $e = Entity::where('identification','=',1013611324)->get()->first();
+      $t = Type::find(1);
+      $e->type()->attach(1);
+  }
 }
