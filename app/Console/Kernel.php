@@ -6,6 +6,7 @@ use App\Console\Commands\SearchEntities;
 use App\Console\Commands\SearchInvoices;
 use App\Console\Commands\UpdateEntities;
 use App\Console\Commands\UploadRedemptions;
+use App\Console\Commands\EntiiesAsingTypeMass;
 
 
 
@@ -24,8 +25,7 @@ class Kernel extends ConsoleKernel
         SearchInvoices::class,
         UpdateEntities::class,
         UploadRedemptions::class,
-
-
+        EntiiesAsingTypeMass::class
     ];
 
     /**

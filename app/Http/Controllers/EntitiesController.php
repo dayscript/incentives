@@ -492,8 +492,6 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-      $e = Entity::where('identification','=',1013611324)->get()->first();
-      $t = Type::find(1);
-      $e->type()->attach(1);
+    
   }
 }
