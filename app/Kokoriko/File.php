@@ -5,6 +5,8 @@ namespace App\Kokoriko;
 use Illuminate\Database\Eloquent\Model;
 use App\Incentives\Core\Information;
 use App\Incentives\Core\Entity;
+use App\Incentives\Core\Type;
+
 use App\Kokoriko\Redemption;
 use Storage;
 use Log;
@@ -91,6 +93,7 @@ class File extends Model
     public function process($model = null){
         switch ($model) {
           case 'Enitity':
+            $type = Type::find(1);
             $file_keys = array('field_no_identificacion','name','mail','field_telephone','fecha_de_registro','cedula_del_asesor','nombre_asesor','line_break');
 
             foreach ($this->rows as $key => $line) {
@@ -111,6 +114,7 @@ class File extends Model
                 $entity->subscriptionPoints();
                 $entity->createInformation($new_entity);
                 $entity->entityInformation;
+                $entity->type()->attach($type);
                 Log::info('Enitity Create OK: '.$entity->id);
               } catch (\Exception $e) {
                 Log:info('error creando entidad desde ftp: '. $new_entity['field_no_identificacion'] . ' '.  $e->getMessage());

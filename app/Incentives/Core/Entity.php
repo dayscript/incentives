@@ -110,7 +110,6 @@ class Entity extends Model
       return $this->belongsToMany(Type::class)->withTimestamps();
     }
 
-
     /**
      * Relationship with associated rules values
      *
