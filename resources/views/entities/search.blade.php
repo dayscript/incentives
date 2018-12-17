@@ -8,7 +8,7 @@
         {!! Form::text('identification','',['class'=>'form-control'] )!!}
       </div>
       <div class="form-group row">
-        {{!! Form::select('type', array('1' => 'Contacto', '2' => 'Factura')); !!}}
+        {!! Form::select('type', array('1' => 'Contacto', '2' => 'Factura')); !!}
       </div>
       <div class="form-group row">
         {!! Form::submit('Buscar',['class' => 'btn btn-primary'])!!}
