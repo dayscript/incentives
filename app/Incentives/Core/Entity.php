@@ -266,7 +266,7 @@ class Entity extends Model
       foreach ($this->rules as $rule){
           $rule_points += $rule->pivot->points;
       }
-
+      $invoice_total = 0;
       foreach ($this->entity as $key => $invoice) {
         $invoice_points = [];
         foreach( $invoice->entityInformation as $index => $item ){
