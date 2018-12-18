@@ -171,9 +171,9 @@ class EntitiesController extends Controller
             $entity->redemptions;
 
             foreach ($entity->entity as $key => $invoice) {
-                $entity->facturas[] = array('invoice'=> $invoice, 'data' => $invoice->entityInformation); 
+                $return[] = array('invoice'=> $invoice, 'data' => $invoice->entityInformation);
             };
-
+            dd($return);
             $entity->entityInformation[0];
 
             return $entity;
