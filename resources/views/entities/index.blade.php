@@ -30,7 +30,7 @@
         <div class="panel-footer"><a class="heading-elements-toggle"><i class="icon-more"></i></a>
             <div class="heading-elements">
                 <div class="pull-right">
-                    {{ $entities->links()  }}
+                    {{-- {{ $entities->links()  }} --}}
                 </div>
             </div>
         </div>

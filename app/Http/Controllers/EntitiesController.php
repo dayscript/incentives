@@ -35,14 +35,10 @@ class EntitiesController extends Controller
           $entities = Entity::where('identification','=',$request->input('identification'))->get();
         }
         elseif ($request->input('type')) {
-          $entities = Entity::whereHas('type', function ($query) use($request) {
-            $query->where('type_id', '=', $request->input('type') );
-          })->orderBy('created_at','desc')->paginate(10);
+          $entities = Entity::where('type_id', '=', $request->input('type'))->orderBy('created_at','desc')->paginate(10);
         }
         else{
-          $entities = Entity::whereHas('type', function ($query) {
-            $query->where('type_id', '=', 1);
-          })->orderBy('created_at','desc')->paginate(10);
+          $entities = Entity::where('type_id', '=', 2)->orderBy('created_at','desc')->paginate(10);
         }
 
         return view('entities.index', compact('entities'));

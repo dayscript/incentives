@@ -247,13 +247,10 @@ class Entity extends Model
       $redemptions = [];
       $entity_goals =[];
       $rule_points = 0;
+      $invoice_total = 0;
+
       $date = Carbon::now()->subYears(1);
 
-
-      // foreach ( $this->invoices->where('invoice_date_up','>', $date->format('Y-m-d') ) as $key => $invoice ) {
-      foreach ( $this->invoices as $key => $invoice ) {
-          $invoices[] = $invoice->points;
-      }
 
       foreach ( $this->redemptions as $key => $redemption ) {
           $redemptions[] = $redemption->value;
@@ -266,17 +263,14 @@ class Entity extends Model
       foreach ($this->rules as $rule){
           $rule_points += $rule->pivot->points;
       }
-      $invoice_total = 0;
+
       foreach ($this->entity as $key => $invoice) {
         $invoice_points = [];
         foreach( $invoice->entityInformation as $index => $item ){
-          $invoice_points[] += ((int)$item->value) / 1000;
+          $invoice_points[] += ( (int)$item->value) / 1000;
         }
         $invoice_total += array_sum($invoice_points);
-
       }
-
-
 
       // $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
       $total = ( $invoice_total + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
