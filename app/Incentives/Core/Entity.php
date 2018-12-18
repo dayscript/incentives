@@ -267,9 +267,19 @@ class Entity extends Model
           $rule_points += $rule->pivot->points;
       }
 
-      
+      foreach ($this->entity as $key => $invoice) {
+        $invoice_points = [];
+        foreach( $invoice->entityInformation as $index => $item ){
+          $invoice_points[] += ((int)$item->value) / 1000;
+        }
+        $invoice_total += array_sum($invoice_points);
 
-      $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
+      }
+
+
+
+      // $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
+      $total = ( $invoice_total + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
 
       if($total < 0) $total = 0;
 
