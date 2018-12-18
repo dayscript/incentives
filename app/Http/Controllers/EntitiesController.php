@@ -175,7 +175,7 @@ class EntitiesController extends Controller
             };
 
             $entity->entityInformation[0];
-            $entity->return = $return;
+            $entity->invoices = $return;
             return $entity;
         } else {
           return \Response::json([], 404); // Status code here
