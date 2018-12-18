@@ -1,4 +1,6 @@
 
+
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -39,6 +41,7 @@ Vue.component('edit-template', require('./components/templates/EditTemplate.vue'
 Vue.component('edit-goal', require('./components/goals/EditGoal.vue'));
 Vue.component('edit-entity', require('./components/entities/EditEntity.vue'));
 Vue.component('edit-entity-rules', require('./components/entities/EditEntityRules.vue'));
+Vue.component('edit-entity-related', require('./components/entities/EditEntityRelated.vue'));
 Vue.component('edit-entity-redemption', require('./components/entities/EditEntityRedemption.vue'));
 
 

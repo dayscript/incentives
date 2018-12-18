@@ -6,6 +6,7 @@
           <th style="width: 50px">ID</th>
           <th style="width: 300px;">NOMBRE</th>
           <th>DESCRIPTION</th>
+          <th>TYPE</th>
           <th class="text-center" style="width: 20px;"><i class="icon-arrow-down12"></i></th>
         </tr>
       </thead>
@@ -43,6 +44,11 @@
               <div class="font-weight-semibold">{{ $entity->identification }}</div>
               <span class="text-muted">{{$entity->created_at}}</span>
             </a>
+          </td>
+          <td>
+            <div class="d-flex align-items-center">
+              {{$entity->type->name}}
+            </div>
           </td>
           <td class="text-center">
             <div class="list-icons">

@@ -43,7 +43,21 @@
             </div>
         </div>
         <div class="panel-body">
-            <edit-entity-rules :entity_id="{{ $entity->id }}"></edit-entity>
+            <edit-entity-rules :entity_id="{{ $entity->id }}"></edit-entity-rules>
+        </div>
+    </div>
+
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">{{ __('Facturas') }}</h5>
+            <div class="heading-elements">
+                <ul class="icons-list">
+                    <li><a data-action="collapse"></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body">
+            <edit-entity-related :entity_id="{{ $entity->id }}"></edit-entity-related>
         </div>
     </div>
 
@@ -57,7 +71,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <edit-entity-redemption :entity_id="{{ $entity->id }}"></edit-entity>
+            <edit-entity-redemption :entity_id="{{ $entity->id }}"></edit-entity-redemption>
         </div>
     </div>
 @endsection

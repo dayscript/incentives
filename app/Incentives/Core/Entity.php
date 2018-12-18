@@ -107,7 +107,7 @@ class Entity extends Model
     * @return \Illuminate\Database\Eloquent\Relations\Type
     */
     public function type(){
-      return $this->belongsToMany(Type::class)->withTimestamps();
+      return $this->belongsTo(Type::class);
     }
 
     /**
