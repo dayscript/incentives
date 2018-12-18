@@ -267,6 +267,8 @@ class Entity extends Model
           $rule_points += $rule->pivot->points;
       }
 
+      
+
       $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
 
       if($total < 0) $total = 0;
