@@ -50,7 +50,7 @@ class AddFiledsToTableInformation extends Migration
         $table->dropColumn('gender');
         $table->dropColumn('roles');
         $table->dropColumn('asesor');
-        $table->dropColumn('no_identification_asesor');
+        $table->dropColumn('no_identificacion_asesor');
         $table->dropColumn('zoho_id');
         $table->dropColumn('zoho_module');
       });

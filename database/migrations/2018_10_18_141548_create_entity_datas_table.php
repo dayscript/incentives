@@ -43,8 +43,14 @@ class CreateEntityDatasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('information');
-        Schema::dropIfExists('entity_information');
+
+      Schema::table('entity_information', function (Blueprint $table) {
+        $table->dropForeign('entity_information_entity_id_foreign');
+        $table->dropForeign('entity_information_information_id_foreign');
+      });
+
+      Schema::dropIfExists('information');
+      Schema::dropIfExists('entity_information');
 
     }
 }

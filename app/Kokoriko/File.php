@@ -145,7 +145,17 @@ class File extends Model
             break;
 
           case 'Invoice':
-            $file_keys = array('identification','restaurant_code','invoice_code','product_code','sale_type','quantity','value','invoice_date_up','break_line');
+            $file_keys = array(
+              'identification',
+              'restaurant_code',
+              'invoice_code',
+              'product_code',
+              'sale_type',
+              'quantity',
+              'value',
+              'invoice_date_up',
+              'break_line'
+            );
 
             foreach( $this->rows as $key => $invoice){
               foreach ($invoice as $row => $value) {
@@ -165,39 +175,40 @@ class File extends Model
               unset($new_invoice['break_line']);
 
               try {
-                $invoice = Invoice::firstOrCreate(['invoice_code' => $new_invoice['invoice_code']]);
-
-                if(!$invoice->wasRecentlyCreated){
-                    continue;
-                }else{
-                  $this->process_counter++;
+                $entity = Entity::where('identification','=',$new_invoice['identification'])
+                          ->where('type_id','=',1)->first();
+                if($entity){
+                  print_r('Procesando:' .$new_invoice['invoice_code'].' '.$new_invoice['invoice_date_up'] );
+                  Log::info('Factura : ' . $new_invoice['invoice_code'] );
+                  $invoice = Entity::firstOrCreate( ['identification' => $new_invoice['invoice_code'],'type_id' => 3] );
+                  $information = new Information;
+                  $information->restaurant_code = $new_invoice['restaurant_code'];
+                  $information->product_code    = $new_invoice['product_code'];
+                  $information->sale_type       = $new_invoice['sale_type'];
+                  $information->quantity        = $new_invoice['quantity'];
+                  $information->invoice_date_up = $new_invoice['invoice_date_up'];
+                  $information->value           = $new_invoice['value'];
+                  $information->save();
+                  $invoice->entityInformation()->attach($information);
+                  $invoice->entity_id = $entity->id;
+                  $invoice->save();
+                  print_r('OK' );
+                  Log::info('Factura : OK' );
+                  try {
+                    // $zoho = $invoice->createZoho('Invoices');
+                    Log::info('Invoice create Zoho OK : '.$invoice->identification);
+                    }catch (\Exception $e) {
+                      Log::info('Invoice exist in Zoho : '.$e);
+                    }
                 }
-
-                $invoice->identification  = $new_invoice['identification'];
-                $invoice->restaurant_code = $new_invoice['restaurant_code'];
-                $invoice->product_code    = $new_invoice['product_code'];
-                $invoice->sale_type       = $new_invoice['sale_type'];
-                $invoice->quantity        = $new_invoice['quantity'];
-                $invoice->value           = $new_invoice['value'];
-                $invoice->points          = round($new_invoice['value']/1000);
-                $invoice->invoice_date_up = $new_invoice['invoice_date_up'];
-                $invoice->save();
-              } catch (\Exception $e) {
-                Log::info('Error :'. $new_invoice['invoice_code'] .' '.$e->getMessage());
+              }catch (\Exception $e) {
+                Log::info('Factura error :'.$e->getMessage());
                 continue;
               }
-
-
-              try {
-                // $zoho = $invoice->createZoho('Invoices');
-                Log::info('Invoice create Zoho OK : '.$invoice->identification);
-              } catch (\Exception $e) {
-                Log::info('Invoice exist in Zoho : '.$e);
-              }
-
             }
-            Log::info($this->process_counter.' processed '.$model.'.');
+            exit;
             break;
+
           case 'Contacts':
           /*Actualizar puntos*/
           /*$file_keys = array('field_no_identificacion','puntos','line_break');

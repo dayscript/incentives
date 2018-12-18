@@ -31,7 +31,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['identification', 'name'];
+    protected $fillable = ['identification', 'name','type_id'];
 
 
     public function setNameAttribute($value)
@@ -129,6 +129,16 @@ class Entity extends Model
         return $this->belongsToMany(Goal::class)->withPivot('id','value','real','date')->withTimestamps();
     }
 
+
+    /**
+     * Relationship with associated goals values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+     public function entity(){
+       return $this->hasMany(Entity::class,'entity_id');
+     }
+
     /**
      * Relationship with associated goals values
      *
@@ -190,6 +200,7 @@ class Entity extends Model
         $information->save();
         $this->entityInformation()->attach($information);
       }
+
 
     /**
      * Relationship with associated rules values

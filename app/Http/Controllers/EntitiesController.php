@@ -499,6 +499,8 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
+      $e = Entity::find(10868);
+      dd($e->entity[0]->entityInformation);
 
   }
 }
