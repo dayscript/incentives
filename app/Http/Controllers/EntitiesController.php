@@ -170,12 +170,12 @@ class EntitiesController extends Controller
             $entity->points_overcome = $entity->overcomePoints();
             $entity->redemptions;
 
-            foreach ($entity->entity as $key => $invoice) {
-                $return[] = array('invoice'=> $invoice, 'data' => $invoice->entityInformation);
-            };
+            // foreach ($entity->entity as $key => $invoice) {
+            //     $return[] = array('invoice'=> $invoice, 'data' => $invoice->entityInformation);
+            // };
 
-            $entity->entityInformation[0];
-            $entity->invoices = $return;
+
+
             return $entity;
         } else {
           return \Response::json([], 404); // Status code here
