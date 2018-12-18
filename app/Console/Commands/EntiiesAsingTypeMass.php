@@ -48,6 +48,7 @@ class EntiiesAsingTypeMass extends Command
       foreach ($e as $key => $entity) {
           $this->info($entity->id);
           $entity->type_id = $t->id;
+          $entity->save();
           $this->line('OK');
       }
 
