@@ -206,7 +206,7 @@ class File extends Model
                 continue;
               }
             }
-            exit;
+            
             break;
 
           case 'Contacts':
