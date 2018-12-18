@@ -6,17 +6,11 @@
           <th style="width: 50px">ID</th>
           <th style="width: 300px;">NOMBRE</th>
           <th>DESCRIPTION</th>
-          <th>TYPE</th>
+          <th>TIPO</th>
           <th class="text-center" style="width: 20px;"><i class="icon-arrow-down12"></i></th>
         </tr>
       </thead>
       <tbody>
-        <tr class="table-active table-border-double">
-          <td colspan="3">Entidades activas</td>
-          <td class="text-right">
-            <span class="badge bg-blue badge-pill">24</span>
-          </td>
-        </tr>
         @foreach($entities as $entity)
         <tr>
           <td class="text-center">

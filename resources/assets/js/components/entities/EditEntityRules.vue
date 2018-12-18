@@ -30,7 +30,7 @@
 									<td>{{ points.points }}</td>
 									<td>{{ points.description }}</td>
                   <td>{{ points.created_at }}</td>
-                  
+
                   <td><button class="btn btn-danger" @click.prevent="deleteRule(points.id)">Eliminar<i></i></button></td>
 								</tr>
 							</tbody>
@@ -133,8 +133,7 @@
                 }
               ).catch(function(error){
                 console.log(error);
-              }
-            ).bind(this)
+              }.bind(this));
             }
         }
     }

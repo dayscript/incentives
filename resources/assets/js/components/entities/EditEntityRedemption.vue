@@ -133,18 +133,25 @@
             },
 
             deleteRedemption(id){
+              window.vm.active++;
               axios.post('/api/redemptions/delete',{id:id}).then(
                 data => {
-                    console.log(data);
+                    if (data.status) new PNotify({
+                        text: 'Eliminado',
+                        addclass: 'bg-' + data.status,
+                        type: data.status,
+                        animation: 'fade',
+                        delay: 2000
+                    });
+                    window.vm.active--;
                 }
-              ).catch(
+              ).catch(function (error){
                 error => {
                     console.log(error);
+                    window.vm.active--;
                 }
-              ).bind(this)
-
-
-            }
+            }.bind(this));
+          }
         }
-    }
+      }
 </script>

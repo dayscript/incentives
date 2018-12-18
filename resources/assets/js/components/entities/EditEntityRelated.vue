@@ -20,20 +20,19 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Valor</th>
-                  <th>Valor en pesos</th>
-                  <th>Token</th>
-                  <th>Opciones</th>
-
+                  <th>No. Factura</th>
+                  <th>Vlr. Pesos</th>
+                  <th>Vlr. Puntos</th>
+                  <th>Creado</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(item,key) in entity.entity">
-                  <td>{{ key }}</td>
+                  <td>{{ item.id }}</td>
                   <td>{{ item.identification }}</td>
-                  <td>$ {{ item.type_id }}</td>
+                  <td>{{ item.identification }}</td>
+                  <td>{{ item.identification }}</td>
                   <td>{{ item.created_at }}</td>
-                  <td> <button @click.prevent="deleteRedemption(points.id)" class="btn btn-danger">Eliminar <i class="icon-trash position-right"></i></button> </td>
                 </tr>
               </tbody>
             </table>
@@ -134,12 +133,11 @@
                 data => {
                     console.log(data);
                 }
-              ).catch(
+              ).catch( function (error){
                 error => {
                     console.log(error);
                 }
-              ).bind(this)
-
+              }.bind(this))
 
             }
         }
