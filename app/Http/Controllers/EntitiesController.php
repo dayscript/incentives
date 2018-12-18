@@ -173,9 +173,9 @@ class EntitiesController extends Controller
             foreach ($entity->entity as $key => $invoice) {
                 $return[] = array('invoice'=> $invoice, 'data' => $invoice->entityInformation);
             };
-            dd($return);
-            $entity->entityInformation[0];
 
+            $entity->entityInformation[0];
+            $entity->return = $return;
             return $entity;
         } else {
           return \Response::json([], 404); // Status code here
