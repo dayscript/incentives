@@ -169,7 +169,7 @@ class EntitiesController extends Controller
             $entity->goal_values = $goals;
             $entity->points_overcome = $entity->overcomePoints();
             $entity->redemptions;
-
+            $entity->entity;
             // foreach ($entity->entity as $key => $invoice) {
             //     $return[] = array('invoice'=> $invoice, 'data' => $invoice->entityInformation);
             // };
