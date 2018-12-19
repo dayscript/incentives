@@ -184,15 +184,17 @@ class File extends Model
 
                   Log::info('Factura : ' . $new_invoice['invoice_code'] );
                   $invoice = Entity::firstOrCreate( ['identification' => $new_invoice['invoice_code'],'type_id' => 2] );
-                  $information = new Information;
-                  $information->restaurant_code = $new_invoice['restaurant_code'];
-                  $information->product_code    = $new_invoice['product_code'];
-                  $information->sale_type       = $new_invoice['sale_type'];
-                  $information->quantity        = $new_invoice['quantity'];
-                  $information->invoice_date_up = $new_invoice['invoice_date_up'];
-                  $information->value           = $new_invoice['value'];
-                  $information->save();
-                  $invoice->entityInformation()->attach($information);
+                  // $information = new Information;
+                  // $information->restaurant_code = $new_invoice['restaurant_code'];
+                  // $information->product_code    = $new_invoice['product_code'];
+                  // $information->sale_type       = $new_invoice['sale_type'];
+                  // $information->quantity        = $new_invoice['quantity'];
+                  // $information->invoice_date_up = $new_invoice['invoice_date_up'];
+                  // $information->value           = $new_invoice['value'];
+                  // $information->save();
+                  // $invoice->entityInformation()->attach($information);
+                  $invoice->entity_id = $entity->id;
+                  $invoice->save();
                   print_r('OK'."\n" );
                   Log::info('Factura : OK' );
                   try {
