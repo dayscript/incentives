@@ -193,8 +193,6 @@ class File extends Model
                   $information->value           = $new_invoice['value'];
                   $information->save();
                   $invoice->entityInformation()->attach($information);
-                  $invoice->entity_id = $entity->id;
-                  $invoice->save();
                   print_r('OK'."\n" );
                   Log::info('Factura : OK' );
                   try {
