@@ -10,6 +10,7 @@ use App\Incentives\Core\Type;
 use App\Kokoriko\Redemption;
 use Storage;
 use Log;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -39,16 +40,17 @@ class File extends Model
       $active_files = [];
       $this->files = Storage::disk('ftp')->allFiles($path);
 
-      $aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
-      $current_date = date ( 'Y-m-d');
-
-      // foreach ($this->files as $num_file => $file) {
-      //   preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
-      //   if (!empty($array) && $current_date == $array[0]) {
-      //     array_push($active_files, $file);
-      //   }
-      // }
-      // $this->files = $active_files;
+      // $aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
+      // $current_date = date ( 'Y-m-d');
+      $current_date = Carbon::now()->subDays(1)->format('Y-m-d');
+      foreach ($this->files as $num_file => $file) {
+        preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
+        if (!empty($array) && $current_date == $array[0]) {
+          array_push($active_files, $file);
+        }
+      }
+      $this->files = $active_files;
+      print_r($this->files);
       return $this->files;
     }
 
@@ -103,7 +105,7 @@ class File extends Model
 
               try {
                 $new_entity['field_no_identificacion'] = explode('.', $new_entity['field_no_identificacion'])[0];
-                $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'] ]);
+                $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'], 'type_id'=> 1 ]);
 
                 if(!$entity->wasRecentlyCreated){
                     continue;

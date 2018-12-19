@@ -498,8 +498,10 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-      $e = Entity::find(1183);
-      return $e->entity;
+      $date = Carbon::now()->subDays(2)->format('Y-m-d');
+      $string = 'preregistro_BOGOTA-2018-12-18.csv';
+      preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $string , $array);
+      dd($array);
 
   }
 }
