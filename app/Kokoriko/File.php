@@ -112,11 +112,11 @@ class File extends Model
                 }else{
                   $this->process_counter++;
                 }
-
                 $entity->subscriptionPoints();
                 $entity->createInformation($new_entity);
                 $entity->entityInformation;
-                $entity->type()->attach($type);
+
+
                 Log::info('Enitity Create OK: '.$entity->id);
               } catch (\Exception $e) {
                 Log:info('error creando entidad desde ftp: '. $new_entity['field_no_identificacion'] . ' '.  $e->getMessage());
