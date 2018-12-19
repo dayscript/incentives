@@ -71,7 +71,11 @@ class EntitiesController extends Controller
         'name'         => 'required',
       ]);
 
-      $to_create = ['identification' => $request->input('identification'),'name' => $request->input('name')];
+      $to_create = [
+        'identification' => $request->input('identification'),
+        'name' => $request->input('name'),
+        'type_id' => 1
+      ];
       $to_zoho = $request->all();
       $entity = Entity::firstOrCreate( $to_create );
 
@@ -501,7 +505,7 @@ class EntitiesController extends Controller
       $date = Carbon::now()->subDays(2)->format('Y-m-d');
       $string = 'preregistro_BOGOTA-2018-12-18.csv';
       preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $string , $array);
-      dd($array);
+
 
   }
 }
