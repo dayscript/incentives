@@ -502,10 +502,9 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-      $date = Carbon::now()->subDays(2)->format('Y-m-d');
-      $string = 'preregistro_BOGOTA-2018-12-18.csv';
-      preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $string , $array);
-
+      $invoice = Entity::find(26510);
+      $invoice->createZohoInvoice('Invoices');
+      return $invoice;
 
   }
 }

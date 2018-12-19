@@ -71,7 +71,7 @@ class Invoice extends Model
        'Subject' =>  $this->identification,
        'Tipo_de_Venta' =>  $this->sale_type,
        'Valor_de_compra' => $this->value,
-       'Contact_Name' => 3609958000000679036
+       'Contact_Name' => 3609958000001218233
      ];
 
 

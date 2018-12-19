@@ -84,6 +84,30 @@ class Entity extends Model
      *
      * @var array
      */
+     public $zohoFieldsInvoice =[
+       'Account_Name' =>  null,
+       'Cantidad_de_producto' =>  null,
+       'Created_Time' =>  null,
+       'Cedula_de_cliente' =>  null,
+       'Codigo_de_producto' =>  null,
+       'Codigo_de_restaurante' =>  null,
+       'Fecha_de_Transaccion' =>  null,
+       'Invoice_Number' =>  null,
+       'Owner' =>  null,
+       'Kokoripuntos_Acumulados' =>  null,
+       'Modified_Time' =>  null,
+       'Subject' =>  null,
+       'Tipo_de_Venta' =>  null,
+       'Valor_de_compra' => null,
+       'test_email' => null
+     ];
+
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
 
     public $fieldsRest = [
          'name' => null,
@@ -139,6 +163,15 @@ class Entity extends Model
        return $this->hasMany(Entity::class,'entity_id');
      }
 
+     /**
+      * Relationship with associated goals values
+      *
+      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+      */
+      public function entityMain(){
+        return $this->belongsTo(Entity::class,'entity_id');
+      }
+
     /**
      * Relationship with associated goals values
      *
@@ -166,7 +199,7 @@ class Entity extends Model
      */
     public function entityInformation()
     {
-        return $this->belongsToMany(Information::class);
+        return $this->belongsToMany (Information::class);
     }
 
     /**
@@ -368,9 +401,61 @@ class Entity extends Model
       $response = json_encode($zoho->response);
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
-        $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
-        $this->entityInformation[0]->zoho_module = $module;
-        $this->entityInformation[0]->save();
+        $this->zoho_id = $zoho->response['details']['id'];
+        $this->zoho_module = $module;
+        $this->save();
+      }
+      return $zoho->response;
+    }
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return dayscript\laravelZohoCrm\laravelZohoCrm;
+
+     */
+    public function createZohoInvoice($module){
+
+
+      $valorTotal = 0;
+
+      foreach($this->entityInformation as $key => $item ){
+        $valorTotal += $item->value;
+        $product_code = $item->produc_code;
+        $invoice_date_up = $item->invoice_date_up;
+        $sale_type = $item->sale_type;
+        $restaurant_code = $item->restaurant_code;
+      }
+
+      $zoho = new laravelZohoCrm();
+      $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
+
+
+      $this->zohoFields = [
+        'Account_Name' =>  null,
+        // 'Cantidad_de_producto' =>  $this->quantity,
+        // 'Created_Time' =>  null,
+        'Cedula_de_cliente' =>   $this->entityMain->identification,
+        // 'Codigo_de_producto' =>  $this->product_code,
+        'Codigo_de_restaurante' =>  $restaurant_code,
+        'Fecha_de_Transaccion' =>  str_replace(' ','T', $invoice_date_up.':00-05:00'),
+        'Invoice_Number' =>  $this->identification,
+        'Owner' =>  null,
+        'Kokoripuntos_Acumulados' =>  number_format($valorTotal / 1000, 0),
+        // 'Modified_Time' =>  null,
+        'Subject' =>  $this->identification,
+        'Tipo_de_Venta' =>  $sale_type,
+        'Valor_de_compra' => $valorTotal,
+        'Contact_Name' => $this->zoho_id,
+      ];
+
+      $zoho->addModuleRecord( $module, [$this->zohoFields] );
+      $response = json_encode($zoho->response);
+      Log::info($response);
+      if( $zoho->response['code'] == 'SUCCESS'){
+        $this->zoho_id = $zoho->response['details']['id'];
+        $this->zoho_module = $module;
+        $this->save();
       }
       return $zoho->response;
     }
@@ -406,19 +491,19 @@ class Entity extends Model
         }
       }
 
-      $zoho->updateModuleRecord($this->entityInformation[0]->zoho_module, $this->entityInformation[0]->zoho_id, [$this->zohoFields]);
+      $zoho->updateModuleRecord($this->zoho_module, $this->zoho_id, [$this->zohoFields]);
       $response = json_encode($zoho->response);
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
-          if($this->entityInformation[0]->zoho_module == 'Contacts'){
-            $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
-            $this->entityInformation[0]->zoho_module = 'Contacts';
+          if($this->zoho_module == 'Contacts'){
+            $this->zoho_id = $zoho->response['details']['id'];
+            $this->zoho_module = 'Contacts';
           }else{
             sleep(2);
-            $this->entityInformation[0]->zoho_id = $this->getSearchModuleFieldZoho('Contacts', 'id', 'Cedula', (string)$this->identification);
-            $this->entityInformation[0]->zoho_module = 'Contacts';
+            $this->zoho_id = $this->getSearchModuleFieldZoho('Contacts', 'id', 'Cedula', (string)$this->identification);
+            $this->zoho_module = 'Contacts';
           }
-          $this->entityInformation[0]->save();
+          $this->save();
       }
 
       return $zoho->response;
@@ -546,9 +631,9 @@ class Entity extends Model
       $response = json_encode($zoho->response);
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
-        $this->entityInformation[0]->zoho_id = $zoho->response['details']['id'];
-        $this->entityInformation[0]->zoho_module = $module;
-        $this->entityInformation[0]->save();
+        $this->zoho_id = $zoho->response['details']['id'];
+        $this->zoho_module = $module;
+        $this->save();
       }
       return $zoho->response;
     }
