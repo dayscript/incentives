@@ -209,8 +209,11 @@ class EntitiesController extends Controller
             $entity->entityInformation[0]->birthdate = $request->input('field_birthdate');
             $entity->entityInformation[0]->gender = $request->input('field_gender');
             $entity->entityInformation[0]->telephone = $request->input('field_telephone');
-            $entity->entityInformation[0]->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
             $entity->entityInformation[0]->save();
+
+            $entity->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
+            $entity->save();
+            
             return $entity->updateZoho();
         }
         return $entity;
@@ -503,8 +506,6 @@ class EntitiesController extends Controller
 
     public function devel(){
       $invoice = Entity::find(26510);
-      $invoice->createZohoInvoice('Invoices');
-      return $invoice;
-
+      return $invoice->updateZoho();
   }
 }
