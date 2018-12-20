@@ -668,4 +668,122 @@ class Entity extends Model
       }
     }
 
+    /**
+     * Relationship with associated rules values
+     *
+     * @return dayscript\laravelZohoCrm\laravelZohoCrm;
+     */
+
+     function createInvoiceItemZoho($module){
+
+       $fieldsMap = array(
+          array(
+             'field_label '=>'Cantidad',
+             'api_name    '=>' Cantidad',
+             'data_type   '=>'Number',
+             'icentives_field' => 'quantity',
+           ),
+         array(
+             'field_label '=>' Created By',
+             'api_name    '=>' Created_By',
+             'data_type   '=>' Single Line	',
+             'icentives_field' => null,
+           ),
+         array(
+             'field_label '=>' Created Time',
+             'api_name    '=>' Created_Time',
+             'data_type   '=>' DateTime',
+             'icentives_field' => null,
+           ),
+           array(
+             'field_label '=>' Email',
+             'api_name    '=>' Email',
+             'data_type   '=>' Email',
+             'icentives_field' => null,
+           ),
+         array(
+             'field_label '=>' Email Opt Out',
+             'api_name    '=>' Email_Opt_Out',
+             'data_type   '=>' Boolean',
+             'icentives_field' => null,
+           ),
+         array(
+             'field_label '=>' Invoice',
+             'api_name    '=>' Invoice',
+             'data_type   '=>' Lookup',
+             'icentives_field' => '[entity][zoho_id]',
+           ),
+         array(
+             'field_label '=>' Invoice Item Name',
+             'api_name    '=>' Name',
+             'data_type   '=>' Single Line	',
+             'icentives_field' => null,
+           ),
+           array(
+             'field_label '=>' Invoice Item Name',
+             'api_name    '=>' Owner	',
+             'data_type   '=>' Lookup	',
+             'icentives_field' => null,
+           ),
+           array(
+             'field_label '=>' Last Activity Time ',
+             'api_name    '=>' Last_Activity_Time 	',
+             'data_type   '=>' DateTime',
+             'icentives_field' => null,
+           ),
+         array(
+             'field_label '=>' Modified By',
+             'api_name    '=>'  Modified_By ',
+             'data_type   '=>' 	Single Line	',
+             'icentives_field' => null,
+           ),
+           array(
+             'field_label '=>' Modified Time  ',
+             'api_name    '=>' Modified_Time ',
+             'data_type   '=>' 	DateTime	',
+             'icentives_field' => null,
+           ),
+         array(
+             'field_label '=>' Producto ',
+             'api_name    '=>'  Producto	',
+             'data_type   '=>'  Lookup	',
+             'icentives_field' => '[product][zoho_id]',
+           ),
+         array(
+             'field_label '=>' Secondary Email  ',
+             'api_name    '=>' Secondary_Email	',
+             'data_type   '=>'  Email	',
+             'icentives_field' => null,
+           ),
+           array(
+             'field_label '=>' Valor Total',
+             'api_name    '=>' Valor_Total',
+             'data_type   '=>'  Currency',
+             'icentives_field' => 'value',
+           ),
+        );
+
+        foreach($fieldsMap as $key => $field){
+            $arrayRecord[$field['api_name']]  =
+        }
+
+       $this->entitiInformation;
+
+
+
+       foreach()
+
+
+
+       Log::info($response);
+       if( $zoho->response['code'] == 'SUCCESS'){
+         $this->zoho_id = $zoho->response['details']['id'];
+         $this->zoho_module = $module;
+         $this->save();
+       }
+       return $zoho->response;
+
+     }
+
+
 }
