@@ -198,7 +198,11 @@ class File extends Model
                   print_r('OK'."\n" );
                   Log::info('Factura : OK' );
                   try {
-                    $zoho = $invoice->createZohoInvoice('Invoices');
+                    if(is_null($invoice->zoho_id)){
+                      $zoho = $invoice->createZohoInvoice('Invoices');
+                    }
+                    $information->createZoho('Invoice_Items');
+
                     Log::info('Invoice create Zoho OK : '.$invoice->identification);
                     }catch (\Exception $e) {
                       Log::info('Invoice exist in Zoho : '.$e);
@@ -333,8 +337,6 @@ class File extends Model
               $information->save();
               $product->entityInformation()->attach($information);
               $product->createProductZoho();
-
-              exit;
             }
 
             break;

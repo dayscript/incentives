@@ -84,8 +84,60 @@ class Information extends Model
      */
     public function entity()
     {
-        return $this->belongsTo(Entity::class);
+        return $this->belongsToMany(Entity::class)->withPivot('entity_id');
     }
 
+    /**
+     * Relationship with associated rules values
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function getProduct()
+    {
+      return Entity::where('identification', '=', $this->product_code)->first();
+    }
+
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return dayscript\laravelZohoCrm\laravelZohoCrm;
+
+     */
+
+    public function createZoho($module){
+
+      $zohoFields = [
+        'Cantidad' => $this->quantity,
+        'Created_By'=> 677524459,
+        // 'Created_Time'=> '',
+        // 'Email'=> '',
+        // 'Email_Opt_Out'=> '',
+        'Invoice'=> $this->entity->first()->zoho_id,
+        'Name'=> $this->getProduct()->name,
+        // 'Owner'=> '',
+        // 'Last_Activity_Time'=> '',
+        // 'Modified_By'=> '',
+        // 'Modified_Time'=> '',
+        'Producto'=> $this->getProduct()->zoho_id,
+        // 'Secondary_Email'=> '',
+        'Valor_Total'=> $this->value,
+
+      ];
+
+      $zoho = new laravelZohoCrm();
+      $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
+
+
+      $zoho->addModuleRecord( $module, [$this->zohoFields] );
+      $response = json_encode($zoho->response);
+      Log::info($response);
+      if( $zoho->response['code'] == 'SUCCESS'){
+        $this->zoho_id = $zoho->response['details']['id'];
+        $this->zoho_module = $module;
+        $this->save();
+      }
+      return $zoho->response;
+    }
 
 }
