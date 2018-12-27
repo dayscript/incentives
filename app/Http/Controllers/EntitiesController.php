@@ -31,6 +31,8 @@ class EntitiesController extends Controller
     public function index(Request $request)
     {
 
+
+
         if($request->input('identification')){
           $entities = Entity::where('identification','=',$request->input('identification'))->get();
         }
@@ -173,9 +175,7 @@ class EntitiesController extends Controller
                 $invoice->entityInformation;
             };
 
-
-
-            return $entity;
+          return $entity;
         } else {
           return \Response::json([], 404); // Status code here
         }
@@ -213,7 +213,7 @@ class EntitiesController extends Controller
 
             $entity->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
             $entity->save();
-            
+
             return $entity->updateZoho();
         }
         return $entity;
@@ -506,6 +506,6 @@ class EntitiesController extends Controller
 
     public function devel(){
       $invoice = Entity::find(26510);
-      return $invoice->updateZoho();
+      return $invoice->createZohoInvoice('Invoices');
   }
 }

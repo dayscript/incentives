@@ -47,7 +47,7 @@
                   <input type="hidden" name="entity_id" class="form-control" v-model="entity.id">
                   <select name="rule_id" class="form-control" v-model="rule_id">
                     <option value="1">50 Kokoripesos por activación de cuenta</option>
-                    <option value="2">Usuario Antiguo</option>
+                    <option value="6">Usuario Antiguo</option>
 
                   </select>
                   <label for="">Seleccione la regla que desea asignar</label>

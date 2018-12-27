@@ -5,7 +5,7 @@
     </div>
     <div class="form-group col-md-12">
       <label for="" class="col-md-12">Tipo: </label>
-      {!! Form::select('type', array('1' => 'Contacto', '2' => 'Factura'),['class'=>'']); !!}
+      {!! Form::select('type', \App\Incentives\Core\Type::pluck('name','id') ,['class'=>'']); !!}
       <br>
     </div>
     <div class="form-group col-md-12">

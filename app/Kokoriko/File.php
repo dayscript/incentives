@@ -198,7 +198,7 @@ class File extends Model
                   print_r('OK'."\n" );
                   Log::info('Factura : OK' );
                   try {
-                    // $zoho = $invoice->createZoho('Invoices');
+                    $zoho = $invoice->createZohoInvoice('Invoices');
                     Log::info('Invoice create Zoho OK : '.$invoice->identification);
                     }catch (\Exception $e) {
                       Log::info('Invoice exist in Zoho : '.$e);
@@ -301,6 +301,44 @@ class File extends Model
 
             $response = Storage::disk('ftp')->put( 'redemptions.csv' , $contents);
           break;
+
+          case 'Products':
+            $file_keys = [
+                'code',
+                'name',
+                'family_code',
+                'family_name',
+                'line_break'
+            ];
+            $type = Type::find(3);
+            foreach ($this->rows as $key => $line) {
+              foreach ($line as $row => $value) {
+                $new_entity[$file_keys[$row]] = $value;
+
+              }
+              unset($new_entity['line_break']);
+
+              $product = Entity::firstOrCreate(['identification' => $new_entity['code'] , 'type_id' => $type->id]);
+              $product->name = $new_entity['name'];
+              $product->zoho_module = 'Products';
+              $product->save();
+              $product->entityInformation()->delete();
+
+
+              $information = new Information;
+              $information->product_code = $new_entity['code'];
+              $information->name = $new_entity['name'];
+              $information->family_name = $new_entity['family_name'];
+              $information->family_code = $new_entity['family_code'];
+              $information->save();
+              $product->entityInformation()->attach($information);
+              $product->createProductZoho();
+
+              exit;
+            }
+
+            break;
+
           default:
             // code...
             break;

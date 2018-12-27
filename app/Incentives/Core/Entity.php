@@ -199,7 +199,7 @@ class Entity extends Model
      */
     public function entityInformation()
     {
-        return $this->belongsToMany (Information::class);
+        return $this->belongsToMany(Information::class);
     }
 
     /**
@@ -446,7 +446,7 @@ class Entity extends Model
         'Subject' =>  $this->identification,
         'Tipo_de_Venta' =>  $sale_type,
         'Valor_de_compra' => $valorTotal,
-        'Contact_Name' => $this->zoho_id,
+        'Contact_Name' => $this->entityMain->zoho_id,
       ];
 
       $zoho->addModuleRecord( $module, [$this->zohoFields] );
@@ -789,6 +789,54 @@ class Entity extends Model
        return $zoho->response;
 
      }
+
+
+     /**
+      * Relationship with associated rules values
+      *
+      * @return dayscript\laravelZohoCrm\laravelZohoCrm;
+      */
+
+
+      function createProductZoho(){
+
+
+
+
+        $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
+
+        $zohoFields = array(
+          'Created_By' => 3609958000001218233,
+          'Created_Time' => $date,
+          'Description' => '',
+          'Modified_By' => 677524459,
+          'Modified_Time' => $date,
+          'Product_Active' => TRUE,
+          'Product_Category' => $this->entityInformation[0]->family_name,
+          'Product_Code' => $this->entityInformation[0]->product_code,
+          'Record_Image' => NULL,
+          'Product_Name' => $this->name,
+          'Owner' => NULL,
+          // 'Vendor_Name' => 3609958000001218233,
+        );
+
+        $zoho = new laravelZohoCrm();
+        if( is_null($this->zoho_id) ){
+            $zoho->addModuleRecord( $this->zoho_module, [$zohoFields] );
+        }else{
+            $zoho->updateModuleRecord($this->zoho_module, $this->zoho_id, [$zohoFields]);
+        }
+
+        $response = json_encode($zoho->response);
+
+        Log::info($response);
+        if( $zoho->response['code'] == 'SUCCESS'){
+          $this->zoho_id = $zoho->response['details']['id'];
+          $this->zoho_module = $this->zoho_module;
+          $this->save();
+        }
+        return $zoho->response;
+      }
 
 
 }
