@@ -6,7 +6,7 @@ use App\Incentives\Core\Entity;
 use Illuminate\Database\Eloquent\Model;
 
 use dayscript\laravelZohoCrm\laravelZohoCrm;
-
+use Log;
 
 class Information extends Model
 {
