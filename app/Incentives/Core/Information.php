@@ -132,7 +132,7 @@ class Information extends Model
       $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
 
 
-      $zoho->addModuleRecord( $module, [$this->zohoFields] );
+      $zoho->addModuleRecord( $module, [$zohoFields] );
       $response = json_encode($zoho->response);
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
