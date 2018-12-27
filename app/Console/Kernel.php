@@ -9,6 +9,8 @@ use App\Console\Commands\UpdateEntities;
 use App\Console\Commands\UploadRedemptions;
 use App\Console\Commands\EntiiesAsingTypeMass;
 use App\Console\Commands\CustomCommand;
+use App\Console\Commands\UpdateZohoInvoices;
+
 
 
 
@@ -32,7 +34,9 @@ class Kernel extends ConsoleKernel
         UploadRedemptions::class,
         EntiiesAsingTypeMass::class,
         CustomCommand::class,
+        UpdateZohoInvoices::class,
     ];
+
 
     /**
      * Define the application's command schedule.
