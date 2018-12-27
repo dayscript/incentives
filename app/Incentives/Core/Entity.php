@@ -800,9 +800,6 @@ class Entity extends Model
 
       function createProductZoho(){
 
-
-
-
         $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
 
         $zohoFields = array(
