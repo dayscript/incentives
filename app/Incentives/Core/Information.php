@@ -5,6 +5,9 @@ use App\Incentives\Core\Entity;
 
 use Illuminate\Database\Eloquent\Model;
 
+use dayscript\laravelZohoCrm\laravelZohoCrm;
+
+
 class Information extends Model
 {
     protected $table = "information";
