@@ -30,8 +30,8 @@
                 <tr v-for="(item,key) in entity.entity">
                   <td>{{ item.id }}</td>
                   <td>{{ item.identification }}</td>
-                  <td>{{ item.identification }}</td>
-                  <td>{{ item.identification }}</td>
+                  <td>{{ item.value }}</td>
+                  <td>{{ item.points }}</td>
                   <td>{{ item.created_at }}</td>
                 </tr>
               </tbody>
@@ -105,10 +105,23 @@
             if (this.entity_id > 0) {
                 axios.get('/entities/' + this.entity_id).then(
                   ({data}) => {
-
                       if (data) {
                           this.entity = data;
-                          console.log(this.entity)
+                          this.entity.entity.forEach(
+                            function(item,key){
+                              this.entity.entity[key].value = 0;
+                              this.entity.entity[key].points = 0;
+
+                              item.entity_information.forEach(
+                                function(element,index){
+                                      this.entity.entity[key].value += parseInt(element.value);
+                                      this.entity.entity[key].points += parseInt( Number(this.entity.entity[key].value).toFixed(1) / 1000);
+
+                                },this
+                              );
+                            },this
+                          );
+                        console.log('Aca: ',this.entity);
                       }
                   }
                 ).catch();
