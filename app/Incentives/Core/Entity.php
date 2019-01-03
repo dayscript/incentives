@@ -301,8 +301,9 @@ class Entity extends Model
         $invoice_points = [];
         foreach( $invoice->entityInformation as $index => $item ){
           $invoice_points[] += (int)$item->value / 1000;
-          dd($invoice_points);
+
         }
+        dd($invoice_points);
         $invoice_total += array_sum($invoice_points);
       }
 
