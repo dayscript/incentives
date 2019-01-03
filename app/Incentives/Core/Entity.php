@@ -300,14 +300,12 @@ class Entity extends Model
       foreach ($this->entity as $key => $invoice) {
         $invoice_points = [];
         foreach( $invoice->entityInformation as $index => $item ){
-          $invoice_points[] += round((int)$item->value / 1000);
-
+          $invoice_points[] = (int)$item->value;
         }
-
-        $invoice_total += array_sum($invoice_points);
+        $invoice_total += round(array_sum($invoice_points) / 1000 );
       }
 
-    
+
       // $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
       $total = ( $invoice_total + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
 

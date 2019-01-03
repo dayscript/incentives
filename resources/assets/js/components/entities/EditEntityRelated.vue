@@ -115,8 +115,8 @@
                               item.entity_information.forEach(
                                 function(element,index){
                                       this.entity.entity[key].value += parseInt(element.value);
-                                      this.entity.entity[key].points += parseInt( Number(this.entity.entity[key].value).toFixed(1) / 1000);
-
+                                      this.entity.entity[key].points = Math.round(parseInt(this.entity.entity[key].value)/1000);
+0
                                 },this
                               );
                             },this
