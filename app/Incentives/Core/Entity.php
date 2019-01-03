@@ -307,9 +307,9 @@ class Entity extends Model
         $invoice_total += array_sum($invoice_points);
       }
 
-      print_r(array_sum($invoice_total));
+      print_r($invoice_total);
       print_r(array_sum($entity_goals));
-      print_r(array_sum($rule_points));
+      print_r($rule_points);
       print_r(array_sum($redemptions));
 
       // $total = ( array_sum($invoices) + ( array_sum($entity_goals) + $rule_points ) ) - array_sum($redemptions);
