@@ -303,7 +303,7 @@ class Entity extends Model
           $invoice_points[] += round((int)$item->value / 1000);
 
         }
-        
+
         $invoice_total += array_sum($invoice_points);
       }
 
@@ -312,7 +312,7 @@ class Entity extends Model
 
       if($total < 0) $total = 0;
 
-      return (int)number_format($total,'2','.','');
+      return (int)$total;
     }
 
     /**
