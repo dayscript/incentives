@@ -46,11 +46,13 @@
               <div class="form-group">
                   <input type="hidden" name="entity_id" class="form-control" v-model="entity.id">
                   <select name="rule_id" class="form-control" v-model="rule_id">
-                    <option value="1">50 Kokoripesos por activación de cuenta</option>
-                    <option value="6">Usuario Antiguo</option>
-
+                    <option v-for="rule in rules" v-bind:value="rule.id"> {{rule.name}}</option>
                   </select>
                   <label for="">Seleccione la regla que desea asignar</label>
+                  <input type="text" name="value" class="form-control" v-model="value" v-if="rule_id == 6">
+                  <label for="">Ingrese el valor a asignar</label>
+
+
               </div>
               <div class="form-group">
                 <button  @click.prevent="createRule" class="btn btn-primary">Crear <i class="icon-paperplane ml-2"></i></button>
@@ -90,15 +92,18 @@
                 },
 
                 rule_id:'',
+                value:0,
                 clients: [],
                 modifiers: [
 
                 ],
+                rules:[],
                 errors: {},
                 adittionaldata: {
                     '_token': window.Laravel.csrfToken,
                     'ajax': true,
                 }
+
             }
         },
         mounted() {
@@ -110,19 +115,28 @@
                       }
                   }
                 ).catch();
+
+                axios.get('/api/rules/all').then(
+                  ({data}) => {
+                    this.rules = data;
+                  }
+                ).catch(
+                  ({error}) => {
+                    console.log(error);
+                  }
+                )
             }
 
         },
         methods: {
             createRule(){
-                axios.post('/api/entities/set-rule',{entity_id:this.entity.id, rule_id:this.rule_id}).then(
+                axios.post('/api/entities/set-rule',{entity_id:this.entity.id, rule_id:this.rule_id, value:this.value}).then(
                   ({data}) => {
                     console.log(data);
                   }
                 ).catch(function(error){
                   console.log(error);
-                }
-              ).bind(this)
+                }.bind(this));
             },
 
             deleteRule(id){

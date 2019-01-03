@@ -112,4 +112,20 @@ class RulesController extends Controller
         $results['message'] = __('Datos eliminados');
         return $results;
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Incentives\Rules\Rule  $rule
+     * @return \Illuminate\Http\Response
+     */
+    public function all()
+    {
+
+        $results            = Rule::all();
+        // $results['status']  = 'success';
+        // $results['message'] = __('Datos eliminados');
+        return $results;
+    }
 }
