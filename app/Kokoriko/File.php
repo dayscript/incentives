@@ -45,7 +45,6 @@ class File extends Model
       $current_date = Carbon::now()->subDays(1)->format('Y-m-d');
       foreach ($this->files as $num_file => $file) {
         preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
-        $current_date = '2018-12-29';
         if (!empty($array) && $current_date == $array[0]) {
           array_push($active_files, $file);
         }
