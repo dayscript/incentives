@@ -49,7 +49,7 @@
       </transition> -->
     </div>
     <div class="row show-grid">
-      <div class="row">
+      <!-- <div class="row">
         <h6>AGREGAR UNO</h6>
           <form action="#">
             <div class="form-group">
@@ -63,7 +63,7 @@
               </button>
             </div>
           </form>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
