@@ -303,7 +303,7 @@ class Entity extends Model
           $invoice_points[] += round((int)$item->value / 1000);
 
         }
-        dd($invoice_points);
+        
         $invoice_total += array_sum($invoice_points);
       }
 
