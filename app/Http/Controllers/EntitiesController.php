@@ -509,9 +509,8 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-      $entity = Entity::find(40180);
-      $entity->entityInformation;
-      return $entity->updateZohoInvoice();
+      $entitys = Entity::where("type_id",'=',2)->where('created_at','like','2019-01-07%')->get() ;
+      dd($entitys);
 
   }
 }
