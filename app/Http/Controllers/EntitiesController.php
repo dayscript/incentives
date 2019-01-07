@@ -511,7 +511,7 @@ class EntitiesController extends Controller
     public function devel(){
       $entity = Entity::find(40180);
       $entity->entityInformation;
-      return $entity;
+      return $entity->updateZohoInvoice();
 
   }
 }

@@ -467,7 +467,7 @@ class Entity extends Model
      * @return dayscript\laravelZohoCrm\laravelZohoCrm;
 
      */
-    public function updateZohoInvoice($module){
+    public function updateZohoInvoice(){
 
 
       $valorTotal = 0;
@@ -508,7 +508,7 @@ class Entity extends Model
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
         $this->zoho_id = $zoho->response['details']['id'];
-        $this->zoho_module = $module;
+        $this->zoho_module = $this->zoho_module;
         $this->save();
       }
       return $zoho->response;
