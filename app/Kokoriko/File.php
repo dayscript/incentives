@@ -43,7 +43,7 @@ class File extends Model
       // $aux = strtotime ('-1 day', strtotime(date('Y-m-d'))); $current_date = date ( 'Y-m-d', $aux);
       // $current_date = date ( 'Y-m-d');
       $current_date = Carbon::now()->subDays(1)->format('Y-m-d');
-      $current_date = '2019-01-05';
+      $current_date = '2019-01-06';
       foreach ($this->files as $num_file => $file) {
         preg_match("/([0-9]{4})\-([0-9]{2})\-([0-9]{2})/i", $file , $array);
         if (!empty($array) && $current_date == $array[0]) {
