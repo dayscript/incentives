@@ -204,13 +204,13 @@ class File extends Model
                   print_r('OK'."\n" );
                   Log::info('Factura : OK' );
                   try {
+
                     if(is_null($invoice->zoho_id)){
                       $zoho = $invoice->createZohoInvoice('Invoices');
                     }else{
                       $zoho = $invoice->UpdateZohoInvoice();
                     }
                     $information->createZoho('Invoice_Items');
-
                     Log::info('Invoice create Zoho OK : '.$invoice->identification);
                     }catch (\Exception $e) {
                       Log::info('Invoice exist in Zoho : '.$e);
