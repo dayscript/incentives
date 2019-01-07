@@ -512,7 +512,13 @@ class EntitiesController extends Controller
       $entitys = Entity::where("type_id",'=',2)->where('created_at','like','2019-01-07%')->get();
       $return = array();
       foreach ($entitys as $key => $value) {
-         $return[$value->id] = $value->updateZohoInvoice();
+        try {
+          $return[$value->id] = $value->updateZohoInvoice();
+        } catch (\Exception $e) {
+          $return[$value->id] = $e->getMessage();
+        }
+
+
       }
       return $return;
   }
