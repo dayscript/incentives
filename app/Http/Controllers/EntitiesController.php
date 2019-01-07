@@ -509,13 +509,9 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-        $invoice = Entity::find(26510);
-        $invoice->createZohoInvoice('Invoices');
-        foreach ($invoice->entityInformation as $key => $item) {
-          $item->createZoho('Invoice_Items');
-        }
-        // $information = Information::find(28410);
-        //
-        // dd($information->getProduct()->zoho_id);
+      $entity = Entity::find(33693);
+      $entity->entityInformation;
+      dd($entity);
+
   }
 }
