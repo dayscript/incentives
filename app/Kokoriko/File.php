@@ -181,10 +181,15 @@ class File extends Model
                 $entity = Entity::where('identification','=',$new_invoice['identification'])
                           ->where('type_id','=',1)->first();
                 if($entity){
-                  print_r('Procesando:' .$new_invoice['invoice_code'].' '.$new_invoice['invoice_date_up']."\n");
+                  print_r('Procesando:' .$new_invoice['invoice_code']. '-' . $entity->id. ' ' .$new_invoice['invoice_date_up']."\n");
 
                   Log::info('Factura : ' . $new_invoice['invoice_code'] );
-                  $invoice = Entity::firstOrCreate( ['identification' => $new_invoice['invoice_code'],'type_id' => 2] );
+                  $invoice = Entity::firstOrCreate(
+                    [
+                      'identification' => $new_invoice['invoice_code'] . '-' . $entity->id,
+                      'type_id' => 2
+                    ]
+                  );
                   $information = new Information;
                   $information->restaurant_code = $new_invoice['restaurant_code'];
                   $information->product_code    = $new_invoice['product_code'];
