@@ -467,6 +467,59 @@ class Entity extends Model
      * @return dayscript\laravelZohoCrm\laravelZohoCrm;
 
      */
+    public function updateZohoInvoice($module){
+
+
+      $valorTotal = 0;
+
+      foreach($this->entityInformation as $key => $item ){
+        $valorTotal += $item->value;
+        $product_code = $item->produc_code;
+        $invoice_date_up = $item->invoice_date_up;
+        $sale_type = $item->sale_type;
+        $restaurant_code = $item->restaurant_code;
+      }
+
+      $zoho = new laravelZohoCrm();
+      $date = str_replace(' ','T',date('Y-m-d H:m:s').'-05:00');
+
+
+      $this->zohoFields = [
+        'Account_Name' =>  null,
+        // 'Cantidad_de_producto' =>  $this->quantity,
+        // 'Created_Time' =>  null,
+        'Cedula_de_cliente' =>   $this->entityMain->identification,
+        // 'Codigo_de_producto' =>  $this->product_code,
+        'Codigo_de_restaurante' =>  $restaurant_code,
+        'Fecha_de_Transaccion' =>  str_replace(' ','T', $invoice_date_up.':00-05:00'),
+        'Invoice_Number' =>  $this->identification,
+        'Owner' =>  null,
+        'Kokoripuntos_Acumulados' =>  number_format($valorTotal / 1000, 0),
+        // 'Modified_Time' =>  null,
+        'Subject' =>  $this->identification,
+        'Tipo_de_Venta' =>  $sale_type,
+        'Valor_de_compra' => $valorTotal,
+        'Contact_Name' => $this->entityMain->zoho_id,
+      ];
+
+      $zoho->updateModuleRecord($this->zoho_module, $this->zoho_id, [$this->zohoFields]);
+
+      $response = json_encode($zoho->response);
+      Log::info($response);
+      if( $zoho->response['code'] == 'SUCCESS'){
+        $this->zoho_id = $zoho->response['details']['id'];
+        $this->zoho_module = $module;
+        $this->save();
+      }
+      return $zoho->response;
+    }
+
+    /**
+     * Relationship with associated rules values
+     *
+     * @return dayscript\laravelZohoCrm\laravelZohoCrm;
+
+     */
     public function updateZoho(){
       $arrayRecod = [
         'mail' =>  $this->entityInformation[0]->mail,
