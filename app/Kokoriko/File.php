@@ -206,6 +206,8 @@ class File extends Model
                   try {
                     if(is_null($invoice->zoho_id)){
                       $zoho = $invoice->createZohoInvoice('Invoices');
+                    }else{
+                      $zoho = $invoice->UpdateZohoInvoice();
                     }
                     $information->createZoho('Invoice_Items');
 
