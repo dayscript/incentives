@@ -509,8 +509,11 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-      $entitys = Entity::where("type_id",'=',2)->where('created_at','like','2019-01-07%')->get() ;
-      dd($entitys);
-
+      $entitys = Entity::where("type_id",'=',2)->where('created_at','like','2019-01-07%')->get();
+      $return = array();
+      foreach ($entitys as $key => $value) {
+         $return[$value->id] = $value->updateZohoInvoice();
+      }
+      return $return;
   }
 }
