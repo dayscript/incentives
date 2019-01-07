@@ -41,15 +41,14 @@ class CustomCommand extends Command
      */
     public function handle()
     {
-        $entities = Entity::where('type_id','=',1)->get();
-
-        foreach($entities as $index => $entity){
-          print_r($entity->id . "\n");
-          $entity->zoho_id = $entity->entityInformation[0]->zoho_id;
-          $entity->zoho_module = $entity->entityInformation[0]->zoho_module;
-          $entity->zoho_lead_to_contact = $entity->entityInformation[0]->zoho_lead_to_contact;
-          $entity->save();
-          print_r('OK');
+      $entitys = Entity::where("type_id",'=',2)->where('created_at','like','2019-01-07%')->get();
+      $return = array();
+      foreach ($entitys as $key => $value) {
+        try {
+          $return[$value->id] = $value->updateZohoInvoice();
+        } catch (\Exception $e) {
+          $return[$value->id] = $e->getMessage();
         }
+      }
     }
 }
