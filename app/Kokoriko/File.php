@@ -106,6 +106,7 @@ class File extends Model
 
               try {
                 $new_entity['field_no_identificacion'] = explode('.', $new_entity['field_no_identificacion'])[0];
+                print_r('Procesando Entidad: '. $new_entity['field_no_identificacion']);
                 $entity = Entity::firstOrCreate(['identification' => $new_entity['field_no_identificacion'], 'name' => $new_entity['name'], 'type_id'=> 1 ]);
 
                 if(!$entity->wasRecentlyCreated){
@@ -117,7 +118,7 @@ class File extends Model
                 $entity->createInformation($new_entity);
                 $entity->entityInformation;
 
-
+                print_r('OK');
                 Log::info('Enitity Create OK: '.$entity->id);
               } catch (\Exception $e) {
                 Log:info('error creando entidad desde ftp: '. $new_entity['field_no_identificacion'] . ' '.  $e->getMessage());
@@ -329,7 +330,7 @@ class File extends Model
 
               }
               unset($new_entity['line_break']);
-
+              print_r('Procesando Entidad: '. $new_entity['code']);
               $product = Entity::firstOrCreate(['identification' => $new_entity['code'] , 'type_id' => $type->id]);
               $product->name = $new_entity['name'];
               $product->zoho_module = 'Products';
@@ -345,6 +346,7 @@ class File extends Model
               $information->save();
               $product->entityInformation()->attach($information);
               $product->createProductZoho();
+              print_r('OK');
             }
 
             break;
