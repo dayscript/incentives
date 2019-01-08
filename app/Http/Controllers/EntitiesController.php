@@ -275,6 +275,11 @@ class EntitiesController extends Controller
 
         $entity  = Entity::find($request->input('entity_id'));
         $rule = Rule::find($request->input('rule_id'));
+
+        if($request->input('description') != ''){
+          $rule->description = $request->input('description');
+        }
+
         if( $request->input('value') != 0 ){
           $entity->rules()->attach($rule->id, ['value' =>  $request->input('value'), 'points' =>  $request->input('value'), 'description' => $rule->description]);
         }else{

@@ -49,10 +49,10 @@
                     <option v-for="rule in rules" v-bind:value="rule.id"> {{rule.name}}</option>
                   </select>
                   <label for="">Seleccione la regla que desea asignar</label>
-                  <input type="text" name="value" class="form-control" v-model="value" v-if="rule_id == 6">
+                  <input type="text" name="value" class="form-control" v-model="value" v-if="rule_id == 6 || rule_id  == 7">
                   <label for="">Ingrese el valor a asignar</label>
-
-
+                  <textarea type="text" name="description" class="form-control" v-model="description" v-if="rule_id  == 7"></textarea>
+                  <label for="">Ingrese una descripción detallando la asignación de puntos</label>
               </div>
               <div class="form-group">
                 <button  @click.prevent="createRule" class="btn btn-primary">Crear <i class="icon-paperplane ml-2"></i></button>
@@ -61,7 +61,7 @@
             </form>
         </div>
       </div>
-
+ 
     </div>
 </template>
 
@@ -93,6 +93,7 @@
 
                 rule_id:'',
                 value:0,
+                description:'',
                 clients: [],
                 modifiers: [
 
@@ -130,7 +131,7 @@
         },
         methods: {
             createRule(){
-                axios.post('/api/entities/set-rule',{entity_id:this.entity.id, rule_id:this.rule_id, value:this.value}).then(
+                axios.post('/api/entities/set-rule',{entity_id:this.entity.id, rule_id:this.rule_id, value:this.value,description:this.description}).then(
                   ({data}) => {
                     console.log(data);
                   }
