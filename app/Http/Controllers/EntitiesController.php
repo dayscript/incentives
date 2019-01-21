@@ -527,4 +527,21 @@ class EntitiesController extends Controller
       }
       return $return;
   }
+
+    /*
+    *
+    *
+    */
+
+    public function webhook(Request $request){
+
+      $entity = Entity::where('zoho_id','=', $request->input('zoho_id'))->first();
+      $entity->entityInformation;
+      $rule = Rule::find($request->input('rule_id'));
+
+      $entity->rules()->attach($rule->id, ['value' =>  $rule->value, 'points' =>  $rule->points, 'description' => $rule->description]);
+      return 'OK';
+    }
+
+
 }

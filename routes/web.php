@@ -42,6 +42,7 @@ Route::get('contacts/create-from-file','EntitiesController@createFromContactFile
 Route::get('tools/export','HomeController@export')->name('tools.export');
 Route::post('tools/export','HomeController@export');
 
+Route::post('entities/webhook', 'EntitiesController@webhook')->name('entities.webhook');
 
 
 
