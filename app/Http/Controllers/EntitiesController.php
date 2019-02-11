@@ -514,7 +514,7 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-      $entitys = Entity::where('type',1,'=')->whereNull('zoho_id');
+      $entitys = Entity::where('type',1,'=')->whereNull('zoho_id')->get();
       return $entitys;
 
   }
