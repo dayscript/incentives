@@ -400,6 +400,7 @@ class Entity extends Model
 
       $zoho->addModuleRecord( $module, [$this->zohoFields] );
       $response = json_encode($zoho->response);
+      Log::info('Create: '. $this->identification .' '. $module);
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
         $this->zoho_id = $zoho->response['details']['id'];
@@ -835,6 +836,7 @@ class Entity extends Model
             }
         }
 
+       Log::info('Creando: '. $this->identification .' '. $module);
        Log::info($response);
        if( $zoho->response['code'] == 'SUCCESS'){
          $this->zoho_id = $zoho->response['details']['id'];
@@ -881,6 +883,7 @@ class Entity extends Model
 
         $response = json_encode($zoho->response);
 
+        Log::info('Creando: '. $this->identification .' '. 'Product');
         Log::info($response);
         if( $zoho->response['code'] == 'SUCCESS'){
           $this->zoho_id = $zoho->response['details']['id'];
