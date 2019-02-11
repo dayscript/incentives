@@ -11,14 +11,14 @@ class FixZohoEntities extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'zoho:fixEntities';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Busca entidades de tipo contacto que no hayan sido creadas en zoho';
 
     /**
      * Create a new command instance.
