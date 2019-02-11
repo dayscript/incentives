@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Incentives\Core\Entity;
+
 
 class FixZohoEntities extends Command
 {
