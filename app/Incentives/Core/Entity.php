@@ -683,7 +683,7 @@ class Entity extends Model
       $this->zohoFields['Tipo_de_Usuario'] = 'Antiguo';
       $zoho->addModuleRecord( $module, [$this->zohoFields] );
       $response = json_encode($zoho->response);
-      Log::info('Creando: '. $this->id ,$module);
+      Log::info('Creando: '. $this->id .' '. $module);
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
         $this->zoho_id = $zoho->response['details']['id'];
