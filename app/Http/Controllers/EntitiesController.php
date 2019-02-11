@@ -516,6 +516,7 @@ class EntitiesController extends Controller
     public function devel(){
       $entitys = Entity::where('type_id',1,'=')->where('zoho_lead_to_contact',1,'=')->whereNull('zoho_id')->first();
       $entitys->entityInformation;
+      $entitys->createZoho('Contacts');
       return $entitys;
 
   }
