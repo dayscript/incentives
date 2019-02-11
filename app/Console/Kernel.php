@@ -10,6 +10,8 @@ use App\Console\Commands\UploadRedemptions;
 use App\Console\Commands\EntiiesAsingTypeMass;
 use App\Console\Commands\CustomCommand;
 use App\Console\Commands\UpdateZohoInvoices;
+use App\Console\Commands\FixZohoEntities;
+
 
 
 
@@ -35,6 +37,7 @@ class Kernel extends ConsoleKernel
         EntiiesAsingTypeMass::class,
         CustomCommand::class,
         UpdateZohoInvoices::class,
+        FixZohoEntities::class,
     ];
 
 

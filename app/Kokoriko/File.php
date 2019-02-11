@@ -121,7 +121,7 @@ class File extends Model
                 print_r('OK');
                 Log::info('Enitity Create OK: '.$entity->id);
               } catch (\Exception $e) {
-                Log:info('error creando entidad desde ftp: '. $new_entity['field_no_identificacion'] . ' '.  $e->getMessage());
+                Log::info('error creando entidad desde ftp: '. $new_entity['field_no_identificacion'] . ' '.  $e->getMessage());
                 continue;
               }
 
