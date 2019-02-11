@@ -39,12 +39,23 @@ class FixZohoEntities extends Command
      */
     public function handle()
     {
-      $this->info('Iniciando:');
+      $this->info('Iniciando Contatos:');
       $entities = Entity::where('type_id',1,'=')->where('zoho_lead_to_contact',1,'=')->whereNull('zoho_id')->get();
+      $this->info(count($entities));
       foreach ($entities as $key => $entity) {
         $this->line($entity->id);
         $entity->entityInformation;
         $entity->createContactZoho('Contacts');
+      }
+      $this->info('Terminado');
+
+      $this->info('Iniciando leads:');
+      $entities = Entity::where('type_id',1,'=')->where('zoho_lead_to_contact',0,'=')->whereNull('zoho_id')->get();
+      $this->info(count($entities));
+      foreach ($entities as $key => $entity) {
+        $this->line($entity->id);
+        $entity->entityInformation;
+        $entity->createZoho('Leads');
       }
       $this->info('Terminado');
     }
