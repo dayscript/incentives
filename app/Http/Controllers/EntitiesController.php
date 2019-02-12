@@ -521,7 +521,7 @@ class EntitiesController extends Controller
 
       $entities = Entity::where('type_id', 1, '=')->limit(10)->get();
       foreach ($entities as $key => $entity) {
-        $facturas = $entity->entityInformation;
+        dd($entity);
       }
       return $facturas;
 
