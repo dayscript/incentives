@@ -514,10 +514,16 @@ class EntitiesController extends Controller
     }
 
     public function devel(){
-      $entitys = Entity::where('type_id',1,'=')->where('zoho_lead_to_contact',1,'=')->whereNull('zoho_id')->first();
-      $entitys->entityInformation;
-      $entitys->createContactZoho('Contacts');
-      return $entitys;
+      // $entitys = Entity::where('type_id',1,'=')->where('zoho_lead_to_contact',1,'=')->whereNull('zoho_id')->first();
+      // $entitys->entityInformation;
+      // $entitys->createContactZoho('Contacts');
+      // return $entitys;
+
+      $entities = Entity::where('type_id', 1, '=')->get()->limit(10);
+      foreach ($entities as $key => $entity) {
+        $facturas = $entity->entityInformation;
+      }
+      return $facturas;
 
   }
 
