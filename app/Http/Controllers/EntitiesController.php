@@ -549,7 +549,7 @@ class EntitiesController extends Controller
       // foreach ( $entitys as $key => $entity ) {
       //   $return[] = $entity->createZoho('Leads');
       // }
-      return $entityes;
+      return $entitys;
 
   }
 
