@@ -629,7 +629,7 @@ class EntitiesController extends Controller
 
       foreach ($ITEMS as $key => $item) {
 
-        $entity = Entity::where('identification','=',$item[0]);
+        $entity = Entity::where('identification','=',$item[0])->get();
 
         dd($entity);
         $entity->zoho_id = $item[1];
