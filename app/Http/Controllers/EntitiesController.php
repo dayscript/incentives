@@ -203,18 +203,22 @@ class EntitiesController extends Controller
     {
         $entity->update($request->all());
         if( $request->input('zoho_lead_to_contact') ){
-            $entity->entityInformation[0]->nombres = $request->input('field_nombres');
-            $entity->entityInformation[0]->apellidos = $request->input('field_apellidos');
-            $entity->entityInformation[0]->mail = $request->input('mail');
-            $entity->entityInformation[0]->birthdate = $request->input('field_birthdate');
-            $entity->entityInformation[0]->gender = $request->input('field_gender');
-            $entity->entityInformation[0]->telephone = $request->input('field_telephone');
-            $entity->entityInformation[0]->save();
+            if(count($entity->entityInformation) != 0){
+              $entity->entityInformation[0]->nombres = $request->input('field_nombres');
+              $entity->entityInformation[0]->apellidos = $request->input('field_apellidos');
+              $entity->entityInformation[0]->mail = $request->input('mail');
+              $entity->entityInformation[0]->birthdate = $request->input('field_birthdate');
+              $entity->entityInformation[0]->gender = $request->input('field_gender');
+              $entity->entityInformation[0]->telephone = $request->input('field_telephone');
+              $entity->entityInformation[0]->save();
 
-            $entity->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
-            $entity->save();
+              $entity->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
+              $entity->save();
 
-            return $entity->updateZoho();
+              return $entity->updateZoho();
+            }else{
+              $entity->createInformation($request->all());
+            }
         }
         return $entity;
     }
@@ -525,7 +529,7 @@ class EntitiesController extends Controller
           return $entity;
       }
       return $entity;
-      
+
     }
 
     /*
