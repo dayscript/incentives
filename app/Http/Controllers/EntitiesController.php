@@ -546,9 +546,9 @@ class EntitiesController extends Controller
     public function devel(){
 
       $entitys = Entity::where('type_id', '=', 1)->whereNull('zoho_module')->get();
-      // foreach ( $entitys as $key => $entity ) {
-      //   $return[] = $entity->createZoho('Leads');
-      // }
+      foreach ( $entitys as $key => $entity ) {
+        $return[] = $entity->createZoho('Leads');
+      }
       return $entitys;
 
   }
