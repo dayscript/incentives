@@ -549,7 +549,7 @@ class EntitiesController extends Controller
 
 
     public function devel(){
-      return 'OK';
+
       $entity = Entity::find(36512);
       return $entity->entityInformation[0];
 
