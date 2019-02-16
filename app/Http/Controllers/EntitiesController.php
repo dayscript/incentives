@@ -628,8 +628,11 @@ class EntitiesController extends Controller
 
       foreach ($ITEMS as $key => $item) {
         $entity = Entity::find($item[0]);
-        dd($entity);
+        $entity->zoho_id = $item[1];
+        $entity->zoho_module = $item[2];
+        $entity->save();
       }
+      return 'OK';
 
   }
 
