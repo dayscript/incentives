@@ -203,7 +203,7 @@ class EntitiesController extends Controller
     {
         $entity->update($request->all());
         if( $request->input('zoho_lead_to_contact') ){
-            if(count($entity->entityInformation) != 0){
+            if( isset( $entity->entityInformation[0] ) ){
               $entity->entityInformation[0]->nombres = $request->input('field_nombres');
               $entity->entityInformation[0]->apellidos = $request->input('field_apellidos');
               $entity->entityInformation[0]->mail = $request->input('mail');
