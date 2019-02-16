@@ -217,7 +217,7 @@ class EntitiesController extends Controller
 
               return $entity->updateZoho();
             }else{
-              $entity->createInformation($request->all());
+              return $request->all();// $entity->createInformation($request->all());
             }
         }
         return $entity;
