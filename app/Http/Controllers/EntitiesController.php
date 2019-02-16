@@ -545,8 +545,8 @@ class EntitiesController extends Controller
 
     public function devel(){
 
-      $entity = Entity::find(36512);
-      return $entity->entityInformation[0];
+      $entity = Entity::find(26058);
+      return $entity->createZoho('Leads');
 
   }
 
