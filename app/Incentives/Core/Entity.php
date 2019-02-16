@@ -366,7 +366,7 @@ class Entity extends Model
 
      */
     public function createZoho($module){
-
+      dd($this->entityInformation);
       $arrayRecod = [
         'mail' =>  $this->entityInformation[0]->mail,
         'field_no_identificacion' =>  (string)$this->identification,
