@@ -628,7 +628,7 @@ class EntitiesController extends Controller
     );
 
       foreach ($ITEMS as $key => $item) {
-        
+        dd($item);
         $entity = Entity::find($item[0]);
         $entity->zoho_id = $item[1];
         $entity->zoho_module = $item[2];
