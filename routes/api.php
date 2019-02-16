@@ -31,6 +31,8 @@ Route::get('entities/{identification}/delvalue/{id}', 'EntitiesController@delval
 Route::get('entities/{identification}/delgoalvalue/{id}', 'EntitiesController@delgoalvalue');
 Route::post('entities/set-rule','EntitiesController@setRule');
 Route::post('entities/del-rule','EntitiesController@delRule');
+Route::get('entities/create-zoho/{entity_id}/{module}','EntitiesController@createZoho');
+
 
 Route::get('rules/all', 'RulesController@all');
 

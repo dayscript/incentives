@@ -513,19 +513,20 @@ class EntitiesController extends Controller
       return $results;*/
     }
 
-    public function devel(){
-      // $entitys = Entity::where('type_id',1,'=')->where('zoho_lead_to_contact',1,'=')->whereNull('zoho_id')->first();
-      // $entitys->entityInformation;
-      // $entitys->createContactZoho('Contacts');
-      // return $entitys;
+    /*
+    *
+    *
+    */
 
-      $entities = Entity::where('type_id', 1, '=')->limit(10)->get();
-      foreach ($entities as $key => $entity) {
-        dd($entity->invoices);
+    public function createZoho(Entity $entity, $module){
+
+      if( is_null($entity->zoho_module) && is_null($entity->zoho_id) ){
+          $entity->createZoho($module);
+          return $entity;
       }
-      return $facturas;
-
-  }
+      return $entity;
+      
+    }
 
     /*
     *
@@ -541,6 +542,23 @@ class EntitiesController extends Controller
       $entity->rules()->attach($rule->id, ['value' =>  $rule->value, 'points' =>  $rule->points, 'description' => $rule->description]);
       return 'OK';
     }
+
+
+    public function devel(){
+      // $entitys = Entity::where('type_id',1,'=')->where('zoho_lead_to_contact',1,'=')->whereNull('zoho_id')->first();
+      // $entitys->entityInformation;
+      // $entitys->createContactZoho('Contacts');
+      // return $entitys;
+
+      $entities = Entity::where('type_id', 1, '=')->limit(10)->get();
+      foreach ($entities as $key => $entity) {
+        dd($entity->invoices);
+      }
+      return $facturas;
+
+  }
+
+
 
 
 }
