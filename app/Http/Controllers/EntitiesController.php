@@ -215,7 +215,7 @@ class EntitiesController extends Controller
               $entity->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
               $entity->save();
 
-              return $request->all(); //$entity->updateZoho();
+              return $entity->updateZoho();
             }else{
               return $request->all();// $entity->createInformation($request->all());
             }
@@ -549,16 +549,8 @@ class EntitiesController extends Controller
 
 
     public function devel(){
-      // $entitys = Entity::where('type_id',1,'=')->where('zoho_lead_to_contact',1,'=')->whereNull('zoho_id')->first();
-      // $entitys->entityInformation;
-      // $entitys->createContactZoho('Contacts');
-      // return $entitys;
-
-      $entities = Entity::where('type_id', 1, '=')->limit(10)->get();
-      foreach ($entities as $key => $entity) {
-        dd($entity->invoices);
-      }
-      return $facturas;
+      $entity = Entity::find(36512);
+      return $entity->entityInformation[0];
 
   }
 
