@@ -215,7 +215,7 @@ class EntitiesController extends Controller
               $entity->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
               $entity->save();
 
-              return $entity->updateZoho();
+              return $request->all(); //$entity->updateZoho();
             }else{
               return $request->all();// $entity->createInformation($request->all());
             }
