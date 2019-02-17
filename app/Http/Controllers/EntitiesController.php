@@ -631,7 +631,7 @@ class EntitiesController extends Controller
 
         $entity = Entity::where('identification','=',$item[0])->first();
 
-        dd($entity);
+        
         $entity->zoho_id = $item[1];
         $entity->zoho_module = $item[2];
         $entity->save();
