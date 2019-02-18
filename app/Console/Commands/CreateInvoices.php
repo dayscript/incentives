@@ -66,7 +66,12 @@ class CreateInvoices extends Command
           foreach ($invoice as $row => $value) {
             $new_invoice[$file_keys[$row]] = $value;
           }
-          print_r(Carbon::parse($new_invoice['invoice_date_up'])->format('Y-m-d h:m:s'));
+
+          $invoice_date = Carbon::parse($new_invoice['invoice_date_up'])->format('Y-m-d h:m:s');
+          $max = Carbon::parse('2019-01-03 19:26:00');
+          if( $invoice_date >= $max ){
+            print_r('entro');
+          }
           exit;
 
           if( strpos($new_invoice['identification'], '.') != false ) {
