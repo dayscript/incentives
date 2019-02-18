@@ -36,7 +36,7 @@ class File extends Model
      *
      * @var array
      */
-    public function getFolder( $path = '/' ){
+    public function getFolder( $path = '/', $all_files = false ){
       $active_files = [];
       $this->files = Storage::disk('ftp')->allFiles($path);
 
@@ -50,7 +50,11 @@ class File extends Model
           array_push($active_files, $file);
         }
       }
-      $this->files = $active_files;
+
+      if(!$all_files){
+        $this->files = $active_files;
+      }
+
       print_r($this->files);
       return $this->files;
     }
