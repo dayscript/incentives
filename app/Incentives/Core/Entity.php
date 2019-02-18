@@ -366,7 +366,7 @@ class Entity extends Model
 
      */
     public function createZoho($module){
-      
+
       $arrayRecod = [
         'mail' =>  $this->entityInformation[0]->mail,
         'field_no_identificacion' =>  (string)$this->identification,
@@ -502,7 +502,7 @@ class Entity extends Model
         'Valor_de_compra' => $valorTotal,
         'Contact_Name' => $this->entityMain->zoho_id,
       ];
-
+      dd($this->zohoFields);
       $zoho->updateModuleRecord($this->zoho_module, $this->zoho_id, [$this->zohoFields]);
 
       $response = json_encode($zoho->response);
