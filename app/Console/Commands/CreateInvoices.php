@@ -45,7 +45,7 @@ class CreateInvoices extends Command
       $file = new File;
       foreach( $file->getFolder('ventas/') as $key => $name ){
         $search_file = File::firstOrCreate(['name' => $name . ' massive_creation']);
-        $content = $search_file->getContentsFile($name,';');
+        $content = $search_file->getContentsFile($name,'|');
         var_dump($content);
         exit;
       }
