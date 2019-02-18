@@ -45,7 +45,7 @@ class CreateInvoices extends Command
       $this->info('Starting.');
 
       $file = new File;
-      foreach( $file->getFolder('ventas/') as $key => $name ){
+      foreach( $file->getFolder('ventas/', $all_files = true ) as $key => $name ){
 
         $search_file = File::firstOrCreate(['name' => $name . ' massive_creation']);
         $rows = $search_file->getContentsFile($name,'|');
@@ -128,8 +128,6 @@ class CreateInvoices extends Command
             continue;
           }
         }
-
-
       }
       $this->info('Finish');
 
