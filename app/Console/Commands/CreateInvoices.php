@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Kokoriko\File;
+use Carbon\Carbon;
+
 
 
 class CreateInvoices extends Command
@@ -64,7 +66,7 @@ class CreateInvoices extends Command
           foreach ($invoice as $row => $value) {
             $new_invoice[$file_keys[$row]] = $value;
           }
-          print_r($new_invoice);
+          print_r(Carbon::parse($new_invoice['invoice_date_up'])->format('Y-m-d h:m:s'));
           exit;
 
           if( strpos($new_invoice['identification'], '.') != false ) {
