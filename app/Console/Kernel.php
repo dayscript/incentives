@@ -11,6 +11,8 @@ use App\Console\Commands\EntiiesAsingTypeMass;
 use App\Console\Commands\CustomCommand;
 use App\Console\Commands\UpdateZohoInvoices;
 use App\Console\Commands\FixZohoEntities;
+use App\Console\Commands\CreateInvoices;
+
 
 
 
@@ -38,6 +40,7 @@ class Kernel extends ConsoleKernel
         CustomCommand::class,
         UpdateZohoInvoices::class,
         FixZohoEntities::class,
+        CreateInvoices::class,
     ];
 
 
