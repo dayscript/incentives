@@ -69,10 +69,9 @@ class CreateInvoices extends Command
 
           $invoice_date = Carbon::parse($new_invoice['invoice_date_up'])->format('Y-m-d h:m:s');
           $max = Carbon::parse('2019-01-03 19:26:00');
-          if( $invoice_date >= $max ){
-            print_r('entro');
+          if( $invoice_date>= $max ){
+            continue;
           }
-          exit;
 
           if( strpos($new_invoice['identification'], '.') != false ) {
               $new_invoice['identification'] = explode('.',$new_invoice['identification'])[0];
