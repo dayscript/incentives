@@ -6,6 +6,14 @@ use Illuminate\Console\Command;
 use App\Kokoriko\File;
 use Carbon\Carbon;
 
+use App\Incentives\Core\Information;
+use App\Incentives\Core\Entity;
+use App\Incentives\Core\Type;
+
+use App\Kokoriko\Redemption;
+use Storage;
+use Log;
+
 
 
 class CreateInvoices extends Command
