@@ -495,7 +495,7 @@ class Entity extends Model
         'Fecha_de_Transaccion' =>  str_replace(' ','T', $invoice_date_up.':00-05:00'),
         'Invoice_Number' =>  $this->identification,
         'Owner' =>  null,
-        'Kokoripuntos_Acumulados' =>  number_format($valorTotal / 1000, 0,'',''),
+        'Kokoripuntos_Acumulados' =>  (int)number_format($valorTotal / 1000, 0,'',''),
         // 'Modified_Time' =>  null,
         'Subject' =>  $this->identification,
         'Tipo_de_Venta' =>  $sale_type,
