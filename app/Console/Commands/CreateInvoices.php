@@ -44,10 +44,87 @@ class CreateInvoices extends Command
 
       $file = new File;
       foreach( $file->getFolder('ventas/') as $key => $name ){
+
         $search_file = File::firstOrCreate(['name' => $name . ' massive_creation']);
-        $content = $search_file->getContentsFile($name,'|');
-        var_dump($content);
-        exit;
+        $rows = $search_file->getContentsFile($name,'|');
+
+        $file_keys = array(
+          'identification',
+          'restaurant_code',
+          'invoice_code',
+          'product_code',
+          'sale_type',
+          'quantity',
+          'value',
+          'invoice_date_up',
+          'break_line'
+        );
+
+        foreach( $rows as $key => $invoice){
+          foreach ($invoice as $row => $value) {
+            $new_invoice[$file_keys[$row]] = $value;
+          }
+          print_r($new_invoice);
+          exit;
+
+          if( strpos($new_invoice['identification'], '.') != false ) {
+              $new_invoice['identification'] = explode('.',$new_invoice['identification'])[0];
+          }
+          if($new_invoice['identification'] == 0 || $new_invoice['identification'] == 1 ){
+            continue;
+          }
+
+          if( strpos($new_invoice['quantity'], '.') != false ) {
+              $new_invoice['quantity'] = explode('.',$new_invoice['quantity'])[0];
+          }
+          unset($new_invoice['break_line']);
+
+          try {
+            $entity = Entity::where('identification','=',$new_invoice['identification'])
+                      ->where('type_id','=',1)->first();
+            if($entity){
+              print_r('Procesando:' .$new_invoice['invoice_code']. '-' . $entity->id. ' ' .$new_invoice['invoice_date_up']."\n");
+
+              Log::info('Factura : ' . $new_invoice['invoice_code'] );
+              $invoice = Entity::firstOrCreate(
+                [
+                  'identification' => $new_invoice['invoice_code'] . '-' . $entity->id,
+                  'type_id' => 2
+                ]
+              );
+              $information = new Information;
+              $information->restaurant_code = $new_invoice['restaurant_code'];
+              $information->product_code    = $new_invoice['product_code'];
+              $information->sale_type       = $new_invoice['sale_type'];
+              $information->quantity        = $new_invoice['quantity'];
+              $information->invoice_date_up = $new_invoice['invoice_date_up'];
+              $information->value           = $new_invoice['value'];
+              $information->save();
+              $invoice->entityInformation()->attach($information);
+              $invoice->entity_id = $entity->id;
+              $invoice->save();
+              print_r('OK'."\n" );
+              Log::info('Factura : OK' );
+              try {
+
+                if(is_null($invoice->zoho_id)){
+                  $zoho = $invoice->createZohoInvoice('Invoices');
+                }else{
+                  $zoho = $invoice->UpdateZohoInvoice();
+                }
+                $information->createZoho('Invoice_Items');
+                Log::info('Invoice create Zoho OK : '.$invoice->identification);
+                }catch (\Exception $e) {
+                  Log::info('Invoice exist in Zoho : '.$e);
+                }
+            }
+          }catch (\Exception $e) {
+            Log::info('Factura error :'.$e->getMessage());
+            continue;
+          }
+        }
+
+
       }
       $this->info('Finish');
 
