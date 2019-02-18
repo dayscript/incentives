@@ -91,7 +91,7 @@ class CreateInvoices extends Command
           if( strpos($new_invoice['quantity'], '.') != false ) {
               $new_invoice['quantity'] = explode('.',$new_invoice['quantity'])[0];
           }
-          unset($new_invoice['break_line']);
+          unset($new_invoice['break_line']); 
 
           try {
             $entity = Entity::where('identification','=',$new_invoice['identification'])
