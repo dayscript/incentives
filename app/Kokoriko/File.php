@@ -65,7 +65,7 @@ class File extends Model
      * @var array
      */
     public function getContentsFile( $name = null, $parse = null){
-      if(is_null($this->name)){
+      if(!is_null($name)){
         $this->file = explode(PHP_EOL,Storage::disk('ftp')->get( $name ));
       }else{
         $this->file = explode(PHP_EOL,Storage::disk('ftp')->get( $this->name ));
