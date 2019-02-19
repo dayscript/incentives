@@ -75,11 +75,11 @@ class CreateInvoices extends Command
             $new_invoice[$file_keys[$row]] = $value;
           }
 
-          $invoice_date = Carbon::parse($new_invoice['invoice_date_up'])->format('Y-m-d h:m:s');
-          $max = Carbon::parse('2019-01-03 19:26:00');
-          if( $invoice_date>= $max ){
-            continue;
-          }
+          // $invoice_date = Carbon::parse($new_invoice['invoice_date_up'])->format('Y-m-d h:m:s');
+          // $max = Carbon::parse('2019-01-03 19:26:00');
+          // if( $invoice_date>= $max ){
+          //   continue;
+          // }
 
           if( strpos($new_invoice['identification'], '.') != false ) {
               $new_invoice['identification'] = explode('.',$new_invoice['identification'])[0];
@@ -91,7 +91,7 @@ class CreateInvoices extends Command
           if( strpos($new_invoice['quantity'], '.') != false ) {
               $new_invoice['quantity'] = explode('.',$new_invoice['quantity'])[0];
           }
-          unset($new_invoice['break_line']); 
+          unset($new_invoice['break_line']);
 
           try {
             $entity = Entity::where('identification','=',$new_invoice['identification'])
