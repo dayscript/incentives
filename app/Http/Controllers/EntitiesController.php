@@ -528,8 +528,16 @@ class EntitiesController extends Controller
       );
 
       if( is_null($entity->zoho_module) && is_null($entity->zoho_id) ){
-          $entity->createZoho($module);
-          $message['message'] = 'Entity created';
+          $result = $entity->createZoho($module);
+          $message['entity'] = Entity::find($entity);
+          if( $result['status'] == 'success'){
+            $message['message'] = 'Entity created';
+          }else{
+            $message['message'] = $result['message']. '' . $result['code'];
+            $message['status'] = 'error';
+          }
+      }else{
+          $message['message'] = 'Entity was already created';
           $message['entity'] = Entity::find($entity);
       }
       return $message;

@@ -399,9 +399,9 @@ class Entity extends Model
       $this->zohoFields['Tipo_de_Usuario'] = 'Nuevo';
 
       $zoho->addModuleRecord( $module, [$this->zohoFields] );
-      $response = json_encode($zoho->response);
+      // $response = json_encode($zoho->response);
       Log::info('Create: '. $this->identification .' '. $module);
-      Log::info($response);
+      Log::info(json_encode($zoho->response));
       if( $zoho->response['code'] == 'SUCCESS'){
         $this->zoho_id = $zoho->response['details']['id'];
         $this->zoho_module = $module;
@@ -510,7 +510,7 @@ class Entity extends Model
       if( $zoho->response['code'] == 'SUCCESS'){
         $this->zoho_id = $zoho->response['details']['id'];
         $this->zoho_module = $this->zoho_module;
-        
+
         $this->save();
       }
       return $zoho->response;
