@@ -33,7 +33,6 @@ Route::post('entities/set-rule','EntitiesController@setRule');
 Route::post('entities/del-rule','EntitiesController@delRule');
 Route::get('entities/create-zoho/{entity_id}/{module}','EntitiesController@createZoho');
 
-
 Route::get('rules/all', 'RulesController@all');
 
 Route::post('redemptions', 'RedemptionController@store');

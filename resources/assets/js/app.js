@@ -43,11 +43,12 @@ Vue.component('edit-entity', require('./components/entities/EditEntity.vue'));
 Vue.component('edit-entity-rules', require('./components/entities/EditEntityRules.vue'));
 Vue.component('edit-entity-related', require('./components/entities/EditEntityRelated.vue'));
 Vue.component('edit-entity-redemption', require('./components/entities/EditEntityRedemption.vue'));
+Vue.component('zoho-entity', require('./components/entities/ZohoEntity.vue'));
 
 
 Vue.component('tools-export', require('./components/tools/ToolsExport.vue'));
 
-
+import VuePNotify from 'vue-pnotify'
 // Vue.component('avatar',require('vue-avatar/dist/Avatar'));
 import Avatar from 'vue-avatar-component'
 // import VueI18n from 'vue-i18n'

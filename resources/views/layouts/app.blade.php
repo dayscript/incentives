@@ -52,9 +52,9 @@
 
 <!-- Scripts -->
 <script type="text/javascript" src="{{ asset('limitless_1_6/layout_1/LTR/default/assets/js/plugins/loaders/pace.min.js') }}"></script>
-<script src="{{ mix('js/app.js') }}"></script>
 <script type="text/javascript" src="{{ asset('limitless_1_6/layout_1/LTR/default/assets/js/plugins/notifications/pnotify.min.js') }}"></script>
 <script type="text/javascript" src="/limitless_1_6/layout_1/LTR/default/assets/js/plugins/forms/selects/select2.min.js"></script>
+<script src="{{ mix('/js/app.js') }}"></script>
 @yield('scripts')
 </body>
 </html>

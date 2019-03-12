@@ -211,6 +211,7 @@ class EntitiesController extends Controller
             $entity->entityInformation[0]->telephone = $request->input('field_telephone');
             $entity->entityInformation[0]->save();
 
+            //Conver zoho lead in zoho contact
             $entity->zoho_lead_to_contact = $request->input('zoho_lead_to_contact');
             $entity->save();
             return $entity->updateZoho();
@@ -517,14 +518,21 @@ class EntitiesController extends Controller
     *
     */
 
-    public function createZoho(Entity $entity, $module){
+    public function createZoho($entity, $module){
+      $entity = Entity::find($entity);
+
+      $message = array(
+        'message' => 'nothing',
+        'status' => 'success',
+        'entity' => $entity
+      );
 
       if( is_null($entity->zoho_module) && is_null($entity->zoho_id) ){
           $entity->createZoho($module);
-          return $entity;
+          $message['message'] = 'Entity created';
+          $message['entity'] = Entity::find($entity);
       }
-      return $entity;
-
+      return $message;
     }
 
     /*
