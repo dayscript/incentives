@@ -101,6 +101,8 @@
                     if (data.status == 'success') {
                       this.entity = data.entity
                       setTimeout(function() {window.vm.active++},1000)
+                    }else{
+                      setTimeout(function() {window.vm.active++},1000)
                     }
 
 
