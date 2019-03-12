@@ -117,6 +117,7 @@
                   } else {
                       console.log('Error', error.message);
                   }
+                  setTimeout(function() {window.vm.active++},1000)
               }.bind(this));
             }
         }
