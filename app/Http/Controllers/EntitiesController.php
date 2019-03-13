@@ -533,7 +533,7 @@ class EntitiesController extends Controller
           if( $result['status'] == 'success'){
             $message['message'] = 'Entity created';
           }else{
-            $message['message'] = $result['message']. '' . $result['code'];
+            $message['message'] = $result['message']. "\n" . $result['code'];
             $message['status'] = 'error';
           }
       }else{
