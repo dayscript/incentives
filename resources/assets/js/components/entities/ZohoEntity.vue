@@ -1,26 +1,69 @@
 <template>
-  <form action="#">
-    <div class="form-group">
-        <table class="table table-xs">
+  <div class="">
+    <div class="col-md-6">
+        <table  class="table table-xs">
           <thead>
             <tr>
-              <th>Zoho Module</th>
-              <th>Zoho Id</th>
+              <th>Zoho Name</th>
+              <th>Valor</th>
             </tr>
           </thead>
-            <tbody>
-              <tr>
-                <td>{{entity.zoho_module}}</td>
-                <td>{{entity.zoho_id}}</td>
-              </tr>
-            </tbody>
+          <tbody>
+            <!-- <tr><td>'Record_Image'                </td><td> NULL</td></tr>
+            <tr><td>'Owner'                       </td><td> NULL</td></tr>
+            <tr><td>'Created_By'                  </td><td> NULL</td></tr>
+            <tr><td>'Created_Time'                </td><td> NULL</td></tr>
+            <tr><td>'Salutation'                  </td><td> NULL</td></tr> -->
+            <tr><td>Cedula                      </td><td> {{entity.identification }} </td></tr>
+            <tr><td>Cedula_Ascesor              </td><td> {{entity.entity_information[0].no_identificacion_asesor }} </td></tr>
+            <tr><td>Date_of_Birth               </td><td> {{entity.entity_information[0].birthdate }} </td></tr>
+            <tr><td>Email                       </td><td> {{entity.entity_information[0].mail }} </td></tr>
+            <tr><td>Email_Opt_Out               </td><td> TRUE</td></tr>
+            <!-- <tr><td>Fecha_de_Preregistro        </td><td> {{entity.entity_information[0] }} NULL</td></tr> -->
+            <tr><td>Fecha_de_Registro           </td><td> {{entity.entity_information[0].created_at }} </td></tr>
+            <tr><td>First_Name                  </td><td> {{entity.entity_information[0].nombres }} </td></tr>
+            <!-- <tr><td>Fuente_de_AdquisicionEdit   </td><td> {{entity.entity_information[0] }} NULL</td></tr>
+            <tr><td>Last_Activity_Time          </td><td> {{entity.entity_information[0] }} NULL</td></tr> -->
+            <tr><td>Last_Name                   </td><td> {{entity.entity_information[0].apellidos }} </td></tr>
+            <tr><td>Mobile                      </td><td> {{entity.entity_information[0].telephone }} </td></tr>
+            <!-- <tr><td>Modified_By                 </td><td> {{entity.entity_information[0] }} NULL</td></tr>
+            <tr><td>Modified_Time               </td><td> {{entity.entity_information[0] }} NULL</td></tr>
+            <tr><td>Negative_Score              </td><td> {{entity.entity_information[0] }} NULL</td></tr>
+            <tr><td>Negative_Touch_Point_Score  </td><td> {{entity.entity_information[0] }} NULL</td></tr> -->
+            <tr><td>Nombre_de_Asesor            </td><td> {{entity.entity_information[0].asesor }} </td></tr>
+            <!-- <tr><td>Positive_Score              </td><td> {{entity.entity_information[0] }} NULL</td></tr>
+            <tr><td>Positive_Touch_Point_Score  </td><td> {{entity.entity_information[0] }} NULL</td></tr>
+            <tr><td>Score                       </td><td> {{entity.entity_information[0] }} NULL</td></tr>
+            <tr><td>Touch_Point_Score           </td><td> {{entity.entity_information[0] }} NULL</td></tr>
+            <tr><td>Twitter                     </td><td> {{entity.entity_information[0] }} NULL</td></tr> -->
+            <tr><td>Genero                      </td><td> {{entity.entity_information[0].gender }} </td></tr>
+            <tr><td>Convertir_en_Contacto       </td><td> {{entity.entity_information[0].zoho_lead_to_contact }}</td></tr>
+          </tbody>
         </table>
-
-        <button class="btn btn-danger" type="button" name="button" @click.prevent="createZoho()"></button>
     </div>
+    <div class="col-md-6">
+      <form action="#">
+        <div class="form-group">
+            <table class="table table-xs">
+              <thead>
+                <tr>
+                  <th>Zoho Module</th>
+                  <th>Zoho Id</th>
+                </tr>
+              </thead>
+                <tbody>
+                  <tr>
+                    <td>{{entity.zoho_module}}</td>
+                    <td>{{entity.zoho_id}}</td>
+                  </tr>
+                </tbody>
+            </table>
 
-
-  </form>
+            <button class="btn btn-success" type="button" name="button" @click.prevent="createZoho()">Enviar a Zoho</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
