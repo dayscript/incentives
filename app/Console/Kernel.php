@@ -12,6 +12,7 @@ use App\Console\Commands\CustomCommand;
 use App\Console\Commands\UpdateZohoInvoices;
 use App\Console\Commands\FixZohoEntities;
 use App\Console\Commands\CreateInvoices;
+use App\Console\Commands\CreateInIncentives;
 
 
 
@@ -41,6 +42,8 @@ class Kernel extends ConsoleKernel
         UpdateZohoInvoices::class,
         FixZohoEntities::class,
         CreateInvoices::class,
+        CreateInIncentives::class,
+
     ];
 
 
