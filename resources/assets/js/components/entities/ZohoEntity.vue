@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="col-md-6">
-        <table  class="table table-xs">
+        <table  class="table table-xs" v-if="entity.type_id == 1">
           <thead>
             <tr>
               <th>Zoho Name</th>
@@ -9,35 +9,59 @@
             </tr>
           </thead>
           <tbody>
-            <!-- <tr><td>'Record_Image'                </td><td> NULL</td></tr>
-            <tr><td>'Owner'                       </td><td> NULL</td></tr>
-            <tr><td>'Created_By'                  </td><td> NULL</td></tr>
-            <tr><td>'Created_Time'                </td><td> NULL</td></tr>
-            <tr><td>'Salutation'                  </td><td> NULL</td></tr> -->
             <tr><td>Cedula                      </td><td> {{entity.identification }} </td></tr>
             <tr><td>Cedula_Ascesor              </td><td> {{entity.entity_information[0].no_identificacion_asesor }} </td></tr>
             <tr><td>Date_of_Birth               </td><td> {{entity.entity_information[0].birthdate }} </td></tr>
             <tr><td>Email                       </td><td> {{entity.entity_information[0].mail }} </td></tr>
             <tr><td>Email_Opt_Out               </td><td> TRUE</td></tr>
-            <!-- <tr><td>Fecha_de_Preregistro        </td><td> {{entity.entity_information[0] }} NULL</td></tr> -->
             <tr><td>Fecha_de_Registro           </td><td> {{entity.entity_information[0].created_at }} </td></tr>
             <tr><td>First_Name                  </td><td> {{entity.entity_information[0].nombres }} </td></tr>
-            <!-- <tr><td>Fuente_de_AdquisicionEdit   </td><td> {{entity.entity_information[0] }} NULL</td></tr>
-            <tr><td>Last_Activity_Time          </td><td> {{entity.entity_information[0] }} NULL</td></tr> -->
             <tr><td>Last_Name                   </td><td> {{entity.entity_information[0].apellidos }} </td></tr>
             <tr><td>Mobile                      </td><td> {{entity.entity_information[0].telephone }} </td></tr>
-            <!-- <tr><td>Modified_By                 </td><td> {{entity.entity_information[0] }} NULL</td></tr>
-            <tr><td>Modified_Time               </td><td> {{entity.entity_information[0] }} NULL</td></tr>
-            <tr><td>Negative_Score              </td><td> {{entity.entity_information[0] }} NULL</td></tr>
-            <tr><td>Negative_Touch_Point_Score  </td><td> {{entity.entity_information[0] }} NULL</td></tr> -->
             <tr><td>Nombre_de_Asesor            </td><td> {{entity.entity_information[0].asesor }} </td></tr>
-            <!-- <tr><td>Positive_Score              </td><td> {{entity.entity_information[0] }} NULL</td></tr>
-            <tr><td>Positive_Touch_Point_Score  </td><td> {{entity.entity_information[0] }} NULL</td></tr>
-            <tr><td>Score                       </td><td> {{entity.entity_information[0] }} NULL</td></tr>
-            <tr><td>Touch_Point_Score           </td><td> {{entity.entity_information[0] }} NULL</td></tr>
-            <tr><td>Twitter                     </td><td> {{entity.entity_information[0] }} NULL</td></tr> -->
             <tr><td>Genero                      </td><td> {{entity.entity_information[0].gender }} </td></tr>
             <tr><td>Convertir_en_Contacto       </td><td> {{entity.entity_information[0].zoho_lead_to_contact }}</td></tr>
+          </tbody>
+        </table>
+        <table  class="table table-xs" v-if="entity.type_id == 2">
+          <thead>
+            <tr>
+              <th>Zoho Name</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Account_Name </td><td>  null</td></tr>
+            <tr><td>Cedula_de_cliente </td><td> <a v-bind:href="'/entities/'+entity.entity_id+'/edit'"> Ver </a> </td></tr>
+            <tr><td>Codigo_de_restaurante </td><td>  {{entity.entity_information[0].restaurant_code}}</td></tr>
+            <tr><td>Fecha_de_Transaccion </td><td>  {{entity.entity_information[0].invoice_date_up}}</td></tr>
+            <tr><td>Invoice_Number </td><td>  null</td></tr>
+            <tr><td>Owner </td><td>  null</td></tr>
+            <tr><td>Kokoripuntos_Acumulados </td><td>  null</td></tr>
+            <tr><td>Subject </td><td> {{entity.identification}} </td></tr>
+            <tr><td>Tipo_de_Venta </td><td>  {{entity.entity_information[0].sale_type}}</td></tr>
+            <tr><td>Valor_de_compra </td><td> null</td></tr>
+          </tbody>
+        </table>
+        <table  class="table table-xs" v-if="entity.type_id == 3">
+          <thead>
+            <tr>
+              <th>Zoho Name</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr><td>Created_By </td><td> 3609958000001218233,</td></tr> -->
+            <!-- <tr><td>Created_Time </td><td> $date</td></tr> -->
+            <!-- <tr><td>Description </td><td> </td></tr> -->
+            <!-- <tr><td>Modified_By </td><td> 677524459</td></tr>
+            <tr><td>Modified_Time </td><td> $date</td></tr> -->
+            <tr><td>Product_Active </td><td> TRUE</td></tr>
+            <tr><td>Product_Category </td><td> {{entity.entity_information[0].family_name}}</td></tr>
+            <tr><td>Product_Code </td><td> {{entity.entity_information[0].product_code}}</td></tr>
+            <tr><td>Record_Image </td><td> NULL</td></tr>
+            <tr><td>Product_Name </td><td> {{entity.entity_information[0].name}}</td></tr>
+            <!-- <tr><td>Owner </td><td> NULL</td></tr> -->
           </tbody>
         </table>
     </div>
@@ -58,8 +82,7 @@
                   </tr>
                 </tbody>
             </table>
-
-            <button class="btn btn-success" type="button" name="button" @click.prevent="createZoho()">Enviar a Zoho</button>
+            <button v-if="entity.zoho_id == null" class="btn btn-success" type="button" name="button" @click.prevent="createZoho()">Enviar a Zoho</button>
         </div>
       </form>
     </div>
