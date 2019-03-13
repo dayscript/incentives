@@ -364,14 +364,14 @@ class Entity extends Model
      *
      * @return dayscript\laravelZohoCrm\laravelZohoCrm;
 
-     */
+     */ 
     public function createZoho($module){
 
       $arrayRecod = [
         'mail' =>  $this->entityInformation[0]->mail,
         'field_no_identificacion' =>  (string)$this->identification,
         'field_nombres' =>  $this->entityInformation[0]->nombres,
-        'field_apellidos' =>  $this->entityInformation[0]->apellidos,
+        'field_apellidos' =>  ($this->entityInformation[0]->apellidos != '') ? $this->entityInformation[0]->apellidos : explode("  ",$this->name)[1],
         'field_telephone' => $this->entityInformation[0]->telephone,
         'asesor' => $this->entityInformation[0]->asesor,
         'cedula_del_asesor' => $this->entityInformation[0]->no_identificacion_asesor,
