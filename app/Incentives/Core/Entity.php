@@ -379,7 +379,7 @@ class Entity extends Model
         'fecha_de_registro'=>str_replace(' ', 'T', $this->entityInformation[0]->created_at->format('Y-m-d H:m:s') ).'-05:00',
         'field_birthdate' => $this->entityInformation[0]->birthdate,
         'roles' => $this->entityInformation[0]->roles,
-        'to_contact' => $this->zoho_lead_to_contact
+        'to_contact' => ($this->zoho_lead_to_contact == 0 ) ? fasle:true
       ];
 
       $zoho = new laravelZohoCrm();
