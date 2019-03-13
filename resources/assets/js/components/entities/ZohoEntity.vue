@@ -95,7 +95,7 @@
                         addclass: 'bg-' + data.status,
                         type: data.status,
                         animation: 'fade',
-                        delay: 2000
+                        delay: 10000
                     });
                     ;
                     if (data.status == 'success') {
