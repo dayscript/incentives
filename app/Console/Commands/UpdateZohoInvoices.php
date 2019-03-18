@@ -14,7 +14,7 @@ class UpdateZohoInvoices extends Command
      *
      * @var string
      */
-    protected $signature = 'zoho:update-invoices';
+    protected $signature = 'zoho:create-invoices';
 
     /**
      * The console command description.
