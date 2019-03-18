@@ -13,13 +13,7 @@ use App\Console\Commands\UpdateZohoInvoices;
 use App\Console\Commands\FixZohoEntities;
 use App\Console\Commands\CreateInvoices;
 use App\Console\Commands\CreateInIncentives;
-
-
-
-
-
-
-
+use App\Console\Commands\CreateProducts;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -43,6 +37,8 @@ class Kernel extends ConsoleKernel
         FixZohoEntities::class,
         CreateInvoices::class,
         CreateInIncentives::class,
+        CreateProducts::class,
+
 
     ];
 
