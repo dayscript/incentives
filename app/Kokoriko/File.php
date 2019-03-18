@@ -333,6 +333,9 @@ class File extends Model
                 $new_entity[$file_keys[$row]] = $value;
 
               }
+              
+              if($new_entity['name'] == ''){continue;} # entity without name is ignored!
+              
               unset($new_entity['line_break']);
               print_r('Procesando Entidad: '. $new_entity['code']);
               $product = Entity::firstOrCreate(['identification' => $new_entity['code'] , 'type_id' => $type->id]);
