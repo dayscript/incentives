@@ -109,7 +109,7 @@ class Information extends Model
      */
 
     public function createZoho($module){
-
+      Log::info($module .':'. $this->id);
       $zohoFields = [
         'Cantidad' => $this->quantity,
         'Created_By'=> 677524459,
@@ -134,6 +134,8 @@ class Information extends Model
 
       $zoho->addModuleRecord( $module, [$zohoFields] );
       $response = json_encode($zoho->response);
+      
+
       Log::info($response);
       if( $zoho->response['code'] == 'SUCCESS'){
         $this->zoho_id = $zoho->response['details']['id'];

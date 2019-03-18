@@ -184,7 +184,7 @@ class File extends Model
 
               try {
                 $entity = Entity::where('identification','=',$new_invoice['identification'])
-                          ->where('type_id','=',1)->first();
+                          ->where('type_id','=',1)->where('zoho_module','=','Contacts')->first();
                 if($entity){
                   print_r('Procesando:' .$new_invoice['invoice_code']. '-' . $entity->id. ' ' .$new_invoice['invoice_date_up']."\n");
 
