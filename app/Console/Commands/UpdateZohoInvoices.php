@@ -41,7 +41,7 @@ class UpdateZohoInvoices extends Command
     public function handle()
     {
         $this->info('Start');
-        $invoices = Entity::where('type_id','=',2)->get();
+        $invoices = Entity::where('type_id','=',2)->whereNull('zoho_id')->get();
 
         foreach ($invoices as $key => $invoice) {
           $this->info('Sending number: '. $invoice->identification);
