@@ -46,9 +46,13 @@ class UpdateZohoInvoices extends Command
         foreach ($invoices as $key => $invoice) {
           $this->info('Sending number: '. $invoice->identification);
           $invoice->createZohoInvoice('Invoices');
-          foreach ($invoice->entityInformation as $index => $information) {
-            $this->info('Sending information: '. $information->id);
-            $information->createZoho('Invoice_Items');
+          if(is_null($invoice->zoho_id)){
+            foreach ($invoice->entityInformation as $index => $information) {
+              $this->info('Sending information: '. $information->id);
+              $information->createZoho('Invoice_Items');
+            }
+          }else{
+            $this->info('Invoice not created');
           }
         }
         $this->info('Finish.');

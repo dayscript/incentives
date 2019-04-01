@@ -215,8 +215,10 @@ class File extends Model
                     }else{
                       $zoho = $invoice->UpdateZohoInvoice();
                     }
-                    $information->createZoho('Invoice_Items');
                     Log::info('Invoice create Zoho OK : '.$invoice->identification);
+                    
+                    $information->createZoho('Invoice_Items');
+                    
                     }catch (\Exception $e) {
                       Log::info('Invoice exist in Zoho : '.$e);
                     }
