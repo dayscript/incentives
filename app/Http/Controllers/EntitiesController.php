@@ -560,9 +560,8 @@ class EntitiesController extends Controller
 
 
     public function devel(){
-      $invoice = Entity::where('identification','=','1728577-14275')->get()->first();
-      return $invoice->UpdateZohoInvoice();
-
+      $files  = Storage::disk('ftp')->allFiles();
+      dd($files);
   }
 
 
